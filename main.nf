@@ -27,22 +27,16 @@ def helpMessage() {
 
     The typical command for running the pipeline is as follows:
 
-    nextflow run nf-core/clinvap --reads '*_R{1,2}.fastq.gz' -profile docker
+    nextflow run nf-core/clinvap --vcf '/input/folder' -profile docker
 
     Mandatory arguments:
-      --reads                       Path to input data (must be surrounded with quotes)
-      --genome                      Name of iGenomes reference
+      --vcf                         Path to the input data
       -profile                      Configuration profile to use. Can use multiple (comma separated)
                                     Available: conda, docker, singularity, awsbatch, test and more.
 
-    Options:
-      --singleEnd                   Specifies that the input is single end reads
-
-    References                      If not specified in the configuration file or you wish to overwrite any of the references.
-      --fasta                       Path to Fasta reference
-
     Other options:
       --outdir                      The output directory where the results will be saved
+      --vep_cachedir
       --email                       Set this parameter to your e-mail address to get a summary e-mail with details of the run sent to you when the workflow exits
       -name                         Name for the pipeline run. If not specified, Nextflow will automatically generate a random mnemonic.
 
@@ -62,20 +56,29 @@ if (params.help){
     exit 0
 }
 
-// TODO nf-core: Add any reference files that are needed
-// Configurable reference genomes
-fasta = params.genome ? params.genomes[ params.genome ].fasta ?: false : false
-if ( params.fasta ){
-    fasta = file(params.fasta)
-    if( !fasta.exists() ) exit 1, "Fasta file not found: ${params.fasta}"
-}
-//
-// NOTE - THIS IS NOT USED IN THIS PIPELINE, EXAMPLE ONLY
-// If you want to use the above in a process, define the following:
-//   input:
-//   file fasta from fasta
-//
+// // TODO nf-core: Add any reference files that are needed
+// // Configurable reference genomes
+// fasta = params.genome ? params.genomes[ params.genome ].fasta ?: false : false
+// if ( params.fasta ){
+//     fasta = file(params.fasta)
+//     if( !fasta.exists() ) exit 1, "Fasta file not found: ${params.fasta}"
+// }
 
+params.vcf = params.vcf ?: { log.error "No input data folder is provided. Make sure you have used the '--vcf' option.": exit 1 }()
+params.outdir = params.outdir ?: {log.warn "No ouput directory is provided. Results will be saved into './results'"; return "./results"}()
+params.vep_cachedir = params.vep_cachedir ?: {log.warn "No VEP cache directory is provided. Cache files will be downloaded into './vep_cache'"; return "./vep_cache"}()
+
+/*
+ * Define the default parameters
+ */
+
+
+
+// Configurable variables
+
+params.name = false
+params.email = false
+params.plaintext_email = false
 
 // Has the run name been specified by the user?
 //  this has the bonus effect of catching both -name and --name
@@ -98,29 +101,39 @@ if( workflow.profile == 'awsbatch') {
 ch_multiqc_config = Channel.fromPath(params.multiqc_config)
 ch_output_docs = Channel.fromPath("$baseDir/docs/output.md")
 
-/*
+/* 
  * Create a channel for input read files
- */
- if(params.readPaths){
-     if(params.singleEnd){
-         Channel
-             .from(params.readPaths)
-             .map { row -> [ row[0], [file(row[1][0])]] }
-             .ifEmpty { exit 1, "params.readPaths was empty - no input files supplied" }
-             .into { read_files_fastqc; read_files_trimming }
-     } else {
-         Channel
-             .from(params.readPaths)
-             .map { row -> [ row[0], [file(row[1][0]), file(row[1][1])]] }
-             .ifEmpty { exit 1, "params.readPaths was empty - no input files supplied" }
-             .into { read_files_fastqc; read_files_trimming }
-     }
- } else {
-     Channel
-         .fromFilePairs( params.reads, size: params.singleEnd ? 1 : 2 )
-         .ifEmpty { exit 1, "Cannot find any reads matching: ${params.reads}\nNB: Path needs to be enclosed in quotes!\nIf this is single-end data, please specify --singleEnd on the command line." }
-         .into { read_files_fastqc; read_files_trimming }
- }
+*/
+Channel
+  .fromPath(params.vcf)
+  .ifEmpty { exit 1, "params.vcf was empty - no input files supplied"}
+  .set {input_vcf}
+
+
+
+// /*
+//  * Create a channel for input read files
+//  */
+//  if(params.readPaths){
+//      if(params.singleEnd){
+//          Channel
+//              .from(params.readPaths)
+//              .map { row -> [ row[0], [file(row[1][0])]] }
+//              .ifEmpty { exit 1, "params.readPaths was empty - no input files supplied" }
+//              .into { read_files_fastqc; read_files_trimming }
+//      } else {
+//          Channel
+//              .from(params.readPaths)
+//              .map { row -> [ row[0], [file(row[1][0]), file(row[1][1])]] }
+//              .ifEmpty { exit 1, "params.readPaths was empty - no input files supplied" }
+//              .into { read_files_fastqc; read_files_trimming }
+//      }
+//  } else {
+//      Channel
+//          .fromFilePairs( params.reads, size: params.singleEnd ? 1 : 2 )
+//          .ifEmpty { exit 1, "Cannot find any reads matching: ${params.reads}\nNB: Path needs to be enclosed in quotes!\nIf this is single-end data, please specify --singleEnd on the command line." }
+//          .into { read_files_fastqc; read_files_trimming }
+//  }
 
 
 // Header log info
@@ -138,9 +151,8 @@ summary['Pipeline Name']  = 'nf-core/clinvap'
 summary['Pipeline Version'] = workflow.manifest.version
 summary['Run Name']     = custom_runName ?: workflow.runName
 // TODO nf-core: Report custom parameters here
-summary['Reads']        = params.reads
-summary['Fasta Ref']    = params.fasta
-summary['Data Type']    = params.singleEnd ? 'Single-End' : 'Paired-End'
+summary['Variants'] = params.vcf
+summary['VEP Cache dir'] = params.vep_cachedir
 summary['Max Memory']   = params.max_memory
 summary['Max CPUs']     = params.max_cpus
 summary['Max Time']     = params.max_time
@@ -182,79 +194,83 @@ ${summary.collect { k,v -> "            <dt>$k</dt><dd><samp>${v ?: '<span style
 }
 
 
+// /*
+//  * Parse software version numbers
+//  */
+// process get_software_versions {
+
+//     output:
+//     file 'software_versions_mqc.yaml' into software_versions_yaml
+
+//     script:
+//     // TODO nf-core: Get all tools to print their version number here
+//     """
+//     echo $workflow.manifest.version > v_pipeline.txt
+//     echo $workflow.nextflow.version > v_nextflow.txt
+//     fastqc --version > v_fastqc.txt
+//     multiqc --version > v_multiqc.txt
+//     scrape_software_versions.py > software_versions_mqc.yaml
+//     """
+// }
+
+
 /*
- * Parse software version numbers
+ * STEP 1 - Vep Cache Files
  */
-process get_software_versions {
+process ensembl_vep_files {
 
-    output:
-    file 'software_versions_mqc.yaml' into software_versions_yaml
+ /*
+ * Input will be the download location.  
+ */
+  publishDir "${params.vep_cachedir}", mode: 'copy', overwrite: false
 
-    script:
-    // TODO nf-core: Get all tools to print their version number here
-    """
-    echo $workflow.manifest.version > v_pipeline.txt
-    echo $workflow.nextflow.version > v_nextflow.txt
-    fastqc --version > v_fastqc.txt
-    multiqc --version > v_multiqc.txt
-    scrape_software_versions.py > software_versions_mqc.yaml
-    """
+  script:
+  """
+  perl INSTALL.pl -n --CACHE_VERSION 95 --VERSION 95 -a acf -s homo_sapiens -y GRCh37
+  wget 'https://raw.githubusercontent.com/Ensembl/VEP_plugins/release/90/LoFtool_scores.txt'
+  """
+}
+
+/*
+ * STEP 2 - Ensembl VEP Annotation
+ */
+
+process vep_on_input_file {
+
+  publishDir "${params.outdir}"
+  input:
+  file vcf_file from input_vcf
+
+  output:
+  file "${vcf_file.basename}_out.vcf" into annotated_vcf
+  script:
+  """
+  vep -i ${vcf_file} -o "${vcf_file.basename}_out.vcf" --config ./assets/vep.ini
+  """
+}
+
+/*
+ * STEP 3 - Report Generation
+ */
+
+process report_generation {
+
+  publishDir "${params.outdir}/reports"
+
+  input:
+  file out_vcf from annotated_vcf
+
+  output:
+  file "${out_vcf.basename}.json"
+  script:
+  """
+  Rscript --no-save --no-restore --no-init-file --no-site-file ./bin/reporting.R -f ${out_vcf} -r "${out_vcf.basename}.json" -d ./assets/driver_db_dump.json
+  """
 }
 
 
-
 /*
- * STEP 1 - FastQC
- */
-process fastqc {
-    tag "$name"
-    publishDir "${params.outdir}/fastqc", mode: 'copy',
-        saveAs: {filename -> filename.indexOf(".zip") > 0 ? "zips/$filename" : "$filename"}
-
-    input:
-    set val(name), file(reads) from read_files_fastqc
-
-    output:
-    file "*_fastqc.{zip,html}" into fastqc_results
-
-    script:
-    """
-    fastqc -q $reads
-    """
-}
-
-
-
-/*
- * STEP 2 - MultiQC
- */
-process multiqc {
-    publishDir "${params.outdir}/MultiQC", mode: 'copy'
-
-    input:
-    file multiqc_config from ch_multiqc_config
-    // TODO nf-core: Add in log files from your new processes for MultiQC to find!
-    file ('fastqc/*') from fastqc_results.collect().ifEmpty([])
-    file ('software_versions/*') from software_versions_yaml
-    file workflow_summary from create_workflow_summary(summary)
-
-    output:
-    file "*multiqc_report.html" into multiqc_report
-    file "*_data"
-
-    script:
-    rtitle = custom_runName ? "--title \"$custom_runName\"" : ''
-    rfilename = custom_runName ? "--filename " + custom_runName.replaceAll('\\W','_').replaceAll('_+','_') + "_multiqc_report" : ''
-    // TODO nf-core: Specify which MultiQC modules to use with -m for a faster run time
-    """
-    multiqc -f $rtitle $rfilename --config $multiqc_config .
-    """
-}
-
-
-
-/*
- * STEP 3 - Output Description HTML
+ * STEP 4 - Output Description HTML
  */
 process output_documentation {
     publishDir "${params.outdir}/Documentation", mode: 'copy'
@@ -348,5 +364,4 @@ workflow.onComplete {
     output_tf.withWriter { w -> w << email_txt }
 
     log.info "[nf-core/clinvap] Pipeline Complete"
-
 }
