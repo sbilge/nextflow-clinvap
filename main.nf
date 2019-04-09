@@ -73,7 +73,6 @@ params.vep_cachedir = params.vep_cachedir ?: {log.warn "No VEP cache directory i
  */
 
 
-
 // Configurable variables
 
 params.name = false
@@ -224,9 +223,15 @@ process ensembl_vep_files {
  */
   publishDir "${params.vep_cachedir}", mode: 'copy', overwrite: false
 
+  output:
+  file 'ensembl-vep' into offline_files
+
+
   script:
   """
-  perl INSTALL.pl -n --CACHE_VERSION 95 --VERSION 95 -a acf -s homo_sapiens -y GRCh37
+  git clone -b release/95 https://github.com/Ensembl/ensembl-vep.git
+  cd ensembl-vep
+  perl INSTALL.pl --NO_HTSLIB -n --CACHE_VERSION 95 --VERSION 95 --CACHEDIR ${params.vep_cachedir} -a acf -s homo_sapiens -y GRCh37
   wget 'https://raw.githubusercontent.com/Ensembl/VEP_plugins/release/90/LoFtool_scores.txt'
   """
 }
@@ -240,12 +245,14 @@ process vep_on_input_file {
   publishDir "${params.outdir}"
   input:
   file vcf_file from input_vcf
+  file('vep_cache') from offline_files
+  
 
   output:
-  file "${vcf_file.basename}_out.vcf" into annotated_vcf
+  file "${vcf_file.baseName}_out.vcf" into annotated_vcf
   script:
   """
-  vep -i ${vcf_file} -o "${vcf_file.basename}_out.vcf" --config ./assets/vep.ini
+  vep -i ${vcf_file} -o ${vcf_file.baseName}_out.vcf --config $baseDir/assets/vep.ini
   """
 }
 

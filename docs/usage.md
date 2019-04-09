@@ -13,8 +13,6 @@
         * [`docker`](#docker)
         * [`singularity`](#singularity)
         * [`test`](#test)
-    * [`--reads`](#--reads)
-    * [`--singleEnd`](#--singleend)
 * [Reference genomes](#reference-genomes)
     * [`--genome`](#--genome)
     * [`--fasta`](#--fasta)
@@ -52,7 +50,7 @@ NXF_OPTS='-Xms1g -Xmx4g'
 ## Running the pipeline
 The typical command for running the pipeline is as follows:
 ```bash
-nextflow run nf-core/clinvap --reads '*_R{1,2}.fastq.gz' -profile docker
+nextflow run nf-core/clinvap --vcf '*.vcf' -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
@@ -104,31 +102,25 @@ If `-profile` is not specified at all the pipeline will be run locally and expec
     * Includes links to test data so needs no other parameters
 
 <!-- TODO nf-core: Document required command line parameters -->
-### `--reads`
-Use this to specify the location of your input FastQ files. For example:
+### `--vcf`
+Use this to specify the location of your input VCF files. For example:
 
 ```bash
---reads 'path/to/data/sample_*_{1,2}.fastq'
+--vcf 'path/to/data/*.vcf'
 ```
 
-Please note the following requirements:
+Please note the path must be enclosed in quotes.
 
-1. The path must be enclosed in quotes
-2. The path must have at least one `*` wildcard character
-3. When using the pipeline with paired end data, the path must use `{1,2}` notation to specify read pairs.
+If left unspecified, a default pattern is used: `data/*.vcf`
 
-If left unspecified, a default pattern is used: `data/*{1,2}.fastq.gz`
-
-### `--singleEnd`
-By default, the pipeline expects paired-end data. If you have single-end data, you need to specify `--singleEnd` on the command line when you launch the pipeline. A normal glob pattern, enclosed in quotation marks, can then be used for `--reads`. For example:
+### `--vep_cachedir`
+By default, the pipeline expects Ensembl VEP cache files. A normal glob pattern, enclosed in quotation marks, can then be used for `--reads`. For example:
 
 ```bash
---singleEnd --reads '*.fastq'
+--vep_cachedir 'path/to/data'
 ```
 
-It is not possible to run a mixture of single-end and paired-end files in one run.
-
-
+<!-- TODO check VEP's compatibility with these genome files -->
 ## Reference genomes
 
 The pipeline config files come bundled with paths to the illumina iGenomes reference index files. If running with docker or AWS, the configuration is set up to use the [AWS-iGenomes](https://ewels.github.io/AWS-iGenomes/) resource.

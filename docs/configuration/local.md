@@ -9,9 +9,12 @@ Nextflow has [excellent integration](https://www.nextflow.io/docs/latest/docker.
 
 First, install docker on your system: [Docker Installation Instructions](https://docs.docker.com/engine/installation/)
 
+
+<!-- TODO change this for your pipeline -->
+
 Then, simply run the analysis pipeline:
 ```bash
-nextflow run nf-core/clinvap -profile docker --genome '<genome ID>' --design '<path to your design file>'
+nextflow run nf-core/clinvap --vcf '<path to your input folder>' -profile docker
 ```
 
 Nextflow will recognise `nf-core/clinvap` and download the pipeline from GitHub. The `-profile docker` configuration lists the [nf-core/clinvap](https://hub.docker.com/r/nfcore/clinvap/) image that we have created and is hosted at dockerhub, and this is downloaded.
