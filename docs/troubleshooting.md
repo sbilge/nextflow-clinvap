@@ -4,13 +4,7 @@
 
 ## Input files not found
 
-If only no file, or only one input file is picked up then something is wrong with your input file declaration
-
-1. The path must be enclosed in quotes (`'` or `"`)
-2. The path must have at least one `*` wildcard character. 
-
 If the pipeline can't find your files then you will get the following error
-
 ```
 ERROR ~ Cannot find any input files matching: *.vcf
 ```

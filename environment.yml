@@ -3,6 +3,7 @@ channels:
   - conda-forge
   - bioconda
   - defaults
+  - sbilge
 dependencies:
   # TODO nf-core: Add required software dependencies here
   - bioconda::ensembl-vep=95.3
@@ -26,3 +27,5 @@ dependencies:
   - bioconda::htslib
   - bioconda::perl-bio-db-hts
   - bioconda::perl-bioperl
+  - sbilge::r-tidyjson 
+  - bioconda::bioconductor-variantannotation

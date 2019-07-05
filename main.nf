@@ -30,19 +30,22 @@ def helpMessage() {
     nextflow run nf-core/clinvap --vcf '/input/folder' -profile docker
 
     Mandatory arguments:
-      --vcf                         Path to the input data
+      --vcf  [Path]                 Path to the input data
       -profile                      Configuration profile to use. Can use multiple (comma separated)
                                     Available: conda, docker, singularity, awsbatch, test and more.
 
     Other options:
       --outdir                      The output directory where the results will be saved
-      --vep_cachedir
+      --vep_cache [Path]            Path to Ensemble VEP cache files
       --email                       Set this parameter to your e-mail address to get a summary e-mail with details of the run sent to you when the workflow exits
       -name                         Name for the pipeline run. If not specified, Nextflow will automatically generate a random mnemonic.
 
     AWSBatch options:
       --awsqueue                    The AWSBatch JobQueue that needs to be set when running on AWSBatch
       --awsregion                   The AWS Region for your AWS Batch job to run on
+
+    Skipping steps:
+      --skip_vep_cache              Skip downloading Ensemble VEP cache files
     """.stripIndent()
 }
 
@@ -65,8 +68,8 @@ if (params.help){
 // }
 
 params.vcf = params.vcf ?: { log.error "No input data folder is provided. Make sure you have used the '--vcf' option.": exit 1 }()
-params.outdir = params.outdir ?: {log.warn "No ouput directory is provided. Results will be saved into './results'"; return "./results"}()
-params.vep_cachedir = params.vep_cachedir ?: {log.warn "No VEP cache directory is provided. Cache files will be downloaded into './vep_cache'"; return "./vep_cache"}()
+params.outdir = params.outdir ?: {log.warn "No ouput directory is provided. Results will be saved into './results'"; return "$baseDir/results"}()
+// params.vep_cachedir = params.vep_cachedir ?: {log.warn "No VEP cache directory is provided. Cache files will be downloaded into './vep_cache'"; return "./vep_cache"}()
 
 /*
  * Define the default parameters
@@ -108,7 +111,18 @@ Channel
   .ifEmpty { exit 1, "params.vcf was empty - no input files supplied"}
   .set {input_vcf}
 
-
+/* 
+ * Create a channel for ensembl vep cache files when provided by user
+*/
+params.vep_cache = false
+if (params.vep_cache){
+  params.skip_vep_cache = true
+  Channel
+    .frompath("${params.vep_cache}")
+    .set(vep_offline_files)
+} else {
+  params.skip_vep_cache = false
+}
 
 // /*
 //  * Create a channel for input read files
@@ -216,22 +230,21 @@ ${summary.collect { k,v -> "            <dt>$k</dt><dd><samp>${v ?: '<span style
 /*
  * STEP 1 - Vep Cache Files
  */
+
 process ensembl_vep_files {
 
- /*
- * Input will be the download location.  
- */
-  publishDir "${params.vep_cachedir}", mode: 'copy', overwrite: false
-
+  storeDir "${params.outdir}/offline"
   output:
-  file 'ensembl-vep' into offline_files
+  file("*") into vep_offline_files 
 
+  when:
+  !params.skip_vep_cache
 
   script:
   """
   git clone -b release/95 https://github.com/Ensembl/ensembl-vep.git
   cd ensembl-vep
-  perl INSTALL.pl --NO_HTSLIB -n --CACHE_VERSION 95 --VERSION 95 --CACHEDIR ${params.vep_cachedir} -a acf -s homo_sapiens -y GRCh37
+  perl INSTALL.pl --NO_HTSLIB -n --CACHE_VERSION 95 --CACHEDIR './offline_cache' --VERSION 95 -a acf -s homo_sapiens -y GRCh37
   wget 'https://raw.githubusercontent.com/Ensembl/VEP_plugins/release/90/LoFtool_scores.txt'
   """
 }
@@ -245,16 +258,21 @@ process vep_on_input_file {
   publishDir "${params.outdir}"
   input:
   file vcf_file from input_vcf
-  file('vep_cache') from offline_files
+  file('ensembl-vep') from vep_offline_files
   
-
   output:
   file "${vcf_file.baseName}_out.vcf" into annotated_vcf
+
   script:
+  if (!params.skip_vep_cache)
   """
-  vep -i ${vcf_file} -o ${vcf_file.baseName}_out.vcf --config $baseDir/assets/vep.ini
+  vep -i ${vcf_file} -o ${vcf_file.baseName}_out.vcf --dir_cache "${params.outdir}/offline/ensembl-vep/offline_cache" --config $baseDir/assets/vep.ini
   """
-}
+  else
+  """
+  vep -i ${vcf_file} -o ${vcf_file.baseName}_out.vcf --dir_cache ${params.vep_cache} --config $baseDir/assets/vep.ini
+  """
+ }
 
 /*
  * STEP 3 - Report Generation
@@ -268,10 +286,11 @@ process report_generation {
   file out_vcf from annotated_vcf
 
   output:
-  file "${out_vcf.basename}.json"
+  file "${out_vcf.baseName}.json"
+
   script:
   """
-  Rscript --no-save --no-restore --no-init-file --no-site-file ./bin/reporting.R -f ${out_vcf} -r "${out_vcf.basename}.json" -d ./assets/driver_db_dump.json
+  Rscript --no-save --no-restore --no-init-file --no-site-file $baseDir/bin/reporting.R -f ${out_vcf} -r "${out_vcf.baseName}.json" -d $baseDir/assets/driver_db_dump.json
   """
 }
 
