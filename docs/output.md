@@ -23,13 +23,13 @@ and processes data using the following steps:
 
 ## Report Generation
 
-[Report Generation](#report) processes the information found in the annotated VCF file and conducts further annotations including driver gene type and therapeutic suggestions. 
+[Report Generation](#report) processes the information found in the annotated VCF file and conducts further annotations including driver gene type and therapeutic suggestions.
 The resulting json report includes 6 main categories:
 
 1. "mskdg": Somatic Mutations in Known Driver genes  
-    List of cancer driver genes along with the observed mutations in the patient. 
+    List of cancer driver genes along with the observed mutations in the patient.
 2. "ptp_da": Summary of Cancer Drugs Targeting the Affected genes  
-    List of cancer drugs targeting the mutated gene. 
+    List of cancer drugs targeting the mutated gene.
 3. "ptp_ia": CIViC Summary of Drugs Targeting the Affected genes  
     Therapies that have evidence of targeting the affected gene
 4. "mskpe": Somatic Mutations with Known Pharmacogenetic Effect
