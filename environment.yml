@@ -7,7 +7,7 @@ channels:
   - defaults
   - sbilge
 dependencies:
-  # TODO nf-core: Add required software dependencies here
+  - conda-forge::r-markdown=1.1
   - bioconda::ensembl-vep=95.3
   - r::r-dplyr=0.7.6
   - r::r-tidyr=0.8.1
