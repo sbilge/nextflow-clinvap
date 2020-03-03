@@ -9,7 +9,6 @@
 # clinical reporting.
 
 library(futile.logger)
-library(tryCatchLog)
 
 # Create a new logger object.
 logger <- log4r::create.logger()
@@ -21,10 +20,10 @@ log4r::logfile(logger) <- '/tmp/base.log'
 flog.appender(appender.file('/tmp/check_points.log'))
 
 # packages are installed within the docker image. 
-tryCatchLog::tryLog({
-  list.of.packages <- c("dplyr", "dtplyr", "tidyr", "stringr", "splitstackshape", "optparse", "readr", "RCurl", "devtools", "tidyjson", "VariantAnnotation","fs")
-  lapply(list.of.packages, library, character.only=T)
-})
+
+list.of.packages <- c("dplyr", "dtplyr", "tidyr", "stringr", "splitstackshape", "optparse", "readr", "RCurl", "devtools", "tidyjson", "VariantAnnotation","fs")
+lapply(list.of.packages, library, character.only=T)
+
 
 # set this manually to run code interactively
 #debug <- TRUE
@@ -46,10 +45,10 @@ opt_parser <- optparse::OptionParser(option_list = option_list)
 opt <- optparse::parse_args(opt_parser)
 
 # define input, output and database variables
-tryLog({
-  vcfFile <- opt$file
-  reportFile <- opt$report
-})
+
+vcfFile <- opt$file
+reportFile <- opt$report
+
 
 #  checks of input VCF
 if (!debug && (is.null(opt$file) || !file.exists(opt$file))) {
@@ -104,19 +103,19 @@ if (is.null(opt$metadata)) {
 
 # Collects the data from CiVIC and returns a list with two data frames for genes and evidence.
 civic_source = "https://civicdb.org/downloads/01-Jan-2019/01-Jan-2019-ClinicalEvidenceSummaries.tsv"
-tryLog({
-  civic_evidence <- read.table(civic_source, sep="\t", header=T, fill = T, quote = "", comment.char = "%") %>%
-    dplyr::rename(chr=chromosome, alt=variant_bases, ref=reference_bases) %>%
-    dplyr::mutate(gene = as.character(gene),
-                  chr = as.character (chr),
-                  start = as.integer(start),
-                  stop = as.integer(stop),
-                  ref = as.character(ref),
-                  alt = as.character(alt)) %>%
-    filter(evidence_status == "accepted") %>%
-    filter(variant_origin == "Somatic Mutation") %>%
-    filter(evidence_type == "Predictive" & evidence_direction == "Supports")
-})
+
+civic_evidence <- read.table(civic_source, sep="\t", header=T, fill = T, quote = "", comment.char = "%") %>%
+dplyr::rename(chr=chromosome, alt=variant_bases, ref=reference_bases) %>%
+dplyr::mutate(gene = as.character(gene),
+                chr = as.character (chr),
+                start = as.integer(start),
+                stop = as.integer(stop),
+                ref = as.character(ref),
+                alt = as.character(alt)) %>%
+filter(evidence_status == "accepted") %>%
+filter(variant_origin == "Somatic Mutation") %>%
+filter(evidence_type == "Predictive" & evidence_direction == "Supports")
+
 
 if(is.null(civic_evidence) || nrow(civic_evidence)==0){
   log4r::level(logger) <- 'ERROR'
@@ -131,9 +130,9 @@ if(is.null(civic_evidence) || nrow(civic_evidence)==0){
 # annotate VCF file
 #
 ###################
-tryLog({
-  vcf <- VariantAnnotation::readVcf(vcfFile, opt$genome) # hg19 = GRCh37
-})
+
+vcf <- VariantAnnotation::readVcf(vcfFile, opt$genome) # hg19 = GRCh37
+
 
 if(!exists('vcf')){
   log4r::level(logger) <- "ERROR"
@@ -393,11 +392,11 @@ reference_map <- tibble(References = c(lof_driver$References, lof_variant_dt_tab
   distinct() %>%
   tibble::rowid_to_column()
 
-tryLog({
-  base_url <- "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?retmode=json;db=pubmed;id="
-  querystring <- URLencode(paste(base_url, paste(
-    (reference_map$References), collapse = ",", sep = ""), sep = ""))
-})
+
+base_url <- "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?retmode=json;db=pubmed;id="
+querystring <- URLencode(paste(base_url, paste(
+(reference_map$References), collapse = ",", sep = ""), sep = ""))
+
 
 references_json <- as.tbl_json(getURL(querystring))
 
