@@ -241,7 +241,7 @@ process vep_on_input_file {
   file('ensembl-vep') from vep_offline_files
   
   output:
-  file "${vcf_file.baseName}_out.vcf" into annotated_vcf
+  file "${vcf_file.baseName}_out.vcf" into ch_annotated_vcf
 
   when:
   !params.skip_vep
@@ -266,7 +266,7 @@ process report_generation {
   publishDir "${params.outdir}/reports"
 
   input:
-  file out_vcf from annotated_vcf.mix(ch_annotated_vcf_for_reporting)
+  file out_vcf from ch_annotated_vcf.mix(ch_annotated_vcf_for_reporting)
 
   output:
   file "${out_vcf.baseName}.json"
