@@ -67,7 +67,7 @@ if (params.help) {
 //params.fasta = params.genome ? params.genomes[ params.genome ].fasta ?: false : false
 //if (params.fasta) { ch_fasta = file(params.fasta, checkIfExists: true) }
 
-if !params.skip_vep {
+if (!params.skip_vep) {
     params.vcf = params.vcf ?: { log.error "No input data folder is provided. Make sure you have used the '--vcf' option.": exit 1 }()
 }
 params.outdir = params.outdir ?: {log.warn "No ouput directory is provided. Results will be saved into './results'"; return "$baseDir/results"}()
@@ -125,7 +125,7 @@ if (params.vep_cache){
 
 if (params.skip_vep){
     Channel
-        .fromFilePairs(params.annotated_vcf, size: 1) {file -> file.baseName}
+        .fromPath(params.annotated_vcf)
         .ifEmpty {exit 1, "Cannot find any vcf matching: ${params.annotated_vcf}.\nTry enclosing paths in quotes!\nTry adding a * wildcard!"}
         .set {ch_annotated_vcf_for_reporting}
         .println()
@@ -212,7 +212,7 @@ ${summary.collect { k,v -> "            <dt>$k</dt><dd><samp>${v ?: '<span style
 process ensembl_vep_files {
 
   storeDir "${params.outdir}/offline"
-  
+
   output:
   file("*") into vep_offline_files 
 
@@ -241,7 +241,7 @@ process vep_on_input_file {
   file('ensembl-vep') from vep_offline_files
   
   output:
-  file "${vcf_file.baseName}_out.vcf" into annotated_vcf
+  file "${vcf_file.baseName}_out.vcf" into ch_annotated_vcf
 
   when:
   !params.skip_vep
@@ -266,7 +266,7 @@ process report_generation {
   publishDir "${params.outdir}/reports"
 
   input:
-  file out_vcf from annotated_vcf.mix(ch_annotated_vcf_for_reporting)
+  file out_vcf from ch_annotated_vcf.mix(ch_annotated_vcf_for_reporting)
 
   output:
   file "${out_vcf.baseName}.json"

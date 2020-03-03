@@ -1,4 +1,4 @@
-#!/usr/bin/env Rscript --no-save --no-restore --no-init-file --no-site-file
+#!/usr/bin/env -S Rscript --no-save --no-restore --no-init-file --no-site-file
 
 # reporting.R
 # Julian Heinrich (julian@joules.de)
