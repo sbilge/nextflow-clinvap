@@ -22,6 +22,7 @@ def helpMessage() {
 
     Mandatory arguments:
       --vcf  [Path]                 Path to the input directory.
+      --annotated_vcf [Path]        Path to the VEP-annotated vcf.
       --genome [str]                Genome version. Supported are: 'GRCh37' or 'GRCh38'.
       -profile [str]                Configuration profile to use. Can use multiple (comma separated).
                                     Available: conda, docker, singularity, awsbatch, test and more.
@@ -66,7 +67,9 @@ if (params.help) {
 //params.fasta = params.genome ? params.genomes[ params.genome ].fasta ?: false : false
 //if (params.fasta) { ch_fasta = file(params.fasta, checkIfExists: true) }
 
-params.vcf = params.vcf ?: { log.error "No input data folder is provided. Make sure you have used the '--vcf' option.": exit 1 }()
+if !params.skip_vep {
+    params.vcf = params.vcf ?: { log.error "No input data folder is provided. Make sure you have used the '--vcf' option.": exit 1 }()
+}
 params.outdir = params.outdir ?: {log.warn "No ouput directory is provided. Results will be saved into './results'"; return "$baseDir/results"}()
 // params.vep_cachedir = params.vep_cachedir ?: {log.warn "No VEP cache directory is provided. Cache files will be downloaded into './vep_cache'"; return "./vep_cache"}()
 
@@ -94,10 +97,14 @@ ch_output_docs = file("$baseDir/docs/output.md", checkIfExists: true)
 /*
  * Create a channel for input read files
  */
-Channel
-  .fromPath(params.vcf)
-  .ifEmpty { exit 1, "params.vcf was empty - no input files supplied"}
-  .set {input_vcf}
+if (!params.skip_vep) {
+    Channel
+    .fromPath(params.vcf)
+    .ifEmpty { exit 1, "params.vcf was empty - no input files supplied"}
+    .set {input_vcf}
+} else {
+    input_vcf = Channel.empty()
+}
 
 /* 
  * Create a channel for ensembl vep cache files when provided by user
@@ -110,6 +117,20 @@ if (params.vep_cache){
     .set(vep_offline_files)
 } else {
   params.skip_vep_cache = false
+}
+
+/*
+* Create a channel for annotated vcf files
+*/
+
+if (params.skip_vep){
+    Channel
+        .fromFilePairs(params.annotated_vcf, size: 1) {file -> file.baseName}
+        .ifEmpty {exit 1, "Cannot find any vcf matching: ${params.annotated_vcf}.\nTry enclosing paths in quotes!\nTry adding a * wildcard!"}
+        .set {ch_annotated_vcf_for_reporting}
+        .println()
+} else {
+    ch_annotated_vcf_for_reporting = Channel.empty()
 }
 
 // Header log info
@@ -191,11 +212,12 @@ ${summary.collect { k,v -> "            <dt>$k</dt><dd><samp>${v ?: '<span style
 process ensembl_vep_files {
 
   storeDir "${params.outdir}/offline"
+  
   output:
   file("*") into vep_offline_files 
 
   when:
-  !params.skip_vep_cache
+  !params.skip_vep_cache && !params.skip_vep
 
   script:
   """
@@ -213,12 +235,16 @@ process ensembl_vep_files {
 process vep_on_input_file {
 
   publishDir "${params.outdir}"
+
   input:
   file vcf_file from input_vcf
   file('ensembl-vep') from vep_offline_files
   
   output:
   file "${vcf_file.baseName}_out.vcf" into annotated_vcf
+
+  when:
+  !params.skip_vep
 
   script:
   if (!params.skip_vep_cache)
@@ -240,12 +266,17 @@ process report_generation {
   publishDir "${params.outdir}/reports"
 
   input:
-  file out_vcf from annotated_vcf
+  file out_vcf from annotated_vcf.mix(ch_annotated_vcf_for_reporting)
 
   output:
   file "${out_vcf.baseName}.json"
 
   script:
+  if (params.genome == 'GRCh38')
+  """
+  reporting.R -f ${out_vcf} -r "${out_vcf.baseName}.json" -d $baseDir/assets/driver_db_dump.json -c $baseDir/assets/GRCh38_01-Jan-2019-ClinicalEvidenceSummaries.txt
+  """
+  else
   """
   reporting.R -f ${out_vcf} -r "${out_vcf.baseName}.json" -d $baseDir/assets/driver_db_dump.json
   """
