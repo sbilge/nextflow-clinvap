@@ -125,7 +125,7 @@ if (params.vep_cache){
 
 if (params.skip_vep){
     Channel
-        .fromFilePairs(params.annotated_vcf, size: 1) {file -> file.baseName}
+        .fromPath(params.annotated_vcf)
         .ifEmpty {exit 1, "Cannot find any vcf matching: ${params.annotated_vcf}.\nTry enclosing paths in quotes!\nTry adding a * wildcard!"}
         .set {ch_annotated_vcf_for_reporting}
         .println()
