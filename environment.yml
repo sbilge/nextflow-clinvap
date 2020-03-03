@@ -24,10 +24,11 @@ dependencies:
   - bioconda::perl-archive-zip=1.64
   - bioconda::perl-dbd-mysql=4.046
   - bioconda::perl-dbi=1.642
-  - conda-forge::c-compiler
-  - conda-forge::zlib
-  - bioconda::htslib
-  - bioconda::perl-bio-db-hts
-  - bioconda::perl-bioperl
+  - conda-forge::c-compiler=1.0.4
+  - conda-forge::zlib=1.2.11
+  - bioconda::htslib=1.10.2
+  - bioconda::perl-bio-db-hts=3.01
+  - bioconda::perl-bioperl=1.7.2
   - sbilge::r-tidyjson 
-  - bioconda::bioconductor-variantannotation
+  - bioconda::bioconductor-variantannotation=1.32.0
+  - conda-forge::r-dtplyr=1.0.1
