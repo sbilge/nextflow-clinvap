@@ -22,6 +22,7 @@ def helpMessage() {
 
     Mandatory arguments:
       --vcf  [Path]                 Path to the input directory.
+      --genome [str]                Genome version. Supported are: 'GRCh37' or 'GRCh38'.
       -profile [str]                Configuration profile to use. Can use multiple (comma separated).
                                     Available: conda, docker, singularity, awsbatch, test and more.
     Other options:
@@ -200,7 +201,7 @@ process ensembl_vep_files {
   """
   git clone -b release/95 https://github.com/Ensembl/ensembl-vep.git
   cd ensembl-vep
-  perl INSTALL.pl --NO_HTSLIB -n --CACHE_VERSION 95 --CACHEDIR './offline_cache' --VERSION 95 -a acf -s homo_sapiens -y GRCh37
+  perl INSTALL.pl --NO_HTSLIB -n --CACHE_VERSION 95 --CACHEDIR './offline_cache' --VERSION 95 -a acf -s homo_sapiens -y ${params.genome}
   wget 'https://raw.githubusercontent.com/Ensembl/VEP_plugins/release/90/LoFtool_scores.txt'
   """
 }
@@ -246,7 +247,7 @@ process report_generation {
 
   script:
   """
-  Rscript --no-save --no-restore --no-init-file --no-site-file $baseDir/bin/reporting.R -f ${out_vcf} -r "${out_vcf.baseName}.json" -d $baseDir/assets/driver_db_dump.json
+  reporting.R -f ${out_vcf} -r "${out_vcf.baseName}.json" -d $baseDir/assets/driver_db_dump.json
   """
 }
 
