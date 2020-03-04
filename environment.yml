@@ -8,6 +8,7 @@ channels:
   - sbilge
 dependencies:
   - conda-forge::r-markdown=1.1
+  - conda-forge::r-vctrs=0.2.0
   - bioconda::ensembl-vep=95.3
   - conda-forge::r-rlang=0.3.0
   - r::r-dplyr=0.7.6
