@@ -21,7 +21,7 @@ flog.appender(appender.file('/tmp/check_points.log'))
 
 # packages are installed within the docker image. 
 
-list.of.packages <- c("dplyr", "dtplyr", "tidyr", "stringr", "splitstackshape", "optparse", "readr", "RCurl", "devtools", "tidyjson", "VariantAnnotation","fs")
+list.of.packages <- c("dplyr", "tidyr", "stringr", "splitstackshape", "optparse", "readr", "RCurl", "devtools", "tidyjson", "VariantAnnotation","fs")
 lapply(list.of.packages, library, character.only=T)
 
 
