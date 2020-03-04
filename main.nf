@@ -71,7 +71,6 @@ if (!params.skip_vep) {
     params.vcf = params.vcf ?: { log.error "No input data folder is provided. Make sure you have used the '--vcf' option.": exit 1 }()
 }
 params.outdir = params.outdir ?: {log.warn "No ouput directory is provided. Results will be saved into './results'"; return "$baseDir/results"}()
-// params.vep_cachedir = params.vep_cachedir ?: {log.warn "No VEP cache directory is provided. Cache files will be downloaded into './vep_cache'"; return "./vep_cache"}()
 
 // Has the run name been specified by the user?
 //  this has the bonus effect of catching both -name and --name
