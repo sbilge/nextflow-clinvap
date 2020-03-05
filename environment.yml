@@ -32,4 +32,4 @@ dependencies:
   - bioconda::perl-bio-db-hts
   - bioconda::perl-bioperl
   - sbilge::r-tidyjson 
-  - bioconda::bioconductor-variantannotation
+  - bioconda::bioconductor-variantannotation=1.28.3
