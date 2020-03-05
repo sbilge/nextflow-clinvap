@@ -8,7 +8,7 @@ channels:
   - sbilge
 dependencies:
   - conda-forge::r-markdown
-  - r::r-base=3.6
+  - r::r-base=3.5
   - conda-forge::r-vctrs
   - bioconda::ensembl-vep
   - conda-forge::r-rlang
