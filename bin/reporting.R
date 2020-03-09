@@ -129,7 +129,7 @@ if(is.null(civic_evidence) || nrow(civic_evidence)==0){
 #
 # annotate VCF file
 #
-###################
+################### 
 vcf <- VariantAnnotation::readVcf(vcfFile, opt$genome) # hg19 = GRCh37
 
 
