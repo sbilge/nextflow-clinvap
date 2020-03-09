@@ -273,11 +273,11 @@ process report_generation {
   script:
   if (params.genome == 'GRCh38')
   """
-  reporting.R -f ${out_vcf} -r "${out_vcf.baseName}.json" -d $baseDir/assets/driver_db_dump.json -c $baseDir/assets/GRCh38_01-Jan-2019-ClinicalEvidenceSummaries.txt
+  reporting.R -f ${out_vcf} -r "${out_vcf.baseName}.json" -d $baseDir/assets/driver_db_dump.json -g ${params.genome} -c $baseDir/assets/GRCh38_01-Jan-2019-ClinicalEvidenceSummaries.txt
   """
   else
   """
-  reporting.R -f ${out_vcf} -r "${out_vcf.baseName}.json" -d $baseDir/assets/driver_db_dump.json
+  reporting.R -f ${out_vcf} -r "${out_vcf.baseName}.json" -d $baseDir/assets/driver_db_dump.json -g ${params.genome}
   """
 }
 
