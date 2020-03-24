@@ -5,3 +5,6 @@ results/
 .DS_Store
 *.pyc
 .nextflow.log*
+._docx*
+._scrape*
+._render*
