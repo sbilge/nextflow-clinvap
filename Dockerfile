@@ -11,3 +11,6 @@ ENV PATH /opt/conda/envs/nf-core-clinvap-1.0dev/bin:$PATH
 
 # Dump the details of the installed packages to a file for posterity
 RUN conda env export --name nf-core-clinvap-1.0dev > nf-core-clinvap-1.0dev.yml
+
+# Install docxtemplater
+RUN npm install docxtemplater pizzip
