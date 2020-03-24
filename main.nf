@@ -293,12 +293,15 @@ process render_report {
 
     input:
     file out_json from docx_generate
+    
 
     output:
     file "${out_json.baseName}.docx"
 
     script:
+    """
     nodejs main.js -d ${out_json} -t ${params.docx_template} -o "${out_json.baseName}.docx"
+    """
 }
 
 
