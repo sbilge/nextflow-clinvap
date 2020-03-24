@@ -34,4 +34,4 @@ dependencies:
   - sbilge::r-tidyjson 
   - conda-forge::r-vctrs=0.2.3
   - bioconda::bioconductor-variantannotation=1.28.3
-  - conda-forge::nodejs=13.10.1
+  - conda-forge::nodejs
