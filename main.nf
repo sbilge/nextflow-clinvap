@@ -300,7 +300,7 @@ process render_report {
 
     script:
     """
-    nodejs main.js -d ${out_json} -t ${params.docx_template} -o "${out_json.baseName}.docx"
+    main.js -d ${out_json} -t ${params.docx_template} -o "${out_json.baseName}.docx"
     """
 }
 
