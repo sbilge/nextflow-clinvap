@@ -292,7 +292,7 @@ process render_report {
     publishDir "${params.outdir}/reports"
 
     input:
-    file out_json from docx_generate
+    file(out_json) from docx_generate
     
 
     output:
