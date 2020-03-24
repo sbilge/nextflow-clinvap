@@ -292,7 +292,7 @@ process render_report {
     publishDir "${params.outdir}/reports"
 
     input:
-    file(out_json) from docx_generate
+    file out_json from docx_generate
     
 
     output:
@@ -300,7 +300,7 @@ process render_report {
 
     script:
     """
-    main.js -d ${out_json} -t ${params.docx_template} -o "${out_json.baseName}.docx"
+    docx_generate.py ${out_json} ${params.docx_template} "${out_json.baseName}.docx"
     """
 }
 
