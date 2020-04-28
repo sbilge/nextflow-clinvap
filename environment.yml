@@ -35,4 +35,5 @@ dependencies:
   - conda-forge::r-vctrs=0.2.3
   - bioconda::bioconductor-variantannotation=1.28.3
   - conda-forge::docxtpl
+  - conda-forge::watchdog=0.10.2
 #   - conda-forge::nodejs
