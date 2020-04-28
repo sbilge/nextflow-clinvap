@@ -66,7 +66,9 @@ For further information or help, don't hesitate to get in touch on [Slack](https
 ## Citation
 
 <!-- TODO nf-core: Add citation for pipeline after first release. Uncomment lines below and update Zenodo doi. -->
-<!-- If you use  nf-core/clinvap for your analysis, please cite it using the following doi: [10.5281/zenodo.XXXXXX](https://doi.org/10.5281/zenodo.XXXXXX) -->
+If you use  nf-core/clinvap for your analysis, please cite the following article:
+
+> Sürün, B., Schärfe, C.P., Divine, M.R., Heinrich, J., Toussaint, N.C., Zimmermann, L., Beha, J. and Kohlbacher, O., 2020. ClinVAP: a reporting strategy from variants to therapeutic options. Bioinformatics, 36(7), pp.2316-2317. [https://doi.org/10.1093/bioinformatics/btz924](https://doi.org/10.1093/bioinformatics/btz924)
 
 You can cite the `nf-core` pre-print as follows:  
 
