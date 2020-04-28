@@ -212,6 +212,8 @@ ${summary.collect { k,v -> "            <dt>$k</dt><dd><samp>${v ?: '<span style
 
 process ensembl_vep_files {
 
+  conda '/opt/conda/envs/nf-core-clinvap-1.0dev'
+
   storeDir "${params.outdir}/offline"
 
   output:
@@ -234,6 +236,8 @@ process ensembl_vep_files {
  */
 
 process vep_on_input_file {
+
+  conda '/opt/conda/envs/nf-core-clinvap-1.0dev'
 
   publishDir "${params.outdir}", mode: 'copy'
 
@@ -264,6 +268,8 @@ process vep_on_input_file {
 
 process report_generation {
 
+  conda '/opt/conda/envs/nf-core-clinvap-1.0dev'
+
   publishDir "${params.outdir}/reports", mode: 'copy'
 
   input:
@@ -289,6 +295,8 @@ process report_generation {
 
 process render_report {
 
+    conda '/opt/conda/envs/nf-core-clinvap-1.0dev'
+
     publishDir "${params.outdir}/reports", mode: 'copy'
 
     input:
@@ -310,6 +318,9 @@ process render_report {
  * STEP 5 - Output Description HTML
  */
 process output_documentation {
+
+    conda '/opt/conda/envs/nf-core-clinvap-1.0dev'
+
     publishDir "${params.outdir}/Documentation", mode: 'copy'
 
     input:
