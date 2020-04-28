@@ -8,10 +8,12 @@ channels:
   - sbilge
 dependencies:
   - conda-forge::r-markdown=1.1
+  - r::r-base=3.5
   - bioconda::ensembl-vep=95.3
   - r::r-dplyr=0.7.6
-  - r::r-tidyr=0.8.1
-  - r::r-stringr=1.3.1
+  - conda-forge::r-rlang=0.4.2
+  - r::r-tidyr= 0.8.1
+  - r::r-stringr= 1.3.1
   - conda-forge::r-readr=1.3.1
   - r::r-rcurl=1.95_4.11
   - r::r-devtools=1.13.6
@@ -30,4 +32,7 @@ dependencies:
   - bioconda::perl-bio-db-hts
   - bioconda::perl-bioperl
   - sbilge::r-tidyjson 
-  - bioconda::bioconductor-variantannotation
+  - conda-forge::r-vctrs=0.2.3
+  - bioconda::bioconductor-variantannotation=1.28.3
+  - conda-forge::docxtpl
+#   - conda-forge::nodejs
