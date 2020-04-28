@@ -235,7 +235,7 @@ process ensembl_vep_files {
 
 process vep_on_input_file {
 
-  publishDir "${params.outdir}"
+  publishDir "${params.outdir}", mode: 'copy'
 
   input:
   file vcf_file from input_vcf
@@ -264,7 +264,7 @@ process vep_on_input_file {
 
 process report_generation {
 
-  publishDir "${params.outdir}/reports"
+  publishDir "${params.outdir}/reports", mode: 'copy'
 
   input:
   file out_vcf from ch_annotated_vcf.mix(ch_annotated_vcf_for_reporting)
@@ -289,7 +289,7 @@ process report_generation {
 
 process render_report {
 
-    publishDir "${params.outdir}/reports"
+    publishDir "${params.outdir}/reports", mode: 'copy'
 
     input:
     file out_json from docx_generate
