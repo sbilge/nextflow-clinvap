@@ -3,8 +3,8 @@
 **Clinical Variant Annotation Pipeline**.
 
 [![Build Status](https://travis-ci.com/nf-core/clinvap.svg?branch=master)](https://travis-ci.com/nf-core/clinvap)
-[![GitHub Actions CI Status](https://github.com/nf-core/clinvap/workflows/nf-core%20CI/badge.svg)](https://github.com/nf-core/clinvap/actions)
-[![GitHub Actions Linting Status](https://github.com/nf-core/clinvap/workflows/nf-core%20linting/badge.svg)](https://github.com/nf-core/clinvap/actions)
+[//]: # ([![GitHub Actions CI Status](https://github.com/nf-core/clinvap/workflows/nf-core%20CI/badge.svg)](https://github.com/nf-core/clinvap/actions))
+[//]: # ([![GitHub Actions Linting Status](https://github.com/nf-core/clinvap/workflows/nf-core%20linting/badge.svg)](https://github.com/nf-core/clinvap/actions))
 [![Nextflow](https://img.shields.io/badge/nextflow-%E2%89%A519.10.0-brightgreen.svg)](https://www.nextflow.io/)
 
 [![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg)](http://bioconda.github.io/)
@@ -33,7 +33,7 @@ iv. Start running your own analysis!
 <!-- TODO nf-core: Update the default command above used to run the pipeline -->
 
 ```bash
-nextflow run nf-core/clinvap -profile <docker/singularity/conda/institute> --reads '*_R{1,2}.fastq.gz' --genome GRCh37
+nextflow run nf-core/clinvap -profile <docker/singularity/conda/institute> --annotated_vcf <input> --skip_vep true
 ```
 
 See [usage docs](docs/usage.md) for all of the available options when running the pipeline.

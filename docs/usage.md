@@ -11,6 +11,9 @@
   * [`-profile`](#-profile)
   * [`--vcf`](#--vcf)
   * [`--vep_cachedir`](#--vep_cachedir)
+  * [`--skip_vep`](#--skip_vep)
+  * [`--annotated_vcf`](#--annotated_vcf)
+  * [`--docx_template`](#--docx_template)
 * [Reference genomes](#reference-genomes)
   * [`--genome` (using iGenomes)](#--genome-using-igenomes)
   * [`--fasta`](#--fasta)
@@ -127,10 +130,41 @@ If left unspecified, a default pattern is used: `data/*.vcf`
 
 ### `--vep_cachedir`
 
-By default, the pipeline expects Ensembl VEP cache files. A normal glob pattern, enclosed in quotation marks, can then be used for `--reads`. For example:
+By default, the pipeline expects Ensembl VEP cache files. A normal glob pattern, enclosed in quotation marks, can then be used for `--vep_cachedir`. For example:
 
 ```bash
 --vep_cachedir 'path/to/data'
+```
+
+### `--docx_template`
+
+```bash
+--docx_template 'path/to/template'
+```
+
+### `--skip_vep`
+
+To run Ensemble Variant Effect Predictor, use  
+
+```bash
+--skip_vep false
+```
+
+
+To skip variant effect prediction step, use  
+
+```
+skip_vep true
+```
+
+The default setting is ```bash
+skip_vep=false
+```
+
+### `--annotated_vcf`
+
+```bash
+--annotated_vcf 'path/to/data/*.vcf'
 ```
 
 ## Reference genomes
