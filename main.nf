@@ -230,7 +230,30 @@ process ensembl_vep_files {
 }
 
 /*
- * STEP 2 - Ensembl VEP Annotation
+ * STEP 2 - VCF Filter 
+ */
+
+process filter_vcf {
+
+    publishDir "${params.outdir}", mode: 'copy'
+
+    input:
+    file vcf_file from input_vcf
+
+    output:
+    file "${vcf_file.baseName}_filter.vcf" into vep
+
+    when:
+    !params.skip_vep
+
+    script:
+    """
+    filter_vcf.py ${vcf_file} ${vcf_file.baseName}_filter.vcf
+    """
+}
+
+/*
+ * STEP 3 - Ensembl VEP Annotation
  */
 
 process vep_on_input_file {
@@ -238,7 +261,7 @@ process vep_on_input_file {
   publishDir "${params.outdir}", mode: 'copy'
 
   input:
-  file vcf_file from input_vcf
+  file filter_vcf_file from vep
   file('ensembl-vep') from vep_offline_files
   
   output:
@@ -250,16 +273,16 @@ process vep_on_input_file {
   script:
   if (!params.skip_vep_cache)
   """
-  vep -i ${vcf_file} -o ${vcf_file.baseName}_out.vcf --dir_cache "${params.outdir}/offline/ensembl-vep/offline_cache" --config $baseDir/assets/vep.ini
+  vep -i ${filter_vcf_file} -o ${filter_vcf_file}_vep.vcf --dir_cache "${params.outdir}/offline/ensembl-vep/offline_cache" --config $baseDir/assets/vep.ini
   """
   else
   """
-  vep -i ${vcf_file} -o ${vcf_file.baseName}_out.vcf --dir_cache ${params.vep_cache} --config $baseDir/assets/vep.ini
+  vep -i ${filter_vcf_file} -o ${filter_vcf_file}_vep.vcf --dir_cache ${params.vep_cache} --config $baseDir/assets/vep.ini
   """
  }
 
 /*
- * STEP 3 - Report Generation
+ * STEP 4 - Report Generation
  */
 
 process report_generation {
@@ -284,7 +307,7 @@ process report_generation {
 }
 
 /*
- * STEP 4 - DOCX
+ * STEP 5 - DOCX
  */
 
 process render_report {
@@ -307,7 +330,7 @@ process render_report {
 
 
 /*
- * STEP 5 - Output Description HTML
+ * STEP 6 - Output Description HTML
  */
 process output_documentation {
     publishDir "${params.outdir}/Documentation", mode: 'copy'
