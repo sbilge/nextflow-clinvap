@@ -29,6 +29,7 @@ def helpMessage() {
     Other options:
       --vep_cache [Path]            Path to Ensemble VEP cache files
       --skip_vep_cache [bool]         Skip downloading Ensemble VEP cache files
+      --metadata_json               Json file with patient information such as diagnosis
       --docx_template [Path]               DOCX template to render JSON report
       --outdir [file]                 The output directory where the results will be saved
       --email_on_fail [email]         Same as --email, except only send mail if the workflow is not successful
@@ -117,6 +118,20 @@ if (params.vep_cache){
     .set(vep_offline_files)
 } else {
   params.skip_vep_cache = false
+}
+
+/* 
+ * Create a channel for ensembl vep cache files when provided by user
+*/
+if (params.metadata_json){
+    Channel
+    .fromPath(params.metadata_json)
+    .ifEmpty {exit 1, "Cannot find any json matching: ${params.metadata_json}.\nTry enclosing paths in quotes!"}
+    .set {ch_metadata}
+    .println()
+} else {
+    ch_metadata = Channel.empty()
+    merge_report_generate = Channel.empty()
 }
 
 /*
@@ -235,7 +250,7 @@ process ensembl_vep_files {
 
 process filter_vcf {
 
-    publishDir "${params.outdir}", mode: 'copy'
+    publishDir "${params.outdir}/reports/vcf", mode: 'copy'
 
     input:
     file vcf_file from input_vcf
@@ -258,7 +273,7 @@ process filter_vcf {
 
 process vep_on_input_file {
 
-  publishDir "${params.outdir}", mode: 'copy'
+  publishDir "${params.outdir}/reports/vcf", mode: 'copy'
 
   input:
   file filter_vcf_file from vep
@@ -279,7 +294,7 @@ process vep_on_input_file {
   """
   vep -i ${filter_vcf_file} -o ${filter_vcf_file}_vep.vcf --dir_cache ${params.vep_cache} --config $baseDir/assets/vep.ini
   """
- }
+}
 
 /*
  * STEP 4 - Report Generation
@@ -287,13 +302,14 @@ process vep_on_input_file {
 
 process report_generation {
 
-  publishDir "${params.outdir}/reports", mode: 'copy'
+  publishDir "${params.outdir}/reports/json", mode: 'copy'
 
   input:
   file out_vcf from ch_annotated_vcf.mix(ch_annotated_vcf_for_reporting)
 
   output:
-  file "${out_vcf.baseName}.json" into docx_generate
+  file "${out_vcf.baseName}.json" into report_generate
+  file "${out_vcf.baseName}.json" into direct_report_generate
 
   script:
   if (params.genome == 'GRCh38')
@@ -307,7 +323,30 @@ process report_generation {
 }
 
 /*
- * STEP 5 - DOCX
+ * STEP 5 - MERGE METADATA
+ */
+
+process merge_metadata {
+    publishDir "${params.outdir}/reports/json", mode: 'copy'
+
+    input:
+    file metadata from ch_metadata
+    file main_json from report_generate
+
+    output:
+    file "${main_json.baseName}_merged.json" into merged_report_generate
+
+    when:
+    params.metadata_json
+
+    script:
+    """
+    merge_metadata.py ${main_json} ${metadata} ${main_json.baseName}_merged.json
+    """
+}
+
+/*
+ * STEP 6 - DOCX
  */
 
 process render_report {
@@ -315,15 +354,20 @@ process render_report {
     publishDir "${params.outdir}/reports", mode: 'copy'
 
     input:
-    file out_json from docx_generate
+    file out_json from direct_report_generate
+    file merged_out_json from merged_report_generate.ifEmpty { 'EMPTY' }
     
-
     output:
     file "${out_json.baseName}.docx"
 
     script:
+    if (merged_out_json == 'EMPTY')
     """
-    docx_generate.py ${out_json} ${params.docx_template} "${out_json.baseName}.docx"
+    docx_generate.py ${out_json} ${params.docx_template} ${out_json.baseName}.docx
+    """
+    else
+    """
+    docx_generate.py ${merged_out_json} ${params.docx_template} ${out_json.baseName}.docx
     """
 }
 
