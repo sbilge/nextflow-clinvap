@@ -6,6 +6,7 @@ channels:
   - anaconda
   - https://conda.anaconda.org/openeye
   - anaconda-fusion
+  - conda-forge
   - defaults
 dependencies:
   - r-markdown=1.1
