@@ -67,15 +67,6 @@ else:
 main_mvld = snv.one_letter_repr(main_mvld)
 
 
-# DEFINE SOME TEST PARAMETERS
-
-if test:
-    main_mvld = pd.read_csv(
-        "test/mvld_high_moderate.txt", sep="\t", dtype={'HGNC_ID': str, 'start': int, 'end': int})
-    for index, row in main_mvld.iterrows():
-        if row["chr"] != "X":
-            main_mvld.loc[index, "chr"] = int(row["chr"])
-
 # list of genes
 gene_list = query.get_gene_list(main_mvld)
 
