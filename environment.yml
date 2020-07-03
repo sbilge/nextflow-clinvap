@@ -67,3 +67,4 @@ dependencies:
   - wrapt=1.11.2
   - xz=5.2.5
   - zlib=1.2.11
+  - docxtpl=0.10.0
