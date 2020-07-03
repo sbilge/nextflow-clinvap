@@ -312,13 +312,8 @@ process report_generation {
   file "${out_vcf.baseName}.json" into direct_report_generate
 
   script:
-  if (params.genome == 'GRCh38')
   """
-  reporting.R -f ${out_vcf} -r "${out_vcf.baseName}.json" -d $baseDir/assets/driver_db_dump.json -g ${params.genome} -c $baseDir/assets/GRCh38_01-Jan-2019-ClinicalEvidenceSummaries.txt
-  """
-  else
-  """
-  reporting.R -f ${out_vcf} -r "${out_vcf.baseName}.json" -d $baseDir/assets/driver_db_dump.json -g ${params.genome}
+  reporting.py ${out_vcf} ${out_vcf.baseName}.json ${params.genome}
   """
 }
 
