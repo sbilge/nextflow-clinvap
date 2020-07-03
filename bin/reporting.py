@@ -38,11 +38,11 @@ if len(sys.argv) != 4:
     exit(1)
 
 
-KNOWLEDGEBASE = query.read_knowledgebase(os.path.join(os.getenv("baseDir"), 'assets/cancerDB_final.json')
+KNOWLEDGEBASE = query.read_knowledgebase(os.path.join(os.getenv("baseDir"), 'assets/cancerDB_final.json'))
 
 
 ############
-### SNVs ### 
+### SNVs ###
 ############
 
 # PROCESS VCF
