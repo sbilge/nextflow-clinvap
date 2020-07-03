@@ -313,7 +313,7 @@ process report_generation {
 
   script:
   """
-  reporting.py ${out_vcf} ${out_vcf.baseName}.json ${params.genome}
+  reporting.py ${out_vcf} ${out_vcf.baseName}.json ${params.genome} $baseDir/assets/cancerDB_final.json
   """
 }
 

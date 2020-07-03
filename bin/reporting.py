@@ -31,14 +31,14 @@ import os
 input_vcf = sys.argv[1]
 output_json = sys.argv[2]
 genome = sys.argv[3]
+knowledgebase = sys.argv[4]
 
-if len(sys.argv) != 4:
-    print("usage: {} <input_vcf> <output_json> <genome_assembly_version>".format(
+if len(sys.argv) != 5:
+    print("usage: {} <input_vcf> <output_json> <genome_assembly_version> <knowledgebase>".format(
         sys.argv[0]))
     exit(1)
 
-
-KNOWLEDGEBASE = query.read_knowledgebase(os.path.join(os.getenv("baseDir"), 'assets/cancerDB_final.json'))
+KNOWLEDGEBASE = query.read_knowledgebase(knowledgebase)
 
 
 ############
