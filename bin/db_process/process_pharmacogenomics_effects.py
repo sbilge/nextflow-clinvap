@@ -2,14 +2,11 @@ import db_process.helpers as helper
 import db_process.query as query
 import pandas as pd
 
-# depends on direct variant target and gene targets
-
 
 def get_subset_dict(dictionary, subkey):
     """Function to seperate inner key and its values - to extracting pharmacogenomics_therapeutics, 
     pharmacogenomics_combined_variants_therapeutics, adverse_effect_therapeutics, 
-    adverse_effect_combined_variants_therapeutics. direct is 1 for direct targets (directly targeting variant), 
-    0 for gene targets (drugs targeting the distrupted gene)"""
+    adverse_effect_combined_variants_therapeutics."""
     sub = {}
     for key, value in dictionary.items():
         sub[key] = []

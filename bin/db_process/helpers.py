@@ -1,11 +1,3 @@
-# Functions not specific to type (driver, mechanistic etc) coded here. 
-
-
-# function to remove nested part of the dictionary given the key and the doctionary -
-# aim is to remove the tumor_type ater creating the tumor string
-# this can be used for more than one kind i.e for both drivers and mechanistic ones. That makes it a helper. move it to helpers.
-
-#  input is either the list of keys or one key which is given as string? 
 def remove_key_value(dictionary, *keys):
     """Delete key, value pairs from a dictionary."""
     for key in keys:

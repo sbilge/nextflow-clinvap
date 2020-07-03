@@ -144,8 +144,7 @@ else:
 for key in driver_ann_mutation:
     helper.add_tumor_string(key, driver_ann_mutation)
 
-# print(driver_ann_mutation)
-# BIG TODO: mutation, gene symbol and consequence will be taken from the vcf part to create driver gene table. the rest is in the dictionary
+
 
 # Update driver dict
 # collapse info from sources into one representation

@@ -6,10 +6,6 @@ import sys
 import copy
 
 
-
-# room for improvement - get direct relations from gene name search. do not query db two times as direct - indirect. 
-# room for improvement - seperate direct from un-direct after querying. not at the end like we do now.
-
 def read_knowledgebase(filename):
     """Helper fn, Read Knowledgebase"""
     with open(filename) as db:

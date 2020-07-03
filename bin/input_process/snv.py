@@ -6,7 +6,6 @@ from cyvcf2 import VCF
 import sys
 import pandas as pd
 
-# Helper functions for SNVs
 
 
 def read_vcf(inputfile):

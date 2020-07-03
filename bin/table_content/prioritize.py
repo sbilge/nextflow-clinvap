@@ -67,7 +67,6 @@ def result_compatibility(dataframe):
 
 
 
-# room for improvement: write a sort function instead of manually ranking the categories
 def compatibility_sort(dataframe):
     """Function to sort the dataframe according to the match level column which is a combination of 
     evidence level and match level."""

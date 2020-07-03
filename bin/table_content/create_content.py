@@ -108,8 +108,6 @@ def get_drug_relation(dataframe):
 
 
 
-# room for improvment, in stead of multi step rcolumn selecting, dropping - it could be moved to end and 
-# dropped in one step
 def get_content(dataframe, mvld, cols, direct=None, combination=None, adverse=None):
     """Function to create pharmacogenomics and adverse effect dataframes with required 
     table content."""

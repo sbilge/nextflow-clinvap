@@ -1,21 +1,6 @@
 import db_process.helpers as helper
 import pandas as pd
-# For SNVs needs to be generalized. 
 
-# FUNCTION FOR DRIVER GENES
-
-# Driver gene dataframe with columns:
-# GeneName
-# Mutation conclusion?? 
-# Observed mutation in that gene (missense, CNA, FUSION)
-# Driver type
-# Observed in cancer (abbreviations, DO name, DOID, ICD10 ID, only abbreviations will be used in the report template)
-# Confidence - will I come uop with a better and proper confidence? or will I just remove this - how many sources has it been seen, is there a consensus for its role type, has it been observed in a cancer study
-# References - thi will stay as it is. 
-
-
-
-# MEDIUM TODO: SCRIPTTE BU YAPTIGIN MAPPING I ANLATMAN LAZIM
 
 def assign_driver_role(role_set):
     """Function to collapse driver info from different sources into one, take driver role set, 

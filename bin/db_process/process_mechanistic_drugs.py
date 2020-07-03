@@ -20,7 +20,7 @@ def reshape(dictionary, temp):
     return dictionary
 
 
-# MEDIUM TODO: SCRIPTTE BU YAPTIGIN MAPPING I ANLATMAN LAZIM
+
 
 def assign_approval_status(role_set):
     """Function to collapse approval status coming from diffeent sources and solving the conradicting info 
@@ -94,12 +94,3 @@ def dict_to_dataframe(mechanistic_dict):
     df_mechanistic = df_mechanistic.drop_duplicates().reset_index(drop=True)
 
     return df_mechanistic
-
-
-# FUNCTION FOR MECHANISTIC DRUG TARGETS
-
-# Gene name
-# confidence (?) what will I do with this?
-
-# Future note
-# it would be really good if I could also retrieve indication from drugbank. Shall I ask someone? Then I would be able to query with the cancer type
