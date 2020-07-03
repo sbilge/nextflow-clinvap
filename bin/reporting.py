@@ -42,7 +42,7 @@ KNOWLEDGEBASE = query.read_knowledgebase(os.path.join(os.getenv("baseDir"), 'ass
 
 
 ############
-### SNVs ###
+### SNVs ### 
 ############
 
 # PROCESS VCF
