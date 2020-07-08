@@ -11,7 +11,7 @@ channels:
 dependencies:
   - r-markdown=1.1
   - ensembl-vep=95.3
-  - bcftools=1.10.2
+  - bcftools
   - astroid=2.4.1
   - autopep8=1.4.4
   - blas=1.0
