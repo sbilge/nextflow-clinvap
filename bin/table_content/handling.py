@@ -43,12 +43,21 @@ def empty_direct_variant_annotation():
     """Function to print a warning message if query to get variant annotation for observed variants is empty."""
     message = "No direct pharmacodynamics information was found for observed variants."
     print(message)
+    df_direct_adverse = empty_dataframe_direct_adverse()
+    df_direct_pharmacogenomics = empty_dataframe_direct_pharmacogenomics()
+    return df_direct_pharmacogenomics, df_direct_adverse
 
 
 def empty_variant_annotation():
     """Function to print a warning message if query to get variant annotation for observed genes is empty."""
     message = "No pharmacodynamics information was found for observed genes."
     print(message)
+    df_pharmacogenomics = empty_dataframe_pharmacogenomics()
+    df_pharmacogenomics_combined = empty_dataframe_pharmacogenomics_combined()
+    df_adverse = empty_dataframe_adverse()
+    df_adverse_combined = empty_dataframe_adverse_combined()
+    return df_pharmacogenomics, df_pharmacogenomics_combined, df_adverse, df_adverse_combined
+
 
 
 

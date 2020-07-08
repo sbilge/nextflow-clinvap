@@ -131,7 +131,6 @@ if (params.metadata_json){
     .println()
 } else {
     ch_metadata = Channel.empty()
-    merge_report_generate = Channel.empty()
 }
 
 /*
@@ -280,7 +279,7 @@ process vep_on_input_file {
   file('ensembl-vep') from vep_offline_files
   
   output:
-  file "${vcf_file.baseName}_out.vcf" into ch_annotated_vcf
+  file "${filter_vcf_file.baseName}_out.vcf" into ch_annotated_vcf
 
   when:
   !params.skip_vep
@@ -288,11 +287,11 @@ process vep_on_input_file {
   script:
   if (!params.skip_vep_cache)
   """
-  vep -i ${filter_vcf_file} -o ${filter_vcf_file}_vep.vcf --dir_cache "${params.outdir}/offline/ensembl-vep/offline_cache" --config $baseDir/assets/vep.ini
+  vep -i ${filter_vcf_file} -o ${filter_vcf_file.baseName}_out.vcf --dir_cache "${params.outdir}/offline/ensembl-vep/offline_cache" --config $baseDir/assets/vep.ini
   """
   else
   """
-  vep -i ${filter_vcf_file} -o ${filter_vcf_file}_vep.vcf --dir_cache ${params.vep_cache} --config $baseDir/assets/vep.ini
+  vep -i ${filter_vcf_file} -o ${filter_vcf_file.baseName}_out.vcf --dir_cache ${params.vep_cache} --config $baseDir/assets/vep.ini
   """
 }
 
@@ -308,8 +307,7 @@ process report_generation {
   file out_vcf from ch_annotated_vcf.mix(ch_annotated_vcf_for_reporting)
 
   output:
-  file "${out_vcf.baseName}.json" into report_generate
-  file "${out_vcf.baseName}.json" into direct_report_generate
+  file "${out_vcf.baseName}.json" into report_generate, direct_report_generate
 
   script:
   """
@@ -350,13 +348,13 @@ process render_report {
 
     input:
     file out_json from direct_report_generate
-    file merged_out_json from merged_report_generate.ifEmpty { 'EMPTY' }
+    file merged_out_json from merged_report_generate.ifEmpty("EMPTY")
     
     output:
     file "${out_json.baseName}.docx"
 
     script:
-    if (merged_out_json == 'EMPTY')
+    if (!params.metadata_json)
     """
     docx_generate.py ${out_json} ${params.docx_template} ${out_json.baseName}.docx
     """
@@ -365,6 +363,31 @@ process render_report {
     docx_generate.py ${merged_out_json} ${params.docx_template} ${out_json.baseName}.docx
     """
 }
+
+
+
+
+// process render_report {
+
+//     publishDir "${params.outdir}/reports", mode: 'copy'
+
+//     input:
+//     file out_json from direct_report_generate
+//     // file merged_out_json from merged_report_generate.ifEmpty('EMPTY')
+    
+//     output:
+//     file "${out_json.baseName}.docx"
+
+//     script:
+//     // if (merged_out_json == 'EMPTY')
+//     """
+//     docx_generate.py ${out_json} ${params.docx_template} ${out_json.baseName}.docx
+//     """
+//     // else
+//     // """
+//     // docx_generate.py ${merged_out_json} ${params.docx_template} ${out_json.baseName}.docx
+//     // """
+// }
 
 
 

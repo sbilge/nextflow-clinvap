@@ -218,7 +218,7 @@ if direct_variant_targets_mut:
     if df_direct_pharmacogenomics.empty:
         df_direct_pharmacogenomics = handle.empty_dataframe_direct_pharmacogenomics()
 
-    print()
+
     # DIRECT PHARMACOGENOMICS FOR COMBINED VARIANTS
 
     # seperate non-empty pharmacogenomics combined variant therapeutics from variant targets
@@ -255,7 +255,7 @@ if direct_variant_targets_mut:
     if df_direct_adverse.empty:
         df_direct_adverse = handle.empty_dataframe_direct_adverse()
 else:
-    handle.empty_direct_variant_annotation()
+    df_direct_pharmacogenomics, df_direct_adverse = handle.empty_direct_variant_annotation()
     empty_variant_targets = True
 
 
@@ -339,7 +339,7 @@ if gene_targets_mut:
     if df_adverse_combined.empty:
         df_adverse_combined = handle.empty_dataframe_adverse_combined()
 else:
-    handle.empty_variant_annotation()
+    df_pharmacogenomics, df_pharmacogenomics_combined, df_adverse, df_adverse_combined = handle.empty_variant_annotation()
     empty_gene_targets = True
 
 
