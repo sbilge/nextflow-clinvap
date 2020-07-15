@@ -149,6 +149,7 @@ if driver_flag:
         reference = []
         reference_source = set()
         tumor = []
+        db_tumor = []
         for driver_info in annotation:
             # fn updating global role_set
             helper.populate_set(driver_info, "driver_role", role)
@@ -163,6 +164,8 @@ if driver_flag:
                 driver_info, "reference_source", reference_source)
             # fn updating global tumor_list
             helper.populate_list(driver_info, "tumor_list", tumor)
+            # fn updating global db disease keywords
+            helper.populate_list(driver_info, "db_tumor_repr", db_tumor)
 
         driver_role = driver.assign_driver_role(role)
         agg_source = "|".join(source)
@@ -170,21 +173,22 @@ if driver_flag:
         agg_ref = "|".join(reference)
         agg_ref_source = "|".join(list(reference_source))
         agg_tumor = "|".join([t for t in tumor if t != ""])
+        agg_db_tumor = "|".join([t for t in db_tumor if t != ""])
 
         # replace the value of the dict. collapse list into one dict
         driver_ann_mutation[key] = {"driver_role": driver_role, "source_name": agg_source,
-                                    "source_pmid": agg_pmid, "reference_id": agg_ref, "reference_source": agg_ref_source, "tumor_list": agg_tumor}
+                                    "source_pmid": agg_pmid, "reference_id": agg_ref, "reference_source": agg_ref_source, "tumor_list": agg_tumor, "db_tumor_repr": agg_db_tumor}
 
     #  driver information dictionary to dataframe
     df_driver_ann_mutation = driver.dict_to_dataframe(driver_ann_mutation)
 
 else:
     df_driver_ann_mutation = pd.DataFrame(columns=['hgnc_id', 'driver_role', 'source_name', 'source_pmid',
-                                                   'reference_id', 'reference_source', 'tumor_list'])
+                                                   'reference_id', 'reference_source', 'tumor_list', 'db_tumor_repr'])
 
 # Start building up driver content. References will be mapped later.
 driver_ann = df_driver_ann_mutation[[
-    "hgnc_id", "driver_role", "reference_id", "tumor_list"]]
+    "hgnc_id", "driver_role", "reference_id", "tumor_list", "db_tumor_repr"]]
 
 driver_content = pd.merge(from_mlvd, driver_ann, how="right",
                           left_on="HGNC_ID", right_on="hgnc_id").drop(columns=["HGNC_ID"])
@@ -356,9 +360,9 @@ if not skip_pharmacodynamics_content:
     # CREATE PHARMACOGENOMICS TABLES CONTENT
 
     COLUMNS = ["SYMBOL", "drug_name", "evidence_level", "reference_id", "reference_source",
-            "variant_drug_association", "tumor_list", "hgnc_id", "variant", "variant_type", "info"]
+               "variant_drug_association", "tumor_list", "db_tumor_repr", "hgnc_id", "variant", "variant_type", "info"]
     COMB_COLUMNS = ["SYMBOL", "drug_name", "evidence_level", "reference_id", "reference_source", "variant_drug_association",
-                    "tumor_list", "hgnc_id", "variant", "variant_type", "info", "info_pair"]
+                    "tumor_list", "db_tumor_repr", "hgnc_id", "variant", "variant_type", "info", "info_pair"]
 
     # Content from direct pharmacogenomics effect
     direct_pharm_content = content.get_content(
@@ -397,7 +401,7 @@ if not skip_pharmacodynamics_content:
 
     # Join references of the same rows (collapsing same rows with different reference ids)
     cols = ["SYMBOL", "drug_name", "variant_drug_association",
-            "tumor_list", "hgnc_id", "variant", "variant_type", "match_level"]
+            "tumor_list", "db_tumor_repr", "hgnc_id", "variant", "variant_type", "match_level"]
     sorted_direct_pharm_content = prior.unnest_ref(sorted_direct_pharm_content, cols)
 
 

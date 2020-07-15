@@ -14,6 +14,7 @@ def empty_database_result():
     message = "No database result. Terminating..."
     print(message)
     sys.exit()
+    
 
 def empty_high_impact_mvld():
     """Function to print the wrning message of the hogha nad moderate effect mvld table is empty."""
@@ -59,8 +60,6 @@ def empty_variant_annotation():
     return df_pharmacogenomics, df_pharmacogenomics_combined, df_adverse, df_adverse_combined
 
 
-
-
 def pharm_columns(combined=None):
     """Function to return empty dataframes with pharmacogenomics dataframe column names"""
     if combined:
@@ -68,17 +67,18 @@ def pharm_columns(combined=None):
                                    'drug_drug_relationship', 'drug_name', 'drugbank_id', 'evidence_level',
                                    'paired_gene', 'paired_gene_hgnc', 'paired_variant', 'reference_id',
                                    'reference_source', 'source_name', 'source_pmid',
-                                   'variant_drug_association', 'tumor_list', 'hgnc_id', 'variant',
+                                   'variant_drug_association', 'tumor_list', 'db_tumor_repr', 'hgnc_id', 'variant',
                                    'variant_class', 'variant_type', 'chromosome', 'assembly_version',
                                    'alteration_base', 'reference_base', 'start', 'stop'])
     else:
         df = pd.DataFrame(columns=['drug_approval_status', 'drug_class', 'drug_drug_relationship',
-                                'drug_name', 'drugbank_id', 'evidence_level', 'reference_id',
-                                'reference_source', 'source_name', 'source_pmid', 'targeting',
-                                'variant_drug_association', 'tumor_list', 'hgnc_id', 'variant',
-                                'variant_class', 'variant_type', 'chromosome', 'assembly_version',
-                                'alteration_base', 'reference_base', 'start', 'stop'])
+                                   'drug_name', 'drugbank_id', 'evidence_level', 'reference_id',
+                                   'reference_source', 'source_name', 'source_pmid', 'targeting',
+                                   'variant_drug_association', 'tumor_list', 'db_tumor_repr', 'hgnc_id', 'variant',
+                                   'variant_class', 'variant_type', 'chromosome', 'assembly_version',
+                                   'alteration_base', 'reference_base', 'start', 'stop'])
     return df
+
 
 def empty_dataframe_direct_pharmacogenomics():
     """Function to return empty dataframe with column names if direct pharmacogenomics dataframe is empty."""
@@ -91,7 +91,6 @@ def empty_dataframe_direct_pharmacogenomics():
 def empty_dataframe_direct_pharmacogenomics_combined_variants():
     """Not implemented. Always empty for MUT, MUT"""
     pass
-
 
 
 def empty_dataframe_pharmacogenomics():
@@ -107,7 +106,7 @@ def empty_dataframe_pharmacogenomics_combined():
     is empty."""
     message = "No pharmacogenomics information found for observed gene combinations."
     print(message)
-    place_holder = pharm_columns(combined = 1)
+    place_holder = pharm_columns(combined=1)
     return place_holder
 
 
@@ -155,7 +154,6 @@ def empty_dataframe_adverse_combined():
     return place_holder
 
 
-
 def empty_reference_place_holder():
     """Function to return empty reference dataframe with column names if variant annotation 
     (both for genes and variants) returns empty."""
@@ -168,9 +166,8 @@ def empty_pharmacodynamics_place_holder(adverse=None):
     (both for genes and variants) empty"""
     message = "Variant annotation is empty. Place holders will be returned."
     print(message)
-    df = pd.DataFrame(columns=['SYMBOL', 'drug_name', 'variant_drug_association', 'tumor_list',
+    df = pd.DataFrame(columns=['SYMBOL', 'drug_name', 'variant_drug_association', 'tumor_list', 'db_tumor_repr',
                                'hgnc_id', 'variant', 'variant_type', 'match_level', 'reference_id'])
     if adverse:
-        df = df.drop(columns=['tumor_list'])
+        df = df.drop(columns=['tumor_list', 'db_tumor_repr'])
     return df
-

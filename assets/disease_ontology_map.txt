@@ -1,0 +1,755 @@
+tumor_type	disease_name	doid	icd10	do_name	abbr
+COREAD	Colorectal adenocarcinoma	0050861		colorectal adenocarcinoma	COADREAD
+COREAD	Colorectal adenocarcinoma	0050861		colorectal adenocarcinoma	COREAD
+BRCA	Breast carcinoma	3459		breast carcinoma	BRCA
+LGG	Lower grade glioma	0060108		brain glioma	LGG
+ovarian	ovarian				
+breast	breast				BREAST
+pancreatic	pancreatic				
+GBM	Glioblastoma multiforme	3068		glioblastoma multiforme	GBM
+BLCA	Bladder carcinoma	4007		bladder carcinoma	BLCA
+OV	Serous ovarian adenocarcinoma				OV
+UCEC	Uterine corpus endometrioid carcinoma				UCEC
+serous ovarian	serous ovarian				
+LUAD	Lung adenocarcinoma	3910		lung adenocarcinoma	LUAD
+CM	Cutaneous melanoma	8923	C43|C43.9	skin melanoma	SKCM
+CM	Cutaneous melanoma	8923	C43|C43.9	skin melanoma	CM
+LUSC	Lung squamous cell carcinoma	3907		lung squamous cell carcinoma	LUSC
+PRAD	Prostate adenocarcinoma	2526		prostate adenocarcinoma	PRAD
+HNSC	Head and neck squamous cell carcinoma	5520		head and neck squamous cell carcinoma	HNSC
+HNSC	Head and neck squamous cell carcinoma	5520		head and neck squamous cell carcinoma	HNSCC
+RCCC	Renal clear cell carcinoma	4467		clear cell renal cell carcinoma	CCRCC
+melanoma	melanoma	1909		melanoma	MEL
+multiple other tumour types	multiple other tumour types				
+glioma	glioma				
+NSCLC	lung non-small cell carcinoma	3908		lung non-small cell carcinoma	NSCLC
+other tumour types	other tumour types				
+gastric	gastric				
+colorectal	colorectal				
+endometrial	endometrial				
+T-ALL	T-cell acute lymphoblastic leukaemia	5603	C91.5|C91.50	T-cell acute lymphoblastic leukemia	T-ALL
+Soft tissue sarcoma	Soft tissue sarcoma				
+Osteosarcoma	Osteosarcoma	3347		osteosarcoma	OS
+Glioma	Glioma				
+sarcoma	sarcoma	1115	C49	sarcoma	
+glioblastoma	glioblastoma				GB
+bladder	bladder				
+retinoblastoma	retinoblastoma	768		retinoblastoma	RBL
+AML	Acute myeloid leukemia	9119		acute myeloid leukemia	AML
+neurofibroma	neurofibroma	962		neurofibroma	NFIB
+meningioma	meningioma	3565	D32.9	meningioma	MNG
+acoustic neuroma	acoustic neuroma	12689		acoustic neuroma	
+renal	renal				
+prostate	prostate				PROSTATE
+malignant rhabdoid	rhabdoid cancer	3672		rhabdoid cancer	MRT
+MM	Multiple myeloma	9538		multiple myeloma	MM
+ALL	Acute lymphoblastic leukemia	9952	C91.0|C91.00	acute lymphocytic leukemia	ALL
+DLBCL	diffuse large B-cell lymphoma	0050745		diffuse large B-cell lymphoma	DLBCL
+neuroblastoma	neuroblastoma	769		neuroblastoma	NBL
+neuroblastoma	neuroblastoma	769		neuroblastoma	NB
+Burkitt lymphoma	Burkitt lymphoma	8584	C83.7|C83.70	Burkitt lymphoma	BL
+amplified in other cancers	amplified in other cancers				
+B-CLL	B-cell chronic lymphocytic leukemia	1040	C91.1|C91.10	chronic lymphocytic leukemia	CLL
+Neuroblastoma	Neuroblastoma	769		neuroblastoma	NBL
+Neuroblastoma	Neuroblastoma	769		neuroblastoma	NB
+Wilms tumour	Wilms tumour				
+cancers from epithelial neural and hematopoietic origin	cancers from epithelial neural and hematopoietic origin				
+digestive tract cancers	digestive tract cancers				
+B-cell leukemia (B-CLL)	B-cell chronic lymphocytic leukemia	1040	C91.1|C91.10	chronic lymphocytic leukemia	CLL
+non small cell lung carcinomas (NSCLC)	non-small cell lung carcinoma	3908		lung non-small cell carcinoma	
+ALCL	anaplastic large cell lymphoma	0050744		anaplastic large cell lymphoma	ALCL
+inflammatory myofibroblastic tumour	inflammatory myofibroblastic tumor	0050905		inflammatory myofibroblastic tumor	IMT
+Spitzoid tumour	Spitzoid tumour				
+desmoid	desmoid				
+hepatoblastoma	hepatoblastoma	687	C22.2	hepatoblastoma	LIHB
+other CNS	other CNS				
+colon cancer	colon cancer	219	C18|C18.9	colon cancer	
+lymphoma	lymphoma	0060058	C85.9	lymphoma	
+clear cell ovarian carcinoma	clear cell ovarian carcinoma	0050934		ovarian clear cell carcinoma	
+RCC	RCC	4450		renal cell carcinoma	RCC
+T-PLL	T-PLL				T-PLL
+hepatocellular carcinoma	hepatocellular carcinoma	684	C22.0	hepatocellular carcinoma	HCC
+sporadic medulloblastoma	sporadic medulloblastoma				
+uterine carcinosarcoma	uterine carcinosarcoma	6171		uterine carcinosarcoma	
+CLL	Chronic lymphocytic leukemia	1040		chronic lymphocytic leukemia	CLL
+MALT	MALT lymphoma	0050909		MALT lymphoma	MALT
+MCL	mantle cell lymphoma	0050746		mantle cell lymphoma	MCL
+ovarian cancer	ovarian cancer	2394	C56	ovarian cancer	
+lung cancer	lung cancer	1324	C34.1|C34.2|C34.3	lung cancer	
+bladder carcinoma	bladder carcinoma	4007		bladder carcinoma	BLCA
+Ewing sarcoma	Ewing sarcoma	3369		Ewing sarcoma	ES
+soft tissue sarcoma	soft tissue sarcoma				
+lung adenocarcinoma	lung adenocarcinoma	3910		lung adenocarcinoma	LUAD
+oral SCC	oral squamous cell carcinoma	0050866		oral squamous cell carcinoma	
+renal cell carcinoma	renal cell carcinoma	4450		renal cell carcinoma	RCC
+oesophageal SCC	oesophageal squamous cell carcinoma				
+medulloblastoma	medulloblastoma	0050902		medulloblastoma	MBL
+medulloblastoma	medulloblastoma	0050902		medulloblastoma	MB
+CRC	Colorectal carcinoma	0080199		colorectal carcinoma	CRC
+malignant mesothelioma	malignant mesothelioma	1790		malignant mesothelioma	
+oesophageal squamous cell carcinoma	oesophageal squamous cell carcinoma				
+urothelial cancer	urothelial cancer				
+parathyroid tumours	parathyroid tumor				
+pancreatic neuroendocrine tumour	pancreatic neuroendocrine tumour				
+CNS tumours	CNS tumor				
+small cell lung carcinoma	small cell lung carcinoma	5409		lung small cell carcinoma	SCLC
+papillary thyroid	papillary thyroid				
+NHL	B-cell non-Hodgkin lymphoma				NHL
+B-ALL	B-ALL				B-ALL
+clear cell renal carcinoma	clear cell renal cell carcinoma	4467		clear cell renal cell carcinoma	CCRCC
+breast cancer	breast cancer	1612	C50|C50-C50	breast cancer	
+kidney cancer	kidney cancer	263	C64	kidney cancer	
+HNSCC	head and neck squamous cell carcinoma	5520		head and neck squamous cell carcinoma	HNSC
+HNSCC	head and neck squamous cell carcinoma	5520		head and neck squamous cell carcinoma	HNSCC
+pilocytic astrocytoma	pilocytic astrocytoma	4851		pilocytic astrocytoma	PAST
+Hodgkin lymphoma	Hodgkin lymphoma	8567	C81|C81.9	Hodgkin's lymphoma	HL
+endometrium	endometrium				
+small intestine	small intestine				
+oesophageal squamous carcinoma	oesophageal squamous carcinoma				
+multiple myeloma	multiple myeloma	9538	C90.0|C90.00	multiple myeloma	MM
+marginal zone B-cell lymphomas	marginal zone B-cell lymphoma	0050748		marginal zone B-cell lymphoma	
+PMBL	primary mediastinal B-cell lymphoma	0080210	C85.2	primary mediastinal B-cell lymphoma	PMBL
+pulmonary lymphangioleiomyomatosis (LAM)	pulmonary lymphangioleiomyomatosis	3319		lymphangioleiomyomatosis	
+renal angiomyolipoma	renal angiomyolipoma	8411		kidney angiomyolipoma	RAML
+haemangioma	haemangioma				
+pheochromocytoma	pheochromocytoma	0050771		pheochromocytoma	PHC
+desmoplastic small round cell tumour	desmoplastic small round cell tumour				
+CML	CML	8552		chronic myeloid leukemia	CML
+Non-Hodgkin lymphoma	Non-Hodgkin lymphoma	0060060		non-Hodgkin lymphoma	NHL
+Non-Hodgkin lymphoma	Non-Hodgkin lymphoma	0060060		non-Hodgkin lymphoma	B-NHL
+T-cell lymphoma	T-cell lymphoma				
+THCA	thyroid gland carcinoma	3963		thyroid gland carcinoma	THCA
+Papillary thyroid carcinomas (PTCs)	thyroid gland papillary carcinoma	3969		thyroid gland papillary carcinoma	
+congenital fibrosarcoma	congenital fibrosarcoma	8418		congenital fibrosarcoma	
+secretory breast	breast secretory carcinoma	4922		breast secretory carcinoma	
+PA	Pylocytic astrocytoma				PA
+Papillary Thyroid Carcinoma	thyroid gland papillary carcinoma	3969		thyroid gland papillary carcinoma	
+medullary thyroid	medullary thyroid				
+Glioblastoma	Glioblastoma				GB
+cholangiocarcinoma	cholangiocarcinoma	4947	C22.1	cholangiocarcinoma	CHOL
+borderline ovarian	borderline ovarian				
+Acute Lymphoblastic Leukemia (ALL)	Acute Lymphoblastic Leukemia	9952	C91.0|C91.00	acute lymphocytic leukemia	ALL
+Synovial Sarcoma	Synovial Sarcoma	5485		synovial sarcoma	SYNS
+synovial sarcoma	synovial sarcoma	5485		synovial sarcoma	SYNS
+Aneurysmal Bone Cyst	Aneurysmal Bone Cyst				
+aneurysmal bone cyst	aneurysmal bone cyst				
+Acute Megakaryoblastic Leukemia (AMKL| FAB-M7)	Acute Megakaryoblastic Leukemia	8761	C94.2|C94.20	megakaryocytic leukemia	AMKL
+Papillary Thyroid Carcinomas (PTCs)	Papillary Thyroid Carcinomas				
+Acute Myeloid Leukemia of M4EO Subtype	Acute Myeloid Leukemia of M4EO Subtype				
+Childhood Acute Lymphoblastic Leukemia (ALL)	Childhood Acute Lymphoblastic Leukemia	0080144		childhood acute lymphocytic leukemia	
+Acute Leukemia	Acute Leukemia	12603		acute leukemia	
+Therapy-Related Myeloid Malignancies	Therapy-Related Myeloid Malignancies				
+pre B-ALL	pre B-ALL				
+Salivary Gland Pleiomorphic Adenoma	Salivary Gland Pleiomorphic Adenoma				
+Lipoblastoma	Lipoblastoma				
+salivary adenoma	salivary adenoma				
+lipoblastoma	lipoblastoma				
+T-cell acute lymphoblastic leukemias (T-ALL)	T-cell acute lymphoblastic leukemias				
+Acute Myeloid Leukemia	Acute Myeloid Leukemia	9119		acute myeloid leukemia	AML
+Therapy-Related Myelodysplastic Syndrome	Therapy-Related Myelodysplastic Syndrome				TMDS
+Alveolar Soft Part Sarcoma	Alveolar Soft Part Sarcoma	4239		alveolar soft part sarcoma	ASPS
+Papillary Renal Cell Carcinoma	Papillary Renal Cell Carcinoma	4465		papillary renal cell carcinoma	PRCC
+papillary renal	papillary renal cell carcinoma	4465		papillary renal cell carcinoma	PRCC
+alveolar soft part sarcoma	alveolar soft part sarcoma	4239		alveolar soft part sarcoma	ASPS
+Myeloproliferative disorder chronic with eosinophilia (MPE)	Myeloproliferative disorder chronic with eosinophilia	0111344		myeloproliferative disorder with eosinophilia	
+MPN	myeloproliferative neoplasm	2226	D47.1	myeloproliferative neoplasm	MPN
+CMML	chronic myelomonocytic leukemia	0080188		chronic myelomonocytic leukemia	CMML
+Myelodysplastic syndrome (MDS)	Myelodysplastic syndrome	0050908		myelodysplastic syndrome	
+acute megakaryocytic leukaemia	megakaryocytic leukemia	8761	C94.2|C94.20	megakaryocytic leukemia	
+Rhabdomyosarcoma	Rhabdomyosarcoma	3247		rhabdomyosarcoma	RMS
+alveolar rhabdomyosarcoma	alveolar rhabdomyosarcoma	4051		alveolar rhabdomyosarcoma	ARMS
+Acute myeloid leukemia of M4EO subtype	Acute myeloid leukemia of M4EO subtype				
+Acute leukemias	Acute leukemias				
+Alveolar soft part sarcoma	Alveolar soft part sarcoma	4239		alveolar soft part sarcoma	ASPS
+multiple different leukaemia and lymphoma tumour types including ALL	multiple different leukaemia and lymphoma tumour types including ALL				
+MDS	MDS	0060469	Q93.88	Miller-Dieker lissencephaly syndrome	MDS
+Acute myeloid leukemia (AML)	Acute myeloid leukemia	9119		acute myeloid leukemia	AML
+Ewing sarcoma (ES)	Ewing sarcoma	3369		Ewing sarcoma	ES
+Angiomatoid fibrous histiocytoma (AFH)	Angiomatoid fibrous histiocytoma				AFH
+desmoplastic small round cell tumour 	desmoplastic small round cell tumour 				
+clear cell sarcoma	clear cell sarcoma	4233		clear cell sarcoma	CCS
+myoepithelioma	myoepithelioma	2661		myoepithelioma	
+mesothelioma	mesothelioma				
+Pilocytic astrocytomas	Pilocytic astrocytomas				
+pancreas acinar carcinoma	pancreas acinar carcinoma				
+melanocytic nevus	melanocytic nevus				
+lipoma	lipoma	3315	D17|D17.9	lipoma	
+AL	AL				AL
+malignant melanoma of soft parts	malignant melanoma of soft parts	4233		clear cell sarcoma	CCS
+angiomatoid fibrous histiocytoma	angiomatoid fibrous histiocytoma				AFH
+APL (translocation)	APL				
+gastric adenocarcinoma	gastric adenocarcinoma	3717		gastric adenocarcinoma	
+lethal midline carcinoma of young people	lethal midline carcinoma of young people				
+epithelioid haemangioendothelioma	epithelioid haemangioendothelioma				
+JMML	juvenile myelomonocytic leukemia	0050458	C93.3|C93.30	juvenile myelomonocytic leukemia	JMML
+leiomyoma	leiomyoma	127		leiomyoma	LM
+oligodendroglioma	oligodendroglioma	3181		oligodendroglioma	ODG
+myxofibrosarcoma	myxofibrosarcoma	0080534		myxofibrosarcoma	MFS
+fibromyxoid sarcoma	fibromyxoid sarcoma	0080534		myxofibrosarcoma	MFS
+B-NHL	non-Hodgkin lymphoma	0060060		non-Hodgkin lymphoma	NHL
+B-NHL	non-Hodgkin lymphoma	0060060		non-Hodgkin lymphoma	B-NHL
+Downs associated ALL	Downs associated ALL				
+salivary gland mucoepidermoid	salivary gland mucoepidermoid				
+pleomorphic salivary gland adenoma	pleomorphic salivary gland adenoma				
+liposarcoma	liposarcoma	3382		liposarcoma	LIPO
+AML*	AML*				AML*
+prostate carcinoma	prostate carcinoma	10286		prostate carcinoma	
+oesophagus cancer	oesophagus cancer				
+mesenchymal chondrosarcoma	mesenchymal chondrosarcoma	4545		mesenchymal chondrosarcoma	MCHS
+microfollicular thyroid adenoma	microfollicular thyroid adenoma				
+various benign mesenchymal tumours	various benign mesenchymal tumor				
+leukaemia	leukaemia				
+renal cell carcinoma (childhood epithelioid)	renal cell carcinoma	4450		renal cell carcinoma	RCC
+lung	lung				LUNG
+T cell prolymphocytic leukaemia	T-cell prolymphocytic leukaemia				
+adenoid cystic carcinoma	adenoid cystic carcinoma	0080202		adenoid cystic carcinoma	ACYC
+solitary fibrous tumour	solitary fibrous tumour				
+meningeal haemangiopericytoma	meningeal haemangiopericytoma				
+chondrosarcoma	chondrosarcoma	3371		chondrosarcoma	CHS
+rhabdomyosarcoma	rhabdomyosarcoma	3247		rhabdomyosarcoma	RMS
+skin SCC	skin squamous cell carcinoma	3151		skin squamous cell carcinoma	
+lung SCC	lung squamous cell carcinoma	3907		lung squamous cell carcinoma	LUSC
+head and neck SCC	head and neck squamous cell carcinoma	5520		head and neck squamous cell carcinoma	HNSC
+head and neck SCC	head and neck squamous cell carcinoma	5520		head and neck squamous cell carcinoma	HNSCC
+APL	acute promyelocytic leukemia	0060318	C92.4|C92.40	acute promyelocytic leukemia	APL
+extraskeletal myxoid chondrosarcoma	extraskeletal myxoid chondrosarcoma	6496		extraskeletal myxoid chondrosarcoma	EMCHS
+lethal midline carcinoma	lethal midline carcinoma				
+Down syndrome associated ALL	Down syndrome associated ALL				
+DFSP	dermatofibrosarcoma protuberans	3507		dermatofibrosarcoma protuberans	DFSP
+GIST	GIST	9253	C49.A	gastrointestinal stromal tumor	GIST
+idiopathic hypereosinophilic syndrome	idiopathic hypereosinophilic syndrome				
+paediatric glioblastoma	paediatric glioblastoma				
+angiosarcoma	angiosarcoma	0001816		angiosarcoma	ANGS
+follicular thyroid	follicular thyroid				
+uterine leiomyoma	uterine leiomyoma	13223	D25|D25.9	uterine fibroid	ULM
+aCML	aCML	0060597	C92.2|C92.20	atypical chronic myeloid leukemia	
+sAML	sAML				
+MDS/MPN-U	MDS/MPN-U				MDS/MPN-U
+follicular lymphoma	follicular lymphoma	0050873		follicular lymphoma	FL
+large granular lymphocytic leukaemia	large granular lymphocytic leukaemia	0050751		T-cell large granular lymphocyte leukemia	
+skin basal cell	skin basal cell				
+endometrial stromal tumour	endometrial stromal tumour				
+peripheral T-cell lymphoma	peripheral T-cell lymphoma	0050749		peripheral T-cell lymphoma	
+lymphoblastic leukaemia/biphasic	lymphoblastic leukaemia/biphasic				
+splenic marginal zone lymphoma	splenic marginal zone lymphoma	0050750		splenic marginal zone lymphoma	SMZL
+primary central nervous system lymphoma	primary central nervous system lymphoma				
+colorectal carcinoma	colorectal carcinoma	0080199		colorectal carcinoma	CRC
+gallbladder carcinoma	gallbladder carcinoma	4948		gallbladder carcinoma	
+T-CLL	T-CLL				T-CLL
+myxoid chondrosarcoma	myxoid chondrosarcoma	5861		myxoid chondrosarcoma	MYCHS
+intestinal T-cell lymphoma	intestinal T-cell lymphoma				
+adrenocortical	adrenocortical				
+endometrial stromal sarcoma	endometrial stromal sarcoma	4226		endometrial stromal sarcoma	ESS
+follicular thyroid adenoma	follicular adenoma	6204		follicular adenoma	
+large intestine carcinoma	large intestine carcinoma				
+stomach carcinoma	stomach carcinoma	5517		stomach carcinoma	
+pancreatic carcinoma	pancreatic carcinoma	4905		pancreatic carcinoma	
+biliary tract	biliary tract				BILIARY_TRACT
+oesophagus	oesophagus				
+CCRCC	clear cell renal cell carcinoma	4467		clear cell renal cell carcinoma	CCRCC
+epithelial ovarian	epithelial ovarian				
+myeloma	myeloma	0070004		myeloid neoplasm	MNM
+pancreatic neuroendocrine tumours	pancreatic neuroendocrine tumor				PANET
+paediatric GBM	paediatric GBM				
+colorectal adenocarcinoma	colorectal adenocarcinoma	0050861		colorectal adenocarcinoma	COADREAD
+colorectal adenocarcinoma	colorectal adenocarcinoma	0050861		colorectal adenocarcinoma	COREAD
+uveal melanoma	uveal melanoma	6039		uveal melanoma	UM
+colorectal cancer	colorectal cancer	9256		colorectal cancer	
+endometrial carcinoma	endometrial carcinoma	2871		endometrial carcinoma	UCEC
+gastric cancer	gastric cancer	10534	C16|C16.2|C16.5|C16.6|C16.9	stomach cancer	
+hepatocellular	hepatocellular				
+oral squamous cell	oral squamous cell carcinoma	0050866		oral squamous cell carcinoma	
+WM	WM				WM
+parathyroid adenoma	parathyroid adenoma	7608		parathyroid adenoma	
+lobular breast	breast lobular carcinoma	0050938		breast lobular carcinoma	
+bladder cancer	bladder cancer	11054	C67|C67.9	urinary bladder cancer	
+small intestine neuroendocrine tumours	small intestine neuroendocrine tumor	4434		small intestine neuroendocrine neoplasm	
+large intestine	large intestine				
+monoclonal B lymphocytosis	monoclonal B lymphocytosis				
+uterine serous carcinoma	uterine serous carcinoma	5750		uterine corpus serous adenocarcinoma	
+cylindroma	cylindroma	4866		salivary gland adenoid cystic carcinoma	
+sex cord-stromal tumour	sex cord-stromal tumour				
+TGCT	tenosynovial giant cell tumor	314		tenosynovial giant cell tumor	TGCT
+embryonal rhabdomyosarcoma	embryonal rhabdomyosarcoma	3246		embryonal rhabdomyosarcoma	ERMS
+pleuropulmonary blastoma	pleuropulmonary blastoma	4769		pleuropulmonary blastoma	PPB
+pituitary blastoma	pituitary blastoma				
+thyroid cancer	thyroid gland cancer	1781	C73	thyroid gland cancer	
+malignant peripheral nerve sheath tumours	malignant peripheral nerve sheath tumor	5940		malignant peripheral nerve sheath tumor	MPNST
+MDS and related	MDS and related				
+pancreatic cancer	pancreatic cancer	1793	C25.0|C25.1|C25.2	pancreatic cancer	
+chemorefractory CLL	chemorefractory CLL				
+head and neck	head and neck cancer	11934		head and neck cancer	
+pancreatic acinar cell carcinoma	pancreatic acinar cell carcinoma	5742		pancreatic acinar cell adenocarcinoma	
+ovarian carcinoma	ovarian carcinoma	4001		ovarian carcinoma	
+megakaryoblastic leukaemia of Downs syndrome	megakaryoblastic leukaemia of Downs syndrome				
+gastric carcinoma	gastric carcinoma	5517		stomach carcinoma	
+lung carcinoma	lung carcinoma	3905	C34.90	lung carcinoma	
+endometrioid carcinoma	endometrioid carcinoma	2871		endometrial carcinoma	UCEC
+hepatic adenoma	hepatic adenoma				
+breast carcinoma	breast carcinoma	3459		breast carcinoma	BRCA
+luminal A breast	luminal A breast				
+colon carcinoma	colon carcinoma	1520		colon carcinoma	
+fibroadenoma	fibroadenoma	1618	D24	breast fibroadenoma	FA
+phyllodes tumour	phyllodes tumour				
+desmoplastic melanoma	desmoplastic melanoma	3162		malignant spindle cell melanoma	DESM
+marginal zone lymphoma	marginal zone lymphoma	0050748		marginal zone B-cell lymphoma	MZL
+biliary tract carcinoma	biliary tract carcinoma				
+ETP ALL	ETP ALL				ETP ALL
+colon adenocarcinoma	colon adenocarcinoma	234		colon adenocarcinoma	COAD
+angiocentric glioma	angiocentric glioma				ANGL
+carcinoma	carcinoma	305		carcinoma	
+diffuse gastric	gastric diffuse adenocarcinoma	6217		gastric diffuse adenocarcinoma	
+T cell lymphomas	T-cell lymphoma				
+paediatric Burkitt lymphoma	paediatric Burkitt lymphoma				
+ovary	ovary				
+pancreas	pancreas				PANCREAS
+prostate cancer	prostate cancer	10283	C61	prostate cancer	
+erythrocytosis	erythrocytosis				
+Lung SCC	Lung squamous cell carcinoma	3907		lung squamous cell carcinoma	LUSC
+SCCOHT	small-cell carcinoma of the ovary of hypercalcemic type	7651		small-cell carcinoma of the ovary of hypercalcemic type	SCCOHT
+SMZL	splenic marginal zone lymphoma	0050750		splenic marginal zone lymphoma	SMZL
+Ewing's sarcoma	Ewing sarcoma	3369		Ewing sarcoma	ES
+myeloid neoplasms	myeloid neoplasm	0070004		myeloid neoplasm	MNM
+skin	skin				SKIN
+mantle cell lymphoma	mantle cell lymphoma	0050746		mantle cell lymphoma	MCL
+adrenocortical carcinoma	adrenocortical carcinoma	3948		adrenocortical carcinoma	ACC
+STAD	Stomach adenocarcinoma	3717		gastric adenocarcinoma	STAD
+ESCA	Esophageal carcinoma	1107		esophageal carcinoma	ESCA
+DLBC	diffuse large B cell lymphoma				DLBC
+PAAD	Pancreatic adenocarcinoma	4074		pancreatic adenocarcinoma	PAAD
+HC	Hepatocarcinoma				HC
+SCLC	Small cell lung carcinoma	5409		lung small cell carcinoma	SCLC
+NB	Neuroblastoma	769		neuroblastoma	NBL
+NB	Neuroblastoma	769		neuroblastoma	NB
+Breast cancer (BC)	Breast cancer	1612		breast cancer	
+Colorectal cancer (CRC)	Colorectal cancer	9256		colorectal cancer	
+Ovarian cancer.	Ovarian cancer	2394		ovarian cancer	
+Cowden syndrome 6 (CWS6)	Cowden syndrome 6				
+					
+Neuroblastoma 3 (NBLST3)	Neuroblastoma 3				
+Familial adenomatous polyposis (FAP)	Familial adenomatous polyposis	0050424		familial adenomatous polyposis	
+Hereditary desmoid disease (HDD)	Hereditary desmoid disease	0111349		hereditary desmoid disease	
+Medulloblastoma (MDB)	Medulloblastoma	0050902		medulloblastoma	MBL
+Medulloblastoma (MDB)	Medulloblastoma	0050902		medulloblastoma	MB
+Gastric cancer (GASC)	Gastric cancer	10534	C16|C16.2|C16.5|C16.6|C16.9	stomach cancer	
+Hepatocellular carcinoma (HCC)	Hepatocellular carcinoma	684		hepatocellular carcinoma	HCC
+Leukemia juvenile myelomonocytic (JMML)	Leukemia juvenile myelomonocytic	0050458	C93.3|C93.30	juvenile myelomonocytic leukemia	JMML
+MB	Medulloblastoma	0050902		medulloblastoma	MBL
+MB	Medulloblastoma	0050902		medulloblastoma	MB
+Taxia telangiectasia (AT)	ataxia telangiectasia	12704		ataxia telangiectasia	
+T-cell acute lymphoblastic leukemia (TALL)	T-cell acute lymphoblastic leukemia	5603	C91.5|C91.50	T-cell acute lymphoblastic leukemia	
+B-cell non-Hodgkin lymphomas (BNHL)	B-cell non-Hodgkin lymphoma				NHL
+B-cell chronic lymphocytic leukemia (BCLL)	B-cell chronic lymphocytic leukemia	1040	C91.1|C91.10	chronic lymphocytic leukemia	CLL
+Mantle cell lymphoma (MCL)	Mantle cell lymphoma	0050746		mantle cell lymphoma	MCL
+T-prolymphocytic leukemia (TPLL)	T-prolymphocytic leukemia				
+Cancer	Cancer	162		cancer	
+Lung cancer (LNCR)	Lung cancer	1324		lung cancer	
+Familial non-Hodgkin lymphoma (NHL)	Familial non-Hodgkin lymphoma				
+Noonan syndrome 7 (NS7)	Noonan syndrome 7	0060585	Q87.1	Noonan syndrome 7	
+Breast-ovarian cancer familial 1 (BROVCA1)	Breast-ovarian cancer familial 1				
+Ovarian cancer (OC)	Ovarian cancer	2394		ovarian cancer	
+Pancreatic cancer 4 (PNCA4)	Pancreatic cancer 4				
+Fanconi anemia complementation group S (FANCS)	Fanconi anemia complementation group S				
+Pancreatic cancer 2 (PNCA2)	Pancreatic cancer 2				
+Breast-ovarian cancer familial 2 (BROVCA2)	Breast-ovarian cancer familial 2				
+Fanconi anemia complementation group D1 (FANCD1)	Fanconi anemia complementation group D1	0111089		Fanconi anemia complementation group D1	
+Glioma 3 (GLM3)	Glioma 3				
+Hyperparathyroidism 1 (HRPT1)	Hyperparathyroidism 1				
+Hyperparathyroidism 2 with jaw tumors (HRPT2)	Hyperparathyroidism 2 with jaw tumors				
+Parathyroid carcinoma (PRTC)	Parathyroid carcinoma	1540		parathyroid carcinoma	PTHC
+Multiple endocrine neoplasia 4 (MEN4)	Multiple endocrine neoplasia 4				
+Melanoma-astrocytoma syndrome (MASTS)	Melanoma-astrocytoma syndrome	0111511		melanoma and neural system tumor syndrome	
+Melanoma cutaneous malignant 2 (CMM2)	Melanoma cutaneous malignant 2				
+Familial atypical multiple mole melanoma-pancreatic carcinoma syndrome (FAMMMPC)	Familial atypical multiple mole melanoma-pancreatic carcinoma syndrome				
+Li-Fraumeni syndrome 2 (LFS2)	Li-Fraumeni syndrome 2	0111504		Li-Fraumeni syndrome 2	
+Prostate cancer (PC)	Prostate cancer	10283		prostate cancer	
+Osteogenic sarcoma (OSRC)	Osteogenic sarcoma	3347		osteosarcoma	OS
+head and neck cancer	head and neck cancer	11934		head and neck cancer	
+Cylindromatosis familial (FCYL)	Cylindromatosis familial				
+Multiple familial trichoepithelioma 1 (MFT1)	Multiple familial trichoepithelioma 1				
+Brooke-Spiegler syndrome (BRSS)	Brooke-Spiegler syndrome	0050693		Brooke-Spiegler syndrome	
+colon	colon				
+nasal NK/T lymphoma	nasal NK/T lymphoma				
+skin squamous cell carcinoma-burn scar related	skin squamous cell carcinoma-burn scar related				
+Leukemia acute myelogenous (AML)	Leukemia acute myelogenous	9119	C92.0|C92.00	acute myeloid leukemia	AML
+primary central nervous system melanocytic neoplasms	primary central nervous system melanocytic neoplasm				
+pituitary adenoma	pituitary adenoma	3829		pituitary adenoma	PTAD
+pancreatic intraductal papillary mucinous neoplasm	pancreatic intraductal papillary-mucinous neoplasm	7575		pancreatic intraductal papillary-mucinous neoplasm	
+fibrous dysplasia	fibrous dysplasia	0080031		fibrous dysplasia	
+ACTH-independent macronodular adrenal hyperplasia 1 (AIMAH1)	ACTH-independent macronodular adrenal hyperplasia 1	0111623		ACTH-independent macronodular adrenal hyperplasia 1	
+infrequent sarcomas	infrequent sarcomas				
+rare other tumour types	rare other tumour types				
+Costello syndrome (CSTLO)	Costello syndrome	0050469		Costello syndrome	
+Thyroid cancer non-medullary 2 (NMTC2)	Thyroid cancer non-medullary 2				
+Schimmelpenning-Feuerstein-Mims syndrome (SFM)	linear nevus sebaceous syndrome	0111530		linear nevus sebaceous syndrome	
+Bladder cancer (BLC)	Bladder cancer	11054	C67|C67.9	urinary bladder cancer	
+quamous cell carcinoma of the head and neck (HNSCC)	squamous cell carcinoma of the head and neck	5520		head and neck squamous cell carcinoma	HNSC
+quamous cell carcinoma of the head and neck (HNSCC)	squamous cell carcinoma of the head and neck	5520		head and neck squamous cell carcinoma	HNSCC
+mastocytosis	mastocytosis	350	D47.09|D89.40|Q82.2	mastocytosis	MCD
+mucosal melanoma	mucosal melanoma	0050929		mucosal melanoma	
+Mastocytosis systemic (MASTSYS)	Mastocytosis systemic	349	D47.02	systemic mastocytosis	SM
+Gastrointestinal stromal tumor (GIST)	Gastrointestinal stromal tumor	9253		gastrointestinal stromal tumor	GIST
+Testicular germ cell tumor (TGCT)	Testicular germ cell tumor				
+thyroid	thyroid				THYROID
+Noonan syndrome 3 (NS3)	Noonan syndrome 3	0060581	Q87.1	Noonan syndrome 3	
+Pylocytic astrocytoma (PA).	Pylocytic astrocytoma				PA
+head-neck squamous cell	head and neck squamous cell carcinoma	5520		head and neck squamous cell carcinoma	HNSC
+head-neck squamous cell	head and neck squamous cell carcinoma	5520		head and neck squamous cell carcinoma	HNSCC
+Cancer of unknown primary origin (CUP)	Cancer of unknown primary origin				
+Gastric cancer	Gastric cancer	10534	C16|C16.2|C16.5|C16.6|C16.9	stomach cancer	
+Renal cell carcinoma papillary (RCCP)	Renal cell carcinoma papillary	4465		papillary renal cell carcinoma	PRCC
+Primary occult malignancy	Primary occult malignancy				
+Hereditary non-polyposis colorectal cancer 2 (HNPCC2)	Hereditary non-polyposis colorectal cancer 2				
+Mismatch repair cancer syndrome (MMRCS)	Mismatch repair cancer syndrome				
+Muir-Torre syndrome (MRTES)	Muir-Torre syndrome	0050465		Muir-Torre syndrome	
+lobular carcinoma in situ (LCIS)	lobular carcinoma in situ	3010		lobular neoplasia	
+Endometrial cancer (ENDMC)	Endometrial cancer	1380		endometrial cancer	
+clear cell renal cell carcinoma	clear cell renal cell carcinoma	4467		clear cell renal cell carcinoma	CCRCC
+anaplastic thyroid cancer	thyroid gland anaplastic carcinoma	0080522		thyroid gland anaplastic carcinoma	
+urothelial cell carcinoma	urothelial cell carcinoma	2671		transitional cell carcinoma	
+central nervous system tumours	central nervous system tumor	3620	C72.9	central nervous system cancer	
+testicular germ cell tumours and other tumour types	testicular germ cell tumor and other tumour types				
+ABC-DLBCL	ABC-DLBCL				ABC-DLBCL
+Neurofibromatosis 1 (NF1)	Neurofibromatosis 1	0111253		neurofibromatosis 1	
+Familial spinal neurofibromatosis (FSNF)	Familial spinal neurofibromatosis	0111253		neurofibromatosis 1	
+Neurofibromatosis 2 (NF2)	Neurofibromatosis 2	0111252		neurofibromatosis 2	
+Schwannomatosis 1 (SWNTS1)	Schwannomatosis 1				
+Mesothelioma malignant (MESOM)	Mesothelioma malignant	1790		malignant mesothelioma	
+Acute myelogenous leukemia (AML)	Acute myelogenous leukemia	9119	C92.0|C92.00	acute myeloid leukemia	AML
+Noonan syndrome 6 (NS6)	Noonan syndrome 6	0060584	Q87.1	Noonan syndrome 6	
+RAS-associated autoimmune leukoproliferative disorder (RALD)	RAS-associated autoimmune leukoproliferative disorder	0110117	D72.8	autoimmune lymphoproliferative syndrome type 4	
+Melanocytic nevus syndrome congenital (CMNS)	Melanocytic nevus syndrome congenital				
+Melanosis neurocutaneous (NCMS)	Melanosis neurocutaneous				
+Keratinocytic non-epidermolytic nevus (KNEN)	epidermal nevus	0111162		epidermal nevus	
+Beckwith-Wiedemann syndrome (BWS)	Beckwith-Wiedemann syndrome	5572	Q87.3	Beckwith-Wiedemann syndrome	
+Leukemia acute lymphoblastic 3 (ALL3)	Leukemia acute lymphoblastic 3				
+Renal cell carcinoma (RCC)	Renal cell carcinoma	4450		renal cell carcinoma	RCC
+Keratosis seborrheic (KERSEB)	Keratosis seborrheic	6498	L82|L82.1	seborrheic keratosis	
+Cowden syndrome 5 (CWS5)	Cowden syndrome 5				
+SCC	SCC				SCC
+Basal cell nevus syndrome (BCNS)	Basal cell nevus syndrome	2512		nevoid basal cell carcinoma syndrome	
+Basal cell carcinoma (BCC)	Basal cell carcinoma	2513		basal cell carcinoma	BCC
+Cowden syndrome 1 (CWS1)	Cowden syndrome 1				
+Lhermitte-Duclos disease (LDD)	Lhermitte-Duclos disease	6457		Cowden syndrome	
+Squamous cell carcinoma of the head and neck (HNSCC)	Ssquamous cell carcinoma of the head and neck				
+Proteus syndrome	Proteus syndrome	13482		Proteus syndrome	
+Glioma 2 (GLM2)	Glioma 2				
+Basal cell carcinomas	Basal cell carcinoma	2513		basal cell carcinoma	BCC
+Childhood cancer retinoblastoma (RB)	Childhood cancer retinoblastoma				
+Familial platelet disorder with associated myeloid malignancy (FPDMM)	Familial platelet disorder with associated myeloid malignancy				
+Leukemia acute lymphoblastic (ALL)	Leukemia acute lymphoblastic	9952	C91.0|C91.00	acute lymphocytic leukemia	
+myelodysplastic syndrome	myelodysplastic syndrome	0050908		myelodysplastic syndrome	
+Rhabdoid tumor predisposition syndrome 1 (RTPS1)	Rhabdoid tumor predisposition syndrome 1				
+Peutz-Jeghers syndrome (PJS)	Peutz-Jeghers syndrome	3852	Q85.8	Peutz-Jeghers syndrome	
+non-small cell lung cancer (NSCLC) and lung cancer	non-small cell lung cancer and lung cancer				
+Myeloproliferative disorders (MPD)	Myeloproliferative disorders				
+Myeloproliferative neoplasms (MPN)	Myeloproliferative neoplasm	2226		myeloproliferative neoplasm	MPN
+Essential thrombocythemia	Essential thrombocythemia	2224		essential thrombocythemia	ET
+Polycythemia vera	Polycythemia vera	8997		polycythemia vera	PV
+Primary myelofibrosis	Primary myelofibrosis	4971	D47.4|D75.81	myelofibrosis	PMF
+Barrett metaplasia	Barrett metaplasia				
+Esophageal cancer (ESCR)	Esophageal cancer	5041		esophageal cancer	
+Li-Fraumeni syndrome (LFS)	Li-Fraumeni syndrome	3012		Li-Fraumeni syndrome	
+Papilloma of choroid plexus (CPP)	Papilloma of choroid plexus				
+Adrenocortical carcinoma (ADCC)	Adrenocortical carcinoma	3948		adrenocortical carcinoma	ACC
+Basal cell carcinoma 7 (BCC7)	Basal cell carcinoma 7				
+Tuberous sclerosis 1 (TSC1)	Tuberous sclerosis 1	0080324		tuberous sclerosis 1	
+Pheochromocytoma (PCC)	Pheochromocytoma	0050771		pheochromocytoma	PHC
+von Hippel-Lindau disease (VHLD)	von Hippel-Lindau disease	14175	Q85.8	von Hippel-Lindau disease	
+Frasier syndrome (FS)	Frasier syndrome	0050438		Frasier syndrome	
+Wilms tumor 1 (WT1)	Wilms tumor 1				
+Denys-Drash syndrome (DDS)	Denys-Drash syndrome	3764		Denys-Drash syndrome	
+Nephrotic syndrome 4 (NPHS4)	Nephrotic syndrome 4				
+Leukemia chronic myeloid (CML)	Leukemia chronic myeloid	8552		chronic myeloid leukemia	
+hemangioblastoma	hemangioblastoma	5241		hemangioblastoma	HMBL
+Breast cancer	Breast cancer	1612		breast cancer	
+Overian cancer	Ovarian cancer	2394		ovarian cancer	
+Prostate cancer	Prostate cancer	10283		prostate cancer	
+Endometrial cancer	Endometrial cancer	1380		endometrial cancer	
+granulosa-cell tumour of the ovary	granulosa-cell tumour of the ovary				
+AML (CML blast transformation)	AML				
+Hereditary non-polyposis colorectal cancer 1 (HNPCC1)	Hereditary non-polyposis colorectal cancer 1				
+Multiple neoplasia 2A (MEN2A)	multiple endocrine neoplasia type 2A	0050430	E31.22	multiple endocrine neoplasia type 2A	
+Medullary thyroid carcinoma (MTC)	Medullary thyroid carcinoma	3973		thyroid gland medullary carcinoma	
+Multiple neoplasia 2B (MEN2B)	multiple endocrine neoplasia type 2B	10016	E31.23	multiple endocrine neoplasia type 2B	
+toxic thyroid adenoma	toxic thyroid adenoma				
+DIPG	DIPG				DIPG
+Langerhans cell histiocytosis	Langerhans-cell histiocytosis	2571	C96.0|C96.5|C96.6	Langerhans-cell histiocytosis	
+adrenal aldosterone producing adenoma	adrenal aldosterone producing adenoma				
+adult T-cell leukaemia/lymphoma	adult T-cell leukaemia/lymphoma				
+CNL	chronic neutrophilic leukemia	0080187		chronic neutrophilic leukemia	CNL
+leukaemia lymphoma and MDS associated with severe congenital neutropenia	leukaemia lymphoma and MDS associated with severe congenital neutropenia				
+de novo AML	de novo AML				
+prostae adenocarcinoma	prostae adenocarcinoma				
+squamous cell carcinoma	squamous cell carcinoma	1749		squamous cell carcinoma	
+paraganglioma	paraganglioma	0050773		paraganglioma	PGNG
+central nervous system hemangioblastomas	central nervous system hemangioblastomas				
+SM-AHD	SM-AHD				SM-AHD
+HES	hypereosinophilic syndrome	999	D72.1	hypereosinophilic syndrome	HES
+Renal carcinoma	Renal carcinoma	4451		renal carcinoma	
+Colon cancer	Colon cancer	219		colon cancer	
+Melanoma	Melanoma	1909		melanoma	MEL
+Colorectal cancer	Colorectal cancer	9256		colorectal cancer	
+Acute myeloid leukemia	Acute myeloid leukemia	9119		acute myeloid leukemia	AML
+adrenal adenoma	adrenal adenoma	656		adrenal adenoma	
+skin basal cell carcinoma	skin basal cell carcinoma				
+eyelid sebaceous carcinoma	eyelid sebaceous carcinoma				
+lymphomas	lymphoma	0060058	C85.9	lymphoma	
+liver	liver				LIVER
+ovarian mixed germ cell tumour	ovarian mixed germ cell tumour				
+cervical carcinoma	cervical carcinoma				
+relapse ALL	relapse ALL				
+skin cancer	skin cancer	4159		skin cancer	
+pancreatic ductal adenocarcinoma	pancreatic ductal adenocarcinoma	3498		pancreatic ductal adenocarcinoma	
+fibrolamellar hepatocellular carcinoma	fibrolamellar hepatocellular carcinoma	5015		fibrolamellar carcinoma	FLC
+cortisol secreting adrenal adenoma	cortisol secreting adrenal adenoma				
+others	others				
+peritoneal carcinomatosis	peritoneal carcinomatosis				
+Paragangliomas 5 (PGL5)	Paragangliomas 5				
+Nodular lymphocyte predominant Hodgkin lymphoma	Nodular lymphocyte predominant Hodgkin lymphoma				
+oral squamous cell carcinoma	oral squamous cell carcinoma	0050866		oral squamous cell carcinoma	
+T-cell large granular lymphocytic leukaemia	T-cell large granular lymphocyte leukemia	0050751		T-cell large granular lymphocyte leukemia	
+skin squamous cell	skin squamous cell				
+Tuberous sclerosis 2 (TSC2)	Tuberous sclerosis 2	0080325		tuberous sclerosis 2	
+corticotroph adenoma	corticotroph adenoma	7004		ACTH-secreting pituitary adenoma	
+Thyroid carcinoma	thyroid gland carcinoma	3963		thyroid gland carcinoma	
+Prostatic carcinoma	Prostatic carcinoma				
+Myeloproliferative disorders	Myeloproliferative disorders				
+Lymphoma mucosa-associated lymphoid type (MALTOMA)	Lymphoma mucosa-associated lymphoid type				
+tumor formation	tumor formation				
+Mosaic variegated aneuploidy syndrome 1 (MVA1)	Mosaic variegated aneuploidy syndrome 1	0080141		mosaic variegated aneuploidy syndrome 1	
+Perlman syndrome (PRLMNS)	Perlman syndrome	0060476	Q87.3	Perlman syndrome	
+Renal cancer	Renal cancer	263	C64	kidney cancer	
+Glioma (GLM)	Glioma				
+Prostate cancer hereditary 2 (HPC2)	Prostate cancer hereditary 2				
+Thrombocytopenia 5 (THC5)	Thrombocytopenia 5				
+Hereditary multiple exostoses 1 (EXT1)	Hereditary multiple exostoses 1	206	Q78.6	hereditary multiple exostoses	
+Chondrosarcoma (CHDSA)	Chondrosarcoma	3371		chondrosarcoma	CHS
+Hereditary multiple exostoses 2 (EXT2)	Hereditary multiple exostoses 2	206	Q78.6	hereditary multiple exostoses	
+Hereditary leiomyomatosis and renal cell cancer (HLRCC)	Hereditary leiomyomatosis and renal cell cancer				
+Birt-Hogg-Dube syndrome (BHD)	Birt-Hogg-Dube syndrome	0050676		Birt-Hogg-Dube syndrome	
+Bleeding disorder platelet-type 17 (BDPLT17)	Bleeding disorder platelet-type 17	0111049	D69.1	platelet-type bleeding disorder 17	
+colorectal cancer (CRC)	colorectal cancer	9256		colorectal cancer	
+Chronic myelogenous leukemia (CML)	Chronic myelogenous leukemia	8552		chronic myeloid leukemia	CML
+sophageal cancer (ESCR)	esophageal cancer	5041	C15.3|C15.4|C15.5	esophageal cancer	
+Meningiomas	Meningiomas				
+Familial adenomatous polyposis 2 (FAP2)	Familial adenomatous polyposis 2	0080410		familial adenomatous polyposis 2	
+Ovarian tumors	Ovarian tumors				
+Non small cell lung carcinomas (NSCLC)	non-small cell lung carcinoma	3908		lung non-small cell carcinoma	
+Fanconi anemia complementation group N (FANCN)	Fanconi anemia complementation group N	0111094		Fanconi anemia complementation group N	
+Pancreatic cancer 3 (PNCA3)	Pancreatic cancer 3				
+Myofibromatosis infantile 1 (IMF1)	Myofibromatosis infantile 1				
+Hereditary non-polyposis colorectal cancer 4 (HNPCC4)	Hereditary non-polyposis colorectal cancer 4				
+Noonan syndrome 5 (NS5)	Noonan syndrome 5	0060583	Q87.1	Noonan syndrome 5	
+Cancer alopecia pigment dyscrasia onychodystrophy and keratoderma (CAPOK)	Cancer alopecia pigment dyscrasia onychodystrophy and keratoderma				
+Myopathy congenital with fiber-type disproportion (CFTD)	Myopathy congenital with fiber-type disproportion				
+Cap myopathy 1 (CAPM1)	Cap myopathy 1				
+Mulibrey nanism (MUL)	Mulibrey nanism	0050436		mulibrey nanism	
+diffuse large B-cell lymphoma	diffuse large B-cell lymphoma	0050745		diffuse large B-cell lymphoma	DLBCL
+Testicular cancer	Testicular cancer	2998		testicular cancer	
+Node-positive breast cancer	Node-positive breast cancer				
+Polycythemia Vera	Polycythemia Vera	8997		polycythemia vera	PV
+Gastrointestinal Stromal Tumor	Gastrointestinal Stromal Tumor	9253		gastrointestinal stromal tumor	GIST
+Colorectal Cancer	Colorectal Cancer	9256		colorectal cancer	
+Skin Melanoma	Skin Melanoma	8923		skin melanoma	
+Lung Non-small Cell Carcinoma	Lung Non-small Cell Carcinoma	3908		lung non-small cell carcinoma	
+Systemic Mastocytosis	Systemic Mastocytosis	349		systemic mastocytosis	SM
+Langerhans-Cell Histiocytosis	Langerhans-Cell Histiocytosis	2571	C96.0|C96.5|C96.6	Langerhans-cell histiocytosis	
+Cholangiocarcinoma	Cholangiocarcinoma	4947		cholangiocarcinoma	CHOL
+Inflammatory Myofibroblastic Tumor	Inflammatory Myofibroblastic Tumor	0050905		inflammatory myofibroblastic tumor	IMT
+Pancreatic Adenocarcinoma	Pancreatic Adenocarcinoma	4074		pancreatic adenocarcinoma	PAAD
+Acute Promyelocytic Leukemia	Acute Promyelocytic Leukemia	0060318		acute promyelocytic leukemia	APL
+Leukemia	Leukemia	1240		leukemia	
+Thyroid Gland Medullary Carcinoma	Thyroid Gland Medullary Carcinoma	3973		thyroid gland medullary carcinoma	
+Thyroid Gland Papillary Carcinoma	Thyroid Gland Papillary Carcinoma	3969		thyroid gland papillary carcinoma	
+Gastrointestinal Neuroendocrine Tumor	Gastrointestinal Neuroendocrine Tumor	0050626		gastrointestinal neuroendocrine tumor	
+Hairy Cell Leukemia	Hairy Cell Leukemia	285		hairy cell leukemia	HCL
+Multiple Myeloma	Multiple Myeloma	9538		multiple myeloma	MM
+Ganglioglioma	Ganglioglioma	5078		ganglioglioma	GNG
+Ovarian Cystadenocarcinoma	Ovarian Cystadenocarcinoma	3605		ovarian cystadenocarcinoma	
+Ovarian Cancer	Ovarian Cancer	2394		ovarian cancer	
+Anaplastic Thyroid Carcinoma	Anaplastic Thyroid Carcinoma	0080522		thyroid gland anaplastic carcinoma	
+Laryngeal Squamous Cell Carcinoma	Laryngeal Ssquamous Cell Carcinoma				
+Lung Cancer	Lung Cancer	1324		lung cancer	
+Bladder Carcinoma	Bladder Carcinoma	4007		bladder carcinoma	BLCA
+Invasive Bladder Transitional Cell Carcinoma	Invasive Bladder Transitional Cell Carcinoma	6477		invasive bladder transitional cell carcinoma	
+Glioblastoma Multiforme	Glioblastoma Multiforme	3068		glioblastoma multiforme	GBM
+Chronic Myeloid Leukemia	Chronic Myeloid Leukemia	8552		chronic myeloid leukemia	
+Mantle Cell Lymphoma	Mantle Cell Lymphoma	0050746		mantle cell lymphoma	MCL
+Intrahepatic Cholangiocarcinoma	Intrahepatic Cholangiocarcinoma	4928		intrahepatic cholangiocarcinoma	IHCH
+Brain Glioma	Brain Glioma	0060108		brain glioma	
+Malignant Glioma	Malignant Glioma	3070		malignant glioma	
+Pancreatic Carcinoma	Pancreatic Carcinoma	4905		pancreatic carcinoma	
+Lung Adenocarcinoma	Lung Adenocarcinoma	3910		lung adenocarcinoma	LUAD
+Breast Cancer	Breast Cancer	1612		breast cancer	
+Colon Cancer	Colon Cancer	219		colon cancer	
+Pancreatic Cancer	Pancreatic Cancer	1793		pancreatic cancer	
+Head And Neck Squamous Cell Carcinoma	Head And Neck Ssquamous Cell Carcinoma				
+Thyroid Cancer	thyroid gland cancer	1781	C73	thyroid gland cancer	
+Lung Acinar Adenocarcinoma	Lung Acinar Adenocarcinoma	6482		lung acinar adenocarcinoma	
+T-cell Leukemia	T-cell Leukemia	715		T-cell lymphocytic leukemia	
+Estrogen-receptor Positive Breast Cancer	Estrogen-receptor Positive Breast Cancer	0060075		estrogen-receptor positive breast cancer	
+Malignant Anus Melanoma	Malignant Anus Melanoma	14145		malignant anus melanoma	
+Head And Neck Cancer	Head And Neck Cancer	11934		head and neck cancer	
+Her2-receptor Positive Breast Cancer	Her2-receptor Positive Breast Cancer	0060079		Her2-receptor positive breast cancer	
+Stomach Carcinoma	Stomach Carcinoma	5517		stomach carcinoma	
+Acute Lymphocytic Leukemia	Acute Lymphocytic Leukemia	9952		acute lymphocytic leukemia	
+Prostate Cancer	Prostate Cancer	10283		prostate cancer	
+Chronic Lymphocytic Leukemia	Chronic Lymphocytic Leukemia	1040		chronic lymphocytic leukemia	CLL
+Colon Carcinoma	Colon Carcinoma	1520		colon carcinoma	
+Prostate Carcinoma	Prostate Carcinoma	10286		prostate carcinoma	
+Hematologic Cancer	Hematologic Cancer	2531		hematologic cancer	
+Esophagus Adenocarcinoma	Esophagus Adenocarcinoma	4914		esophagus adenocarcinoma	
+Cervical Adenocarcinoma	Cervical Adenocarcinoma	3702		cervical adenocarcinoma	CEAD
+Uveal Melanoma	Uveal Melanoma	6039		uveal melanoma	UM
+Malignant Mesothelioma	Malignant Mesothelioma	1790		malignant mesothelioma	
+Ovarian Serous Cystadenocarcinoma	Ovarian Serous Cystadenocarcinoma	5746		ovarian serous cystadenocarcinoma	
+Thymic Carcinoma	Thymic Carcinoma	3284		thymic carcinoma	THYC
+Epithelial Ovarian Cancer	ovary epithelial cancer	2152		ovary epithelial cancer	
+Stomach Cancer	Stomach Cancer	10534		stomach cancer	
+Endometrial Cancer	Endometrial Cancer	1380		endometrial cancer	
+Sarcoma	Sarcoma	1115		sarcoma	
+Gastric Adenocarcinoma	Gastric Adenocarcinoma	3717		gastric adenocarcinoma	
+Uterine Corpus Endometrial Carcinoma	Uterine Corpus Endometrial Carcinoma	0050939		uterine corpus endometrial carcinoma	
+Lung Small Cell Carcinoma	Lung Small Cell Carcinoma	5409		lung small cell carcinoma	
+Uterine Corpus Serous Adenocarcinoma	Uterine Corpus Serous Adenocarcinoma	5750		uterine corpus serous adenocarcinoma	
+Scrotum Paget's Disease	Scrotum Paget's Disease	3444		scrotum Paget's disease	
+Ovarian Serous Carcinoma	Ovarian Serous Carcinoma	0050933		ovarian serous carcinoma	
+T-cell Acute Lymphoblastic Leukemia	T-cell Acute Lymphoblastic Leukemia	5603	C91.5|C91.50	T-cell acute lymphoblastic leukemia	
+Peritoneal Mesothelioma	Peritoneal Mesothelioma	1788		peritoneal mesothelioma	PEMESO
+Ovarian Carcinoma	Ovarian Carcinoma	4001		ovarian carcinoma	
+Lung Squamous Cell Carcinoma	Lung Ssquamous Cell Carcinoma				
+Colorectal Adenocarcinoma	Colorectal Adenocarcinoma	0050861		colorectal adenocarcinoma	COADREAD
+Colorectal Adenocarcinoma	Colorectal Adenocarcinoma	0050861		colorectal adenocarcinoma	COREAD
+Bronchiolo-alveolar Adenocarcinoma	Bronchiolo-alveolar Adenocarcinoma	4926		bronchiolo-alveolar adenocarcinoma	
+Skin Squamous Cell Carcinoma	Skin Ssquamous Cell Carcinoma				
+Merkel Cell Carcinoma	Merkel Cell Carcinoma	3965		Merkel cell carcinoma	MCC
+Brain Medulloblastoma	Brain Medulloblastoma	0050902		medulloblastoma	MBL
+Brain Medulloblastoma	Brain Medulloblastoma	0050902		medulloblastoma	MB
+Basal Cell Carcinoma	Basal Cell Carcinoma	2513		basal cell carcinoma	BCC
+Head And Neck Carcinoma	Head And Neck Carcinoma	1542		head and neck carcinoma	
+Hepatocellular Carcinoma	Hepatocellular Carcinoma	684		hepatocellular carcinoma	HCC
+Anaplastic Large Cell Lymphoma	Anaplastic Large Cell Lymphoma	0050744		anaplastic large cell lymphoma	ALCL
+Diffuse Large B-cell Lymphoma	Diffuse Large B-cell Lymphoma	0050745		diffuse large B-cell lymphoma	DLBCL
+Vagina Sarcoma	Vagina Sarcoma	1901		vagina sarcoma	
+Epithelioid Inflammatory Myofibroblastic Sarcoma	Epithelioid Inflammatory Myofibroblastic Sarcoma	0080372		epithelioid inflammatory myofibroblastic sarcoma	
+Lung Carcinoma	Lung Carcinoma	3905		lung carcinoma	
+Anaplastic Oligodendroglioma	Anaplastic Oligodendroglioma				AODG
+Waldenström's Macroglobulinemia	Waldenstrom Macroglobulinemia	0050747	C88.0	lymphoplasmacytic lymphoma	LPL
+Renal Carcinoma	Renal Carcinoma	4451		renal carcinoma	
+Chronic Myeloproliferative Disease	Chronic Myeloproliferative Disease	2226	D47.1	myeloproliferative neoplasm	MPN
+Angiosarcoma	Angiosarcoma	0001816		angiosarcoma	ANGS
+Thyroid Gland Carcinoma	Thyroid Gland Carcinoma	3963		thyroid gland carcinoma	
+Pancreatic Ductal Adenocarcinoma	Pancreatic Ductal Adenocarcinoma	3498		pancreatic ductal adenocarcinoma	
+Colon Mucinous Adenocarcinoma	Colon Mucinous Adenocarcinoma	3029		colon mucinous adenocarcinoma	
+Renal Cell Carcinoma	Renal Cell Carcinoma	4450		renal cell carcinoma	RCC
+Ewing Sarcoma Of Bone	Ewing Sarcoma Of Bone	3368		Ewing sarcoma of bone	
+B-cell Childhood Acute Lymphoblastic Leukemia	B-cell Childhood Acute Lymphoblastic Leukemia	0080146		B-cell childhood acute lymphoblastic leukemia	
+Endometrial Adenocarcinoma	Endometrial Adenocarcinoma	2870		endometrial adenocarcinoma	
+Clear Cell Renal Cell Carcinoma	Clear Cell Renal Cell Carcinoma	4467		clear cell renal cell carcinoma	CCRCC
+Liposarcoma	Liposarcoma	3382		liposarcoma	LIPO
+Her2-receptor Negative Breast Cancer	Her2-receptor Negative Breast Cancer	0060080		Her2-receptor negative breast cancer	
+Ewing Sarcoma	Ewing Sarcoma	3369		Ewing sarcoma	ES
+Chronic Leukemia	Chronic Leukemia	1036		chronic leukemia	
+Urothelial Carcinoma	Urothelial Carcinoma				
+Myeloid And Lymphoid Neoplasms With Eosinophilia And Abnormalities Of PDGFRA	Myeloid And Lymphoid Neoplasms With Eosinophilia And Abnormalities Of PDGFRA				
+PDGFRB	PDGFRB				PDGFRB
+And FGFR1	And FGFR1				
+Papillary Adenocarcinoma	Papillary Adenocarcinoma	3112		papillary adenocarcinoma	
+Sezary's Disease	Sezary's Disease	8541	C84.1|C84.10	Sezary's disease	
+Adult B-Lymphoblastic Leukemia	Adult B-Lymphoblastic Leukemia	0060592		B-cell adult acute lymphocytic leukemia	
+Colon Adenocarcinoma	Colon Adenocarcinoma	234		colon adenocarcinoma	COAD
+Rhabdoid Cancer	Rhabdoid Cancer	3672		rhabdoid cancer	MRT
+Malignant Peripheral Nerve Sheath Tumor	Malignant Peripheral Nerve Sheath Tumor	5940		malignant peripheral nerve sheath tumor	MPNST
+NUT Midline Carcinoma	NUT Midline Carcinoma	0060463		NUT midline carcinoma	
+Salivary Gland Carcinoma	Salivary Gland Carcinoma	0050904		salivary gland carcinoma	
+Breast Secretory Carcinoma	Breast Secretory Carcinoma	4922		breast secretory carcinoma	
+Pediatric B-lymphoblastic Leukemia	Pediatric B-lymphoblastic Leukemia				
+Mucosal Melanoma	Mucosal Melanoma	0050929		mucosal melanoma	
+Ovarian Clear Cell Carcinoma	Ovarian Clear Cell Carcinoma	0050934		ovarian clear cell carcinoma	
+Follicular Thyroid Carcinoma	Follicular Thyroid Carcinoma	3962		thyroid gland follicular carcinoma	
+Ureter Small Cell Carcinoma	Ureter Small Cell Carcinoma	6886		ureter small cell carcinoma	
+Chronic Neutrophilic Leukemia	Chronic Neutrophilic Leukemia	0080187		chronic neutrophilic leukemia	CNL
+Congenital Fibrosarcoma	Congenital Fibrosarcoma	8418		congenital fibrosarcoma	
+Pediatric B-cell Acute Lymphoblastic Leukemia	B-cell childhood acute lymphoblastic leukemia	0080146		B-cell childhood acute lymphoblastic leukemia	
+Cutaneous melanoma	Cutaneous melanoma	8923	C43|C43.9	skin melanoma	SKCM
+Cutaneous melanoma	Cutaneous melanoma	8923	C43|C43.9	skin melanoma	CM
+Any cancer type	Any cancer type				
+Chronic myeloid leukemia	Chronic myeloid leukemia	8552		chronic myeloid leukemia	
+Colorectal adenocarcinoma	Colorectal adenocarcinoma	0050861		colorectal adenocarcinoma	COADREAD
+Colorectal adenocarcinoma	Colorectal adenocarcinoma	0050861		colorectal adenocarcinoma	COREAD
+Acute lymphoblastic leukemia	Acute lymphoblastic leukemia	9952	C91.0|C91.00	acute lymphocytic leukemia	ALL
+Lung adenocarcinoma	Lung adenocarcinoma	3910		lung adenocarcinoma	LUAD
+Head an neck squamous	Head and neck squamous cell carcinoma	5520		head and neck squamous cell carcinoma	HNSC
+Head an neck squamous	Head and neck squamous cell carcinoma	5520		head and neck squamous cell carcinoma	HNSCC
+Fibrous histiocytoma	Fibrous histiocytoma	4415		fibrous histiocytoma	
+Endometrium	Endometrium				
+Lung	Lung				LUNG
+Non-small cell lung	lung non-small cell carcinoma	3908		lung non-small cell carcinoma	
+Ovary	Ovary				
+Myeloma	Myeloma	0070004		myeloid neoplasm	MNM
+Lymphoma	Lymphoma	0060058		lymphoma	
+Stomach	Stomach				
+Bladder	Bladder				
+Prostate adenocarcinoma	Prostate adenocarcinoma	2526		prostate adenocarcinoma	PRAD
+Mesothelioma	Mesothelioma				
+Renal	Renal				
+Thyroid	Thyroid				THYROID
+Pancreas	Pancreas				PANCREAS
+Billiary tract	Billiary tract				
+Gastrointestinal stromal	gastrointestinal stromal tumor	9253	C49.A	gastrointestinal stromal tumor	GIST
+Neuroendocrine	Neuroendocrine				
+Malignant astrocytoma	Malignant astrocytoma				
+Pediatric glioma	Pediatric glioma				
+Hairy-Cell leukemia	Hairy Cell leukemia	285		hairy cell leukemia	HCL
+Lagerhans cell histiocytosis	Langerhans-cell histiocytosis	2571	C96.0|C96.5|C96.6	Langerhans-cell histiocytosis	
+Erdheim-Chester histiocytosis	Erdheim-Chester histiocytosis				
+Breast adenocarcinoma	Breast adenocarcinoma	3458		breast adenocarcinoma	
+Myelodisplasic proliferative syndrome	Myelodisplasic proliferative syndrome				
+Atypical chronic myeloid leukemia	Atypical chronic myeloid leukemia	0060597		atypical chronic myeloid leukemia	
+Lung squamous cell	lung squamous cell carcinoma	3907		lung squamous cell carcinoma	LUSC
+Head an neck	Head and neck cancer	11934		head and neck cancer	
+Plexiform neurofibroma	Plexiform neurofibroma	5151		plexiform neurofibroma	
+Cervix squamous cell	Cervix squamous cell				
+Cervix	Cervix				CERVIX
+Hematologic malignancies	Hematologic malignancies				
+Myelofibrosis	Myelofibrosis	4971		myelofibrosis	
+Megakaryoblastic leukemia	Megakaryoblastic leukemia				
+Adrenal adenoma	Adrenal adenoma	656		adrenal adenoma	
+Systemic mastocytosis	Systemic mastocytosis	349		systemic mastocytosis	SM
+Thymic	Thymic				
+Female germ cell tumor	Female germ cell tumor				
+Male germ cell tumor	Male germ cell tumor				
+Schwannoma	Schwannoma	3192		neurilemmoma	SCHW
+Malignant peripheral nerve sheat tumor	Malignant peripheral nerve sheath tumor	5940		malignant peripheral nerve sheath tumor	MPNST
+Mantle cell lymphoma	Mantle cell lymphoma	0050746		mantle cell lymphoma	MCL
+Chronic lymphocytic leukemia	Chronic lymphocytic leukemia	1040		chronic lymphocytic leukemia	CLL
+Myelodisplasic syndrome	Myelodisplasic syndrome				
+Hyper eosinophilic advanced snydrome	Hyper eosinophilic advanced snydrome				
+Eosinophilic chronic leukemia	Eosinophilic chronic leukemia	0080367		chronic eosinophilic leukemia	
+Anaplastic oligodendroglioma	Anaplastic oligodendroglioma				AODG
+Waldenström macroglobulinemia	Waldenstrom macroglobulinemia	0050747	C88.0	lymphoplasmacytic lymphoma	LPL
+Salivary glands	Salivary glands				
+Neurofibroma	Neurofibroma	962		neurofibroma	NFIB
+Hepatic carcinoma	Hepatic carcinoma				
+Meningioma	Meningioma	3565		meningioma	MNG
+Adenoid cystic carcinoma	Adenoid cystic carcinoma	0080202		adenoid cystic carcinoma	ACYC
+Solid tumors	Solid tumors				
+Medulloblastoma	Medulloblastoma	0050902		medulloblastoma	MBL
+Medulloblastoma	Medulloblastoma	0050902		medulloblastoma	MB
+Basal cell carcinoma	Basal cell carcinoma	2513		basal cell carcinoma	BCC
+Retinoblastoma	Retinoblastoma	768		retinoblastoma	RBL
+Malignant rhabdoid tumor	rhabdoid cancer	3672		rhabdoid cancer	MRT
+Glioblastoma multiforme	Glioblastoma multiforme	3068		glioblastoma multiforme	GBM
+B cell lymphoma	B-cell lymphoma	707		B-cell lymphoma	
+Renal angiomyolipoma	Renal angiomyolipoma	8411		kidney angiomyolipoma	RAML
+Giant cell astrocytoma	Giant cell astrocytoma				
+Lymphangioleiomyomatosis	Lymphangioleiomyomatosis	3319		lymphangioleiomyomatosis	
+Inflammatory myofibroblastic	Inflammatory myofibroblastic				
+Multiple myeloma	Multiple myeloma	9538		multiple myeloma	MM
+NUT midline carcinoma	NUT midline carcinoma	0060463		NUT midline carcinoma	
+Gastroesophageal junction adenocarcinoma	Gastroesophageal junction adenocarcinoma	4944		gastroesophageal junction adenocarcinoma	
+Urinary tract carcinoma	Urinary tract carcinoma				
+Dermatofibrosarcoma	dermatofibrosarcoma protuberans	3507		dermatofibrosarcoma protuberans	DFSP
+Acute promyelocytic leukemia	Acute promyelocytic leukemia	0060318		acute promyelocytic leukemia	APL
+Pancreas adenocarcinoma	Pancreas adenocarcinoma	4074		pancreatic adenocarcinoma	PAAD
