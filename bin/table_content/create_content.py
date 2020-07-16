@@ -208,7 +208,7 @@ def appendix_variants(mvld):
     """Function the create the appendix table for every variant observed in the input file."""
     df = mvld.copy()
     df = df[["HGVSp", "HGVSc", "SYMBOL", "dbSNP",
-             "COSMIC", "Consequence"]].fillna("null")
+             "COSMIC", "Consequence", "vaf"]].fillna("null")
     df["HGVSp"] = df["HGVSp"].str.replace("EN.*:", "")
     df["HGVSc"] = df["HGVSp"].str.replace("EN.*:", "")
     df["mutation"] = df.apply(get_mutation, axis=1)

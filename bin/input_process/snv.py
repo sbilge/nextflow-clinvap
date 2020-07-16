@@ -5,7 +5,7 @@ from cyvcf2 import VCF
 
 import sys
 import pandas as pd
-
+import re
 
 
 def read_vcf(inputfile):
@@ -14,9 +14,8 @@ def read_vcf(inputfile):
     return vcf
 
 
-def get_fields(inputfile):
+def get_fields(vcf):
     """Get annotation field names - CSQ comes from Ensembl VEP. It might not work for SV or CNV"""
-    vcf = read_vcf(inputfile)
     try:
         header = vcf.get_header_type(
             "CSQ")["Description"][51:].strip('"').split("|")
@@ -37,15 +36,90 @@ def get_annotation(variant, header):
     return list_annotation
 
 
+def ngs_source(vcf):  # takes vcf object as argument
+    """Function to get NGS pipeline name from the VCF header."""
+    if vcf.contains("source"):
+        source_info = vcf.get_header_type("source")
+        source_name = source_info["source"]
+    else:
+        source_name = "null"
+    return source_name
+
+
+# vaf formula: https://github.com/Illumina/strelka/blob/v2.9.x/docs/userGuide/README.md
+def strelka_vaf_calculation(variant, tumor_sample_index):
+    if variant.var_type == "snp":
+        ref_counts_field = "{}U".format(variant.REF)
+        alt_counts_field = "{}U".format("".join(variant.ALT))
+        tier1_ref_counts = variant.format(ref_counts_field)[
+            tumor_sample_index][0]
+        tier1_alt_counts = variant.format(alt_counts_field)[
+            tumor_sample_index][0]
+    elif variant.var_type == "indel":
+        tier1_ref_counts = variant.format("TAR")[tumor_sample_index][0]
+        tier1_alt_counts = variant.format("TIR")[tumor_sample_index][0]
+    else:
+        return "."
+    vaf = tier1_alt_counts / (tier1_ref_counts + tier1_alt_counts)
+    return "%.2f" % vaf
+
+
+def stratacaller_vaf_identification(variant):
+    vaf = float("".join(variant.format("FREQ")).strip("%"))/100
+    return "%.2f" % vaf
+
+
+def other_ngs_vaf(variant):
+    vaf = "."
+    return vaf
+
+
+# ##SAMPLE filed and IsTumor assumption is made here. VCF has to be checked for those even if it comes from strelka
+def get_tumor_sample(vcf):
+    """Function to get tumor sample id from the VCF header."""
+    sample_tumor_dict = {}
+    header_list = vcf.raw_header.split("\n")
+    info_sample = [h for h in header_list if h.startswith("##SAMPLE")]
+    for s in info_sample:
+        sample_name = re.search("(?<=##SAMPLE=<ID=).+?(?=,)", s).group(0)
+        tumor_state = re.search("(?<=IsTumor=).+?(?=,)", s).group(0)
+        if tumor_state == "yes":
+            sample_tumor_dict[sample_name] = tumor_state
+        else:
+            continue
+    return sample_tumor_dict
+
+
+# Only one tumor sample assumption is made. If more, fix is needed here.
+def tumor_sample_format_index(vcf, source):
+    if source == "strelka":
+        tumor_sample = get_tumor_sample(vcf)
+        samples = vcf.samples
+        for s in samples:
+            if tumor_sample.get(s) == "yes":
+                tumor_sample_index = samples.index(s)
+        return tumor_sample_index
+    else:
+        return "null"
+
+
 # Read VCF file and create dataframe minium variant level data (MVLD) according to
 # Ritter et al. (https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-016-0367-z)
 
 def parse_vcf(inputfile):
     """Parse and process VCF, create dataframe"""
     complete_line_list = list()
-    fields = get_fields(inputfile)  # Get fields of VCF
     vcf = read_vcf(inputfile)
+    fields = get_fields(vcf)  # Get fields of VCF
+    source = ngs_source(vcf)
+    tumor_sample_index = tumor_sample_format_index(vcf, source)
     for variant in vcf:
+        if source == "strelka":
+            vaf = strelka_vaf_calculation(variant, tumor_sample_index)
+        elif "StrataCaller" in source:
+            vaf = stratacaller_vaf_identification(variant)
+        else:
+            vaf = other_ngs_vaf(variant)
         chrom = variant.CHROM.replace("chr", "")
         if chrom != "X":
             chrom = int(chrom)
@@ -59,18 +133,21 @@ def parse_vcf(inputfile):
         if len(alt) == 1:
             alt = alt[0]
         location = "{}:{}_{}/{}".format(chrom, start, ref, alt)
-        line = [chrom, start, stop, location, vid, ref, alt, qual, vfilter]
+        line = [chrom, start, stop, location,
+                vid, ref, alt, qual, vfilter, vaf]
         annotation = get_annotation(variant, fields)
         for ann in annotation:
             for ln in line:
                 ann.append(ln)
             complete_line_list.append(ann)
     header = fields + ["chr", "start", "end", "location",
-                       "vid", "ref", "alt", "qual", "filter"]  # create VCF dataframe
+                       "vid", "ref", "alt", "qual", "filter", "vaf"]  # create VCF dataframe
     dataframe = pd.DataFrame(complete_line_list, columns=header)
 
-    dataframe["dbSNP"] = dataframe["Existing_variation"].str.findall("(rs.\d+)").apply(",".join)
-    dataframe["COSMIC"] = dataframe["Existing_variation"].str.findall("(COSM.\d+)").apply(",".join)
+    dataframe["dbSNP"] = dataframe["Existing_variation"].str.findall(
+        "(rs.\d+)").apply(",".join)
+    dataframe["COSMIC"] = dataframe["Existing_variation"].str.findall(
+        "(COSM.\d+)").apply(",".join)
 
     if dataframe.empty:
         handle.empty_mvld()
@@ -105,22 +182,21 @@ def get_modifier_effect(dataframe):
         return pd.DataFrame()
 
 
-ONE_LETTER = {"Ala": "A", "Arg": "R", "Asn": "N", "Asp": "D", "Cys": "C", "Gln": "Q", "Glu": "E", "Gly": "G", "His": "H", "Ile": "I", "Leu": "L", "Lys": "K", "Met": "M", "Phe": "F", "Pro": "P", "Ser": "S", "Thr": "T", "Trp": "W", "Tyr": "Y", "Val": "V", "Asx": "B", "Glx": "Z", "Xaa": "X"}
+ONE_LETTER = {"Ala": "A", "Arg": "R", "Asn": "N", "Asp": "D", "Cys": "C", "Gln": "Q", "Glu": "E", "Gly": "G", "His": "H", "Ile": "I", "Leu": "L",
+              "Lys": "K", "Met": "M", "Phe": "F", "Pro": "P", "Ser": "S", "Thr": "T", "Trp": "W", "Tyr": "Y", "Val": "V", "Asx": "B", "Glx": "Z", "Xaa": "X"}
 
 
 def one_letter_repr(dataframe):
     """Function to represent HGVSp with one letter aminoacids"""
     dataframe["aa"] = dataframe["HGVSp"].str.replace("ENSP.*p\.", "")
     dataframe["aa_1"] = dataframe["aa"].str.extract("([a-zA-Z]{3}(?=\d))")
-    dataframe["aa_number"] = dataframe["aa"].str.extract( "((?<=[a-zA-Z]{3}).*(?=[a-zA-Z]{3}))")
+    dataframe["aa_number"] = dataframe["aa"].str.extract(
+        "((?<=[a-zA-Z]{3}).*(?=[a-zA-Z]{3}))")
     dataframe["aa_2"] = dataframe["aa"].str.extract("((?<=\d)[a-zA-Z]{3})")
     dataframe["aa_1"] = dataframe["aa_1"].map(ONE_LETTER)
     dataframe["aa_2"] = dataframe["aa_2"].map(ONE_LETTER)
     cols = ["aa_1", "aa_number", "aa_2"]
-    dataframe["one_letter_repr"] = dataframe[cols].apply(lambda row: "".join(row.values.astype(str)), axis=1)
-    dataframe = dataframe.drop(["aa", "aa_1", "aa_2", "aa_number"], axis = 1)
+    dataframe["one_letter_repr"] = dataframe[cols].apply(
+        lambda row: "".join(row.values.astype(str)), axis=1)
+    dataframe = dataframe.drop(["aa", "aa_1", "aa_2", "aa_number"], axis=1)
     return dataframe
-    
-
-
-

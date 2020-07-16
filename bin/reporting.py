@@ -72,7 +72,7 @@ gene_list = query.get_gene_list(main_mvld)
 
 # fields needed from mlvd:
 from_mlvd = main_mvld[[
-    "HGNC_ID", "SYMBOL", "one_letter_repr", "Consequence"]]
+    "HGNC_ID", "SYMBOL", "one_letter_repr", "Consequence", "vaf"]]
 
 # QUERY DATABASE
 
