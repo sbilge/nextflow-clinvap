@@ -321,7 +321,7 @@ process report_generation {
  * STEP 5 - MERGE METADATA
  */
 
-process merge_metadata {
+process pr_metadata {
     publishDir "${params.outdir}/reports/json", mode: 'copy'
 
     input:
@@ -329,14 +329,14 @@ process merge_metadata {
     file main_json from report_generate
 
     output:
-    file "${main_json.baseName}_merged.json" into merged_report_generate, ch_diagnosis_filter
+    file "${main_json.baseName}_merged.json" into ch_diagnosis_filter
 
     when:
     params.metadata_json
 
     script:
     """
-    merge_metadata.py ${main_json} ${metadata} ${main_json.baseName}_merged.json
+    metadata_process.py ${main_json} ${metadata} ${main_json.baseName}_merged.json $baseDir/assets/disease_ontology_map.txt
     """
 }
 
@@ -354,11 +354,16 @@ process diagnosis_filter {
     file "${merged_report.baseName}_diagnosis_processed.json" into diagnosis_specific_report
 
     when:
-    params.diagnosis_filter
+    params.metadata_json
 
     script:
+    if (params.diagnosis_filter)
     """
-    filter_diagnosis.py ${merged_report} ${merged_report.baseName}_diagnosis_processed.json $baseDir/assets/disease_ontology_map.txt
+    filter_diagnosis.py ${merged_report} ${merged_report.baseName}_diagnosis_processed.json 
+    """
+    else
+    """
+    prior_diagnosis.py ${merged_report} ${merged_report.baseName}_diagnosis_processed.json 
     """
 }
 
@@ -372,7 +377,6 @@ process render_report {
 
     input:
     file out_json from direct_report_generate
-    file merged_out_json from merged_report_generate.ifEmpty("EMPTY")
     file diagnosis_filtered_out_json from diagnosis_specific_report.ifEmpty("EMPTY")
     
     output:
@@ -383,11 +387,7 @@ process render_report {
     """
     docx_generate.py ${out_json} ${params.docx_template} ${out_json.baseName}.docx
     """
-    else if (params.metadata_json && !params.diagnosis_filter)
-    """
-    docx_generate.py ${merged_out_json} ${params.docx_template} ${out_json.baseName}.docx
-    """
-    else if (params.metadata_json && params.diagnosis_filter)
+    else
     """
     docx_generate.py ${diagnosis_filtered_out_json} ${params.docx_template} ${out_json.baseName}.docx
     """
