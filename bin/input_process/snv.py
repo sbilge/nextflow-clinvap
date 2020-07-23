@@ -92,12 +92,20 @@ def get_tumor_sample(vcf):
 
 # Only one tumor sample assumption is made. If more, fix is needed here.
 def tumor_sample_format_index(vcf, source):
+    """Function to return index of tumor sample name. The required Format filed of the tumor sample can be reached with the index. 
+    It returns index if ##Sample field if present in VCF header. It returns index if sample names are Tumor, Normal. It returns "null" otherwise.
+    """
     if source == "strelka":
         tumor_sample = get_tumor_sample(vcf)
         samples = vcf.samples
-        for s in samples:
-            if tumor_sample.get(s) == "yes":
-                tumor_sample_index = samples.index(s)
+        if tumor_sample:
+            for s in samples:
+                if tumor_sample.get(s) == "yes":
+                    tumor_sample_index = samples.index(s)
+        elif "NORMAL" in samples and "TUMOR" in samples:
+            tumor_sample_index = samples.index("TUMOR")
+        else:
+            tumor_sample_index = "null"
         return tumor_sample_index
     else:
         return "null"
@@ -115,7 +123,10 @@ def parse_vcf(inputfile):
     tumor_sample_index = tumor_sample_format_index(vcf, source)
     for variant in vcf:
         if source == "strelka":
-            vaf = strelka_vaf_calculation(variant, tumor_sample_index)
+            if tumor_sample_index != "null":
+                vaf = strelka_vaf_calculation(variant, tumor_sample_index)
+            else:
+                vaf = other_ngs_vaf(variant)
         elif "StrataCaller" in source:
             vaf = stratacaller_vaf_identification(variant)
         else:
