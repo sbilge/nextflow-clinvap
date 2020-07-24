@@ -13,7 +13,6 @@ output_json = sys.argv[3]
 do = sys.argv[4]
 
 
-
 if len(sys.argv) != 5:
     print("usage: {} <main_json> <metadata_json> <output_json> <disease_ontology_map>".format(
         sys.argv[0]))
@@ -46,11 +45,9 @@ def get_field(key, metadata):
     return val
 
 
-def give_na_diagnosis_tag(report, *keys):
+def give_na_diagnosis_tag(report):
     copy_report = copy.deepcopy(report)
-    for key in keys:
-        for d in copy_report[key]:
-            d["seen_in_diagnosis"] = "Not applicable"
+    copy_report["seen_in_diagnosis"] = "Not applicable"
     return copy_report
 
 
@@ -62,8 +59,7 @@ abbr = get_field("abbreviation", merge_report).lower()
 
 
 if all(val == "null" for val in [diagnosis, do_name, doid, icd10, abbr]):
-    tagged_report = give_na_diagnosis_tag(merge_report, "driver_table",
-                                          "direct_pharm_table", "pharm_table")
+    tagged_report = give_na_diagnosis_tag(merge_report)
     with open(output_json, "w") as o:
         json.dump(tagged_report, o, indent=4)
     sys.exit(0)
@@ -136,8 +132,7 @@ else:
 keyword_lists = [vocab_diagnosis, vocab_diagnosis2_tn,
                  vocab_diagnosis3_tn, vocab_doid_tn, vocab_icd10_tn, vocab_abbr_tn]
 if all(result == [] for result in keyword_lists):
-    tagged_report = give_na_diagnosis_tag(
-        merge_report, "driver_table", "direct_pharm_table", "pharm_table")
+    tagged_report = give_na_diagnosis_tag(merge_report)
     with open(output_json, "w") as o:
         json.dump(tagged_report, o, indent=4)
     sys.exit(0)

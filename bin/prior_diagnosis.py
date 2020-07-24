@@ -23,7 +23,14 @@ with open(main_json) as r:
     report = json.load(r)
 
 
+# Check if "seen in diagnosis": "not applicable" is in the report
+# if so, do nothing, give report back
+if report.get("seen_in_diagnosis") == "Not applicable":
+    with open(output_json, "w") as o:
+        json.dump(report, o, indent=4)
+    os.remove(main_json)
+    sys.exit(0)
 
-# Save the result
+
 with open(output_json, "w") as o:
     json.dump(report, o, indent=4)
