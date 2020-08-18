@@ -14,7 +14,7 @@ def empty_database_result():
     message = "No database result. Terminating..."
     print(message)
     sys.exit()
-    
+
 
 def empty_high_impact_mvld():
     """Function to print the wrning message of the hogha nad moderate effect mvld table is empty."""
@@ -22,10 +22,14 @@ def empty_high_impact_mvld():
     print(message)
 
 
-def empty_driver_annotation():
+def empty_driver_annotation(var_type):
     """Function to print a warning if querying the knowledgebase for driver genes returns empty. Sets driver flag to false"""
-    message = "No driver gene identified. Driver gene table will be empty."
+    message = "No driver gene identified for {}. Driver gene table will be empty.".format(
+        var_type)
     print(message)
+    place_holder = pd.DataFrame(columns=['hgnc_id', 'driver_role', 'source_name', 'source_pmid',
+                                         'reference_id', 'reference_source', 'tumor_list', 'db_tumor_repr', 'var_type'])
+    return place_holder
 
 
 def empty_mechanistic():

@@ -141,18 +141,19 @@ def parse_vcf(inputfile):
         qual = variant.QUAL
         vfilter = variant.FILTER
         alt = variant.ALT
+        var_type = variant.var_type
         if len(alt) == 1:
             alt = alt[0]
         location = "{}:{}_{}/{}".format(chrom, start, ref, alt)
         line = [chrom, start, stop, location,
-                vid, ref, alt, qual, vfilter, vaf]
+                vid, ref, alt, qual, vfilter, vaf, var_type]
         annotation = get_annotation(variant, fields)
         for ann in annotation:
             for ln in line:
                 ann.append(ln)
             complete_line_list.append(ann)
     header = fields + ["chr", "start", "end", "location",
-                       "vid", "ref", "alt", "qual", "filter", "vaf"]  # create VCF dataframe
+                       "vid", "ref", "alt", "qual", "filter", "vaf", "var_type"]  # create VCF dataframe
     dataframe = pd.DataFrame(complete_line_list, columns=header)
 
     dataframe["dbSNP"] = dataframe["Existing_variation"].str.findall(

@@ -68,21 +68,22 @@ main_mvld = snv.one_letter_repr(main_mvld)
 
 
 # list of genes
-gene_list = query.get_gene_list(main_mvld)
+gene_list = query.get_gene_list(main_mvld)[0]
+gene_dict = query.get_gene_list(main_mvld)[1]
 
 # fields needed from mlvd:
 from_mlvd = main_mvld[[
-    "HGNC_ID", "SYMBOL", "one_letter_repr", "Consequence", "vaf"]]
+    "HGNC_ID", "SYMBOL", "one_letter_repr", "Consequence", "vaf", "var_type"]]
+
 
 # QUERY DATABASE
 
-#  Get driver gene annotations
+#  Get driver gene annotations for snv and small indels
 driver_ann_mutation = query.get_driver_annotation(
-    main_mvld, KNOWLEDGEBASE, "mutation")
-# There is a TODO here
-# driver_ann_indel = query.get_driver_annotation(
-#     main_mvld, KNOWLEDGEBASE, "indel")
+    main_mvld, KNOWLEDGEBASE)[0]
 
+driver_ann_indel = query.get_driver_annotation(
+    main_mvld, KNOWLEDGEBASE)[1]
 
 # Query database - Get direct drug targets
 direct_variant_targets = query.ann_pharm_variant(
@@ -105,7 +106,7 @@ gene_targets_mut = query.filter_variant_class(
 mechanistic_drug_targets = query.get_mechanistic_drugs(
     main_mvld, KNOWLEDGEBASE)
 
-if (not mechanistic_drug_targets) and (not driver_ann_mutation) and (not gene_targets_mut) and (not direct_variant_targets_mut):
+if (not mechanistic_drug_targets) and (not driver_ann_mutation) and (not driver_ann_indel) and (not gene_targets_mut) and (not direct_variant_targets_mut):
     handle.empty_database_result()
 
 
@@ -119,82 +120,54 @@ else:
 
 # Check if driver gene annotation dictionary is empty or not.
 if driver_ann_mutation:
-    driver_flag = True
+    driver_mut_flag = True
 else:
-    driver_flag = False
-    handle.empty_driver_annotation()
+    driver_mut_flag = False
+
+if driver_ann_indel:
+    driver_indel_flag = True
+else:
+    driver_indel_flag = False
 
 
-
+############################################################################
 
 # PROCESS DATABASE RESULTS
 
+############################################################################
+# DRIVER ANNOTATION
 
 # Update driver dict
 # add tumor string to driver dictionary and remove tumor_type list of dictionaries (same function doing both)
-for key in driver_ann_mutation:
-    helper.add_tumor_string(key, driver_ann_mutation)
+for dt in [driver_ann_mutation, driver_ann_indel]:
+    for key in dt:
+        helper.add_tumor_string(key, dt)
 
 
-
-# Update driver dict
-# collapse info from sources into one representation
-
-
-if driver_flag:
-    for key, annotation in driver_ann_mutation.items():
-        role = set()
-        source = []
-        source_pmid = []
-        reference = []
-        reference_source = set()
-        tumor = []
-        db_tumor = []
-        for driver_info in annotation:
-            # fn updating global role_set
-            helper.populate_set(driver_info, "driver_role", role)
-            # fn updating global source_list
-            helper.populate_list(driver_info, "source_name", source)
-            # fn updating global source_pmid_list
-            helper.populate_list(driver_info, "source_pmid", source_pmid)
-            # fn updating global reference_id list
-            helper.populate_list(driver_info, "reference_id", reference)
-            # fn updating global reference_source list
-            helper.populate_set(
-                driver_info, "reference_source", reference_source)
-            # fn updating global tumor_list
-            helper.populate_list(driver_info, "tumor_list", tumor)
-            # fn updating global db disease keywords
-            helper.populate_list(driver_info, "db_tumor_repr", db_tumor)
-
-        driver_role = driver.assign_driver_role(role)
-        agg_source = "|".join(source)
-        agg_pmid = "|".join(source_pmid)
-        agg_ref = "|".join(reference)
-        agg_ref_source = "|".join(list(reference_source))
-        agg_tumor = "|".join([t for t in tumor if t != ""])
-        agg_db_tumor = "|".join([t for t in db_tumor if t != ""])
-
-        # replace the value of the dict. collapse list into one dict
-        driver_ann_mutation[key] = {"driver_role": driver_role, "source_name": agg_source,
-                                    "source_pmid": agg_pmid, "reference_id": agg_ref, "reference_source": agg_ref_source, "tumor_list": agg_tumor, "db_tumor_repr": agg_db_tumor}
-
-    #  driver information dictionary to dataframe
-    df_driver_ann_mutation = driver.dict_to_dataframe(driver_ann_mutation)
-
+if driver_mut_flag:
+    df_driver_ann_mutation = driver.get_driver_df(driver_ann_mutation)
 else:
-    df_driver_ann_mutation = pd.DataFrame(columns=['hgnc_id', 'driver_role', 'source_name', 'source_pmid',
-                                                   'reference_id', 'reference_source', 'tumor_list', 'db_tumor_repr'])
+    df_driver_ann_mutation = handle.empty_driver_annotation("SNVs")
+
+
+if driver_indel_flag:
+    df_driver_ann_indel = driver.get_driver_df(driver_ann_indel)
+else:
+    df_driver_ann_indel = handle.empty_driver_annotation("INDELs")
+
+# Concat snv and indel driver annotations to get driver content on those.
+df_driver_ann = pd.concat([df_driver_ann_mutation, df_driver_ann_indel],
+                          ignore_index=True).drop(columns=["index"])
 
 # Start building up driver content. References will be mapped later.
-driver_ann = df_driver_ann_mutation[[
-    "hgnc_id", "driver_role", "reference_id", "tumor_list", "db_tumor_repr"]]
+driver_ann = df_driver_ann[[
+    "hgnc_id", "driver_role", "reference_id", "tumor_list", "db_tumor_repr", "var_type"]]
 
 driver_content = pd.merge(from_mlvd, driver_ann, how="right",
-                          left_on="HGNC_ID", right_on="hgnc_id").drop(columns=["HGNC_ID"])
+                          left_on=["HGNC_ID", "var_type"], right_on=["hgnc_id", "var_type"]).drop(columns=["HGNC_ID"])
 
 # Get references
-ref_driver = content.get_references(df_driver_ann_mutation)
+ref_driver = content.get_references(df_driver_ann)
 
 ###############################################################################################################
 
