@@ -644,4 +644,4 @@ report_json["appendix_reference_table"] = appendix_reference_table
 
 
 with open(output_json, "w") as f:
-    json.dump(report_json, f, indent=4)
+    json.dump(report_json, f, indent=4, ensure_ascii=False)
