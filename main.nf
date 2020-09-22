@@ -28,10 +28,11 @@ def helpMessage() {
                                     Available: conda, docker, singularity, awsbatch, test and more.
     Other options:
       --vep_cache [Path]            Path to Ensemble VEP cache files
-      --skip_vep_cache [bool]         Skip downloading Ensemble VEP cache files
+      --skip_vep_cache [bool]       Skip downloading Ensemble VEP cache files
       --skip_vep [bool]             Skip variant effect prediction step
-      --metadata_json               Json file with patient information such as diagnosis
-      --docx_template [Path]               DOCX template to render JSON report
+      --metadata_json [Path]        Json file with patient information such as diagnosis
+      --cnv [Path]                  Path to cnv file
+      --docx_template [Path]        DOCX template to render JSON report
       --diagnosis_filter [bool]       Filter results based on diagnosis      
       --outdir [file]                 The output directory where the results will be saved
       --email_on_fail [email]         Same as --email, except only send mail if the workflow is not successful
@@ -148,6 +149,20 @@ if (params.skip_vep){
 } else {
     ch_annotated_vcf_for_reporting = Channel.empty()
 }
+
+/*
+* Create a channel for cnv file
+*/
+if (params.cnv){
+    Channel
+    .fromPath(params.cnv)
+    .ifEmpty {exit 1, "Cannot find any tsv matching: ${params.cnv}.\nTry enclosing paths in quotes!"}
+    .set {ch_cnv}
+    .println()
+} else {
+    ch_cnv = Channel.empty()
+}
+
 
 // Header log info
 log.info nfcoreHeader()
@@ -307,14 +322,21 @@ process report_generation {
 
   input:
   file out_vcf from ch_annotated_vcf.mix(ch_annotated_vcf_for_reporting)
+  file cnv from ch_cnv.ifEmpty("EMPTY")
 
   output:
   file "${out_vcf.baseName}.json" into report_generate, direct_report_generate
 
   script:
+  if (!params.cnv)
   """
-  reporting.py ${out_vcf} ${out_vcf.baseName}.json ${params.genome} $baseDir/assets/cancerDB_final.json
+  snv_reporting.py -i ${out_vcf} -o ${out_vcf.baseName}.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
   """
+  else
+  """
+  snv_reporting.py -i ${out_vcf} -c ${cnv} -o ${out_vcf.baseName}.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
+  """
+
 }
 
 /*
