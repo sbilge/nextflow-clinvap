@@ -32,9 +32,10 @@ def empty_driver_annotation(var_type):
     return place_holder
 
 
-def empty_mechanistic():
+def empty_mechanistic(variant_type):
     """Function to print warning that there is no hit for mechanistic drug targets."""
-    message = "No mechanistic drugs targeting distrupted genes was identified. Mechanistic drug targets table will be empty."
+    message = "{}: No mechanistic drugs targeting distrupted genes was identified. Mechanistic drug targets table will be empty.".format(
+        varint_type)
     print(message)
 
 
@@ -44,21 +45,23 @@ def empty_approved_mechanistic():
     print(message)
 
 
-def empty_direct_variant_annotation():
+def empty_direct_variant_annotation(variant_type):
     """Function to print a warning message if query to get variant annotation for observed variants is empty."""
     message = "No direct pharmacodynamics information was found for observed variants."
     print(message)
     df_direct_adverse = empty_dataframe_direct_adverse()
-    df_direct_pharmacogenomics = empty_dataframe_direct_pharmacogenomics()
+    df_direct_pharmacogenomics = empty_dataframe_direct_pharmacogenomics(
+        variant_type)
     return df_direct_pharmacogenomics, df_direct_adverse
 
 
-def empty_variant_annotation():
+def empty_variant_annotation(variant_type):
     """Function to print a warning message if query to get variant annotation for observed genes is empty."""
     message = "No pharmacodynamics information was found for observed genes."
     print(message)
-    df_pharmacogenomics = empty_dataframe_pharmacogenomics()
-    df_pharmacogenomics_combined = empty_dataframe_pharmacogenomics_combined()
+    df_pharmacogenomics = empty_dataframe_pharmacogenomics(variant_type)
+    df_pharmacogenomics_combined = empty_dataframe_pharmacogenomics_combined(
+        variant_type)
     df_adverse = empty_dataframe_adverse()
     df_adverse_combined = empty_dataframe_adverse_combined()
     return df_pharmacogenomics, df_pharmacogenomics_combined, df_adverse, df_adverse_combined
@@ -84,9 +87,10 @@ def pharm_columns(combined=None):
     return df
 
 
-def empty_dataframe_direct_pharmacogenomics():
+def empty_dataframe_direct_pharmacogenomics(variant_type):
     """Function to return empty dataframe with column names if direct pharmacogenomics dataframe is empty."""
-    message = "No pharmacogenomics information found for observed variants."
+    message = "No pharmacogenomics information found for observed variants in {} cases.".format(
+        variant_type)
     print(message)
     place_holder = pharm_columns()
     return place_holder
@@ -97,18 +101,20 @@ def empty_dataframe_direct_pharmacogenomics_combined_variants():
     pass
 
 
-def empty_dataframe_pharmacogenomics():
+def empty_dataframe_pharmacogenomics(variant_type):
     """Function to return empty dataframe with column names if pharmacogenomics dataframe is empty."""
-    message = "No pharmacogenomics information found for observed genes."
+    message = "No pharmacogenomics information found for observed genes in {} cases.".format(
+        variant_type)
     print(message)
     place_holder = pharm_columns()
     return place_holder
 
 
-def empty_dataframe_pharmacogenomics_combined():
+def empty_dataframe_pharmacogenomics_combined(variant_type):
     """Function to return empty dataframe with column names if pharmacogenomics combined variants dataframe 
     is empty."""
-    message = "No pharmacogenomics information found for observed gene combinations."
+    message = "No pharmacogenomics information found for observed gene combinations of {} cases.".format(
+        variant_type)
     print(message)
     place_holder = pharm_columns(combined=1)
     return place_holder
@@ -170,7 +176,7 @@ def empty_pharmacodynamics_place_holder(adverse=None):
     (both for genes and variants) empty"""
     message = "Variant annotation is empty. Place holders will be returned."
     print(message)
-    df = pd.DataFrame(columns=['SYMBOL', 'drug_name', 'variant_drug_association', 'tumor_list', 'db_tumor_repr',
+    df = pd.DataFrame(columns=['gene', 'drug_name', 'variant_drug_association', 'tumor_list', 'db_tumor_repr',
                                'hgnc_id', 'variant', 'variant_type', 'match_level', 'reference_id'])
     if adverse:
         df = df.drop(columns=['tumor_list', 'db_tumor_repr'])

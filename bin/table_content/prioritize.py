@@ -76,7 +76,7 @@ def compatibility_sort(dataframe):
         dataframe["rank"] = dataframe["match_level"].map(rank_map)
         dataframe = dataframe.sort_values(by=["rank"]).drop(columns=["rank", "evidence_level"])
     else:
-        dataframe = pd.DataFrame(columns=['SYMBOL', 'drug_name', 'variant_drug_association', 'tumor_list',
+        dataframe = pd.DataFrame(columns=['gene', 'drug_name', 'variant_drug_association', 'tumor_list',
                                           'hgnc_id', 'variant', 'variant_type', 'match_level', 'reference_id'])
     return dataframe
 

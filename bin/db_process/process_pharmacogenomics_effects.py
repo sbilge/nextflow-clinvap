@@ -14,8 +14,8 @@ def get_subset_dict(dictionary, subkey):
             if not sub_dict[subkey]:
                 continue
             sub[key].append({"variant": sub_dict["variant"], "variant_class": sub_dict["variant_class"], "variant_type": sub_dict["variant_type"], subkey: sub_dict[subkey],
-                            "chromosome": sub_dict["chromosome"], "assembly_version": sub_dict["assembly_version"], "alteration_base": sub_dict["alteration_base"],
-                            "reference_base": sub_dict["reference_base"], "start": sub_dict["start"], "stop": sub_dict["stop"]})
+                             "chromosome": sub_dict["chromosome"], "assembly_version": sub_dict["assembly_version"], "alteration_base": sub_dict["alteration_base"],
+                             "reference_base": sub_dict["reference_base"], "start": sub_dict["start"], "stop": sub_dict["stop"]})
         if not sub[key]:
             del sub[key]
     return sub
@@ -30,8 +30,7 @@ def apply_add_tumor_string(dictionary, keyword):
     return dictionary
 
 
-
-def filter_gene_pair(gene_list, dictionary, keyword):
+def filter_gene_pair(gene_list_snv, gene_list_cnv, dictionary, keyword):
     """Function to filter combined_variants_therapeutics. Both genes should be observed in the input VCF.
     This is for combined variant effect datasets, i.e. pharmacogenomics_combined_variants_therapeutics and 
     adverse_effect_combined_variants_therapeutics. Warning: this function is not for direct targets"""
@@ -39,9 +38,16 @@ def filter_gene_pair(gene_list, dictionary, keyword):
     for key, value in dictionary.items():
         filtered_dict[key] = []
         for element in value:
-            filtered_items = [item for item in element[keyword]
-                              if str(item["paired_gene_hgnc"]) in gene_list]
-            
+            # filtered_items = [item for item in element[keyword] if str(item["paired_gene_hgnc"]) in gene_list]
+            if ";MUT" in element["variant_class"]:
+                filtered_items = [item for item in element[keyword] if str(
+                    item["paired_gene_hgnc"]) in gene_list_snv]
+            elif ";CNA" in element["variant_class"]:
+                filtered_items = [item for item in element[keyword] if (
+                    str(item["paired_gene_hgnc"]), item["paired_variant"], "cnv") in gene_list_cnv]
+            elif ";FUS" in element["variant_class"]:
+                # not implemented
+                pass
             if filtered_items:
                 filtered_dict[key].append({"variant": element["variant"],
                                            "variant_class": element["variant_class"], "variant_type": element["variant_type"],
@@ -76,7 +82,6 @@ def dict_to_dataframe(pharm_dictionary, keyword):
     return df_pharm
 
 
-def direct_adverse_combined(variant_class = "MUT"):
+def direct_adverse_combined(variant_class="MUT"):
     """Database does not include any such cases for MUT and MUT;MUT category"""
     print("Not implemented. No such entries in the database.")
-
