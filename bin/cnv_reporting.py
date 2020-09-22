@@ -18,7 +18,6 @@ from cyvcf2 import VCF
 import pandas as pd
 import argparse
 import requests
-import argparse
 import json
 import sys
 import time
