@@ -326,6 +326,7 @@ process report_generation {
 
   output:
   file "${out_vcf.baseName}.json" into report_generate, direct_report_generate
+  file "${cnv.baseName}.json" into tmp
 
   script:
   if (!params.cnv)
@@ -335,8 +336,8 @@ process report_generation {
   else
   """
   snv_reporting.py -i ${out_vcf} -c ${cnv} -o ${out_vcf.baseName}.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
+  cnv_reporting.py -i ${out_vcf} -c ${cnv} -o ${cnv.baseName}.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
   """
-
 }
 
 /*
