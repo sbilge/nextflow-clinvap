@@ -270,11 +270,7 @@ process filter_vcf {
 
 process vep_on_input_file {
 
-<<<<<<< HEAD
   publishDir "${params.outdir}/reports/vcf", mode: 'copy'
-=======
-  publishDir "${params.outdir}", mode: 'copy'
->>>>>>> master
 
   input:
   file vcf from vep
@@ -303,11 +299,7 @@ process vep_on_input_file {
 
 process report_generation {
 
-<<<<<<< HEAD
   publishDir "${params.outdir}/reports/json", mode: 'copy'
-=======
-  publishDir "${params.outdir}/reports", mode: 'copy'
->>>>>>> master
 
   input:
   file vcf from ch_annotated_vcf.mix(ch_annotated_vcf_for_reporting)
