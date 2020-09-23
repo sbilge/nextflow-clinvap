@@ -116,7 +116,7 @@ def assign_match_level_direct(dataframe, col_name):
 
 
 def cnv_match_level_indirect(dataframe, col_name):
-    processed = dataframe.assign(col_name="Same gene, different variation, same consequence.").rename(
+    processed = dataframe.assign(col_name="Same gene, different variant, same consequence.").rename(
         columns={"col_name": col_name})
     return processed
 

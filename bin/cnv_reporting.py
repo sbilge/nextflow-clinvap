@@ -549,17 +549,19 @@ pharm_table = cnv_sorted_pharm_content.to_dict("records")
 mechanistic_table = cnv_mechanistic_content.to_dict("records")
 appendix_variant_table = cnv_appendix_content.to_dict("records")
 appendix_reference_table = cnv_reference_content.to_dict("records")
-report_json["cnv_num_oncogene"] = num_oncogene
-report_json["cnv_num_tsg"] = num_tsg
-report_json["cnv_num_onco_tsg"] = num_onco_tsg
-report_json["cnv_num_unknown"] = num_unknown
 
-report_json["cnv_driver_table"] = driver_table_json
-report_json["cnv_direct_pharm_table"] = direct_pharm_table
-report_json["cnv_pharm_table"] = pharm_table
-report_json["cnv_mechanistic_drug_table"] = mechanistic_table
-report_json["cnv_appendix_variant_table"] = appendix_variant_table
-report_json["cnv_appendix_reference_table"] = appendix_reference_table
+report_json["tag"] = "CNV"
+report_json["num_oncogene"] = num_oncogene
+report_json["num_tsg"] = num_tsg
+report_json["num_onco_tsg"] = num_onco_tsg
+report_json["num_unknown"] = num_unknown
+
+report_json["driver_table"] = driver_table_json
+report_json["direct_pharm_table"] = direct_pharm_table
+report_json["pharm_table"] = pharm_table
+report_json["mechanistic_drug_table"] = mechanistic_table
+report_json["appendix_variant_table"] = appendix_variant_table
+report_json["appendix_reference_table"] = appendix_reference_table
 
 
 

@@ -681,6 +681,8 @@ mechanistic_table = mechanistic_content.to_dict("records")
 adverse_table = sorted_adverse_content.to_dict("records")
 appendix_variant_table = appendix_content.to_dict("records")
 appendix_reference_table = reference_content.to_dict("records")
+
+report_json["tag"] = "SNV"
 report_json["num_nonsynonymous"] = num_nonsynonymous
 report_json["num_oncogene"] = num_oncogene
 report_json["num_tsg"] = num_tsg

@@ -217,26 +217,7 @@ ${summary.collect { k,v -> "            <dt>$k</dt><dd><samp>${v ?: '<span style
 }
 
 
-// /*
-//  * Parse software version numbers
-//  */
-// process get_software_versions {
 
-//     output:
-//     file 'software_versions_mqc.yaml' into software_versions_yaml
-
-//     script:
-//     // TODO nf-core: Get all tools to print their version number here
-//     """
-//     echo $workflow.manifest.version > v_pipeline.txt
-//     echo $workflow.nextflow.version > v_nextflow.txt
-//     fastqc --version > v_fastqc.txt
-//     multiqc --version > v_multiqc.txt
-//     scrape_software_versions.py > software_versions_mqc.yaml
-//     """
-// }
-
-   
 /*
  * STEP 1 - Vep Cache Files
  */
@@ -292,11 +273,11 @@ process vep_on_input_file {
   publishDir "${params.outdir}/reports/vcf", mode: 'copy'
 
   input:
-  file filter_vcf_file from vep
+  file vcf from vep
   file('ensembl-vep') from vep_offline_files
   
   output:
-  file "${filter_vcf_file.baseName}_out.vcf" into ch_annotated_vcf
+  file "${vcf.baseName}_out.vcf" into ch_annotated_vcf
 
   when:
   !params.skip_vep
@@ -304,11 +285,11 @@ process vep_on_input_file {
   script:
   if (!params.skip_vep_cache)
   """
-  vep -i ${filter_vcf_file} -o ${filter_vcf_file.baseName}_out.vcf --dir_cache "${params.outdir}/offline/ensembl-vep/offline_cache" --config $baseDir/assets/vep.ini
+  vep -i ${vcf} -o ${vcf.baseName}_out.vcf --dir_cache "${params.outdir}/offline/ensembl-vep/offline_cache" --config $baseDir/assets/vep.ini
   """
   else
   """
-  vep -i ${filter_vcf_file} -o ${filter_vcf_file.baseName}_out.vcf --dir_cache ${params.vep_cache} --config $baseDir/assets/vep.ini
+  vep -i ${vcf} -o ${vcf.baseName}_out.vcf --dir_cache ${params.vep_cache} --config $baseDir/assets/vep.ini
   """
 }
 
@@ -321,22 +302,22 @@ process report_generation {
   publishDir "${params.outdir}/reports/json", mode: 'copy'
 
   input:
-  file out_vcf from ch_annotated_vcf.mix(ch_annotated_vcf_for_reporting)
+  file vcf from ch_annotated_vcf.mix(ch_annotated_vcf_for_reporting)
   file cnv from ch_cnv.ifEmpty("EMPTY")
 
   output:
-  file "${out_vcf.baseName}.json" into report_generate, direct_report_generate
-  file "${cnv.baseName}.json" into tmp
+  file "${vcf.baseName}.json" into snv_metadata, snv_report_generate
+  file "${cnv.baseName}.json" into cnv_metadata, cnv_report_generate
 
   script:
   if (!params.cnv)
   """
-  snv_reporting.py -i ${out_vcf} -o ${out_vcf.baseName}.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
+  snv_reporting.py -i ${vcf} -o ${vcf.baseName}.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
   """
   else
   """
-  snv_reporting.py -i ${out_vcf} -c ${cnv} -o ${out_vcf.baseName}.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
-  cnv_reporting.py -i ${out_vcf} -c ${cnv} -o ${cnv.baseName}.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
+  snv_reporting.py -i ${vcf} -c ${cnv} -o ${vcf.baseName}.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
+  cnv_reporting.py -i ${vcf} -c ${cnv} -o ${cnv.baseName}.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
   """
 }
 
@@ -349,49 +330,31 @@ process metadata_diagnosis {
 
     input:
     file metadata from ch_metadata
-    file main_json from report_generate
+    file main_json from snv_metadata
+    file cnv_json from cnv_metadata.ifEmpty("EMPTY")
 
     output:
-    file "${main_json.baseName}_merged.json" into ch_diagnosis
+    file "${main_json.baseName}_merged.json" into ch_snv_diagnosis
+    file "${cnv_json.baseName}_merged.json" into ch_cnv_diagnosis
+
 
     when:
     params.metadata_json
 
     script:
+    if (cnv_json == 'EMPTY')
     """
-    metadata_process.py ${main_json} ${metadata} ${main_json.baseName}_merged.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${diagnosis_filter_option}
+    process_metadata.py ${main_json} ${metadata} ${main_json.baseName}_merged.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
+    """
+    else
+    """
+    process_metadata.py ${main_json} ${metadata} ${main_json.baseName}_merged.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
+    process_metadata.py ${cnv_json} ${metadata} ${cnv_json.baseName}_merged.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
     """
 }
 
-// /*
-//  * STEP 6 - FILTER BASED ON DIAGNOSIS
-//  */
-
-// process diagnosis {
-//     publishDir "${params.outdir}/reports/json", mode: 'copy'
-
-//     input:
-//     file report from ch_diagnosis
-
-//     output:
-//     file "${report.baseName}_diagnosis_processed.json" into diagnosis_specific_report
-
-//     when:
-//     params.metadata_json
-
-//     script:
-//     if (params.diagnosis_filter)
-//     """
-//     process_metadata.py ${report} ${merged_report.baseName}_diagnosis_processed.json 
-//     """
-//     else
-//     """
-//     process_metadata.py ${report} ${merged_report.baseName}_diagnosis_processed.json 
-//     """
-// }
-
 /*
- * STEP 7 - DOCX
+ * STEP 6 - DOCX
  */
 
 process render_report {
@@ -399,52 +362,40 @@ process render_report {
     publishDir "${params.outdir}/reports", mode: 'copy'
 
     input:
-    file out_json from direct_report_generate
-    file diagnosis_filtered_out_json from ch_diagnosis.ifEmpty("EMPTY")
+    file out_json from snv_report_generate
+    file diagnosis_json from ch_snv_diagnosis.ifEmpty("EMPTY")
+    file cnv_json from cnv_report_generate.ifEmpty("EMPTY")
+    file cnv_diagnosis_json from ch_cnv_diagnosis.ifEmpty("EMPTY")
     
     output:
     file "${out_json.baseName}.docx"
+    file "${cnv_json.baseName}.docx"
 
     script:
-    if (!params.metadata_json)
+    if (!params.metadata_json && cnv_json == 'EMPTY')
     """
     docx_generate.py ${out_json} ${params.docx_template} ${out_json.baseName}.docx
     """
-    else
+    else if (!params.metadata_json && cnv_json != 'EMPTY')
     """
-    docx_generate.py ${diagnosis_filtered_out_json} ${params.docx_template} ${out_json.baseName}.docx
+    docx_generate.py ${out_json} ${params.docx_template} ${out_json.baseName}.docx
+    docx_generate.py ${cnv_json} ${params.docx_template} ${cnv_json.baseName}.docx
+    """
+    else if (params.metadata_json && cnv_diagnosis_json == 'EMPTY')
+    """
+    docx_generate.py ${diagnosis_json} ${params.docx_template} ${out_json.baseName}.docx
+    """
+    else if (params.metadata_json && cnv_diagnosis_json != 'EMPTY')
+    """
+    docx_generate.py ${diagnosis_json} ${params.docx_template} ${out_json.baseName}.docx
+    docx_generate.py ${cnv_diagnosis_json} ${params.docx_template} ${cnv_json.baseName}.docx
     """
 }
 
-
-
-// process render_report {
-
-//     publishDir "${params.outdir}/reports", mode: 'copy'
-
-//     input:
-//     file out_json from direct_report_generate
-//     // file merged_out_json from merged_report_generate.ifEmpty('EMPTY')
-    
-//     output:
-//     file "${out_json.baseName}.docx"
-
-//     script:
-//     // if (merged_out_json == 'EMPTY')
-//     """
-//     docx_generate.py ${out_json} ${params.docx_template} ${out_json.baseName}.docx
-//     """
-//     // else
-//     // """
-//     // docx_generate.py ${merged_out_json} ${params.docx_template} ${out_json.baseName}.docx
-//     // """
-// }
-
-
-
 /*
- * STEP 6 - Output Description HTML
+ * STEP 7 - Output Description HTML
  */
+
 process output_documentation {
     publishDir "${params.outdir}/Documentation", mode: 'copy'
 
