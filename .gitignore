@@ -8,3 +8,5 @@ results/
 ._docx*
 ._scrape*
 ._render*
+docs/._usage.md
+._README.md
