@@ -2,10 +2,9 @@
     "patient_firstname": "ABC",
     "patient_lastname": "DEF",
     "patient_dateofbirth": "12.12.1212",
-    "diagnosis": "bladder carcinoma",
-    "doid": "4007",
-    "icd10": "",
-    "abbreviation": "BLCA",
+    "do_name": "skin melanoma",
+    "doid": "8923",
+    "icd10": "C43",
     "mutation_load": "Medium",
     "additional_information": "Metastasis"
 }
