@@ -369,7 +369,7 @@ process render_report {
     
     output:
     file "${out_json.baseName}.docx"
-    file "${cnv_json.baseName}.docx"
+    file "${cnv_json.baseName}.docx" optional true
 
     script:
     if (!params.metadata_json && cnv_json == 'EMPTY')
