@@ -307,7 +307,7 @@ process report_generation {
 
   output:
   file "${vcf.baseName}.json" into snv_metadata, snv_report_generate
-  file "${cnv.baseName}.json" into cnv_metadata, cnv_report_generate
+  file "${cnv.baseName}.json" optional true into cnv_metadata, cnv_report_generate
 
   script:
   if (!params.cnv)
