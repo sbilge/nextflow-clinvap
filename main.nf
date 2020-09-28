@@ -308,7 +308,7 @@ process report_generation {
   output:
   file "${vcf.baseName}.json" into snv_metadata, snv_report_generate
   file "${cnv.baseName}.json" optional true into cnv_metadata, cnv_report_generate
-
+  
   script:
   if (!params.cnv)
   """
@@ -335,14 +335,14 @@ process metadata_diagnosis {
 
     output:
     file "${main_json.baseName}_merged.json" into ch_snv_diagnosis
-    file "${cnv_json.baseName}_merged.json" into ch_cnv_diagnosis
+    file "${cnv_json.baseName}_merged.json" optional true into ch_cnv_diagnosis
 
 
     when:
     params.metadata_json
 
     script:
-    if (cnv_json == 'EMPTY')
+    if (!params.cnv)
     """
     process_metadata.py ${main_json} ${metadata} ${main_json.baseName}_merged.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
     """
@@ -357,43 +357,60 @@ process metadata_diagnosis {
  * STEP 6 - DOCX
  */
 
-process render_report {
+process render_report_snv {
 
     publishDir "${params.outdir}/reports", mode: 'copy'
 
     input:
     file out_json from snv_report_generate
     file diagnosis_json from ch_snv_diagnosis.ifEmpty("EMPTY")
-    file cnv_json from cnv_report_generate.ifEmpty("EMPTY")
-    file cnv_diagnosis_json from ch_cnv_diagnosis.ifEmpty("EMPTY")
-    
+
     output:
     file "${out_json.baseName}.docx"
-    file "${cnv_json.baseName}.docx" optional true
 
     script:
-    if (!params.metadata_json && cnv_json == 'EMPTY')
+    if (!params.metadata_json)
     """
     docx_generate.py ${out_json} ${params.docx_template} ${out_json.baseName}.docx
     """
-    else if (!params.metadata_json && cnv_json != 'EMPTY')
-    """
-    docx_generate.py ${out_json} ${params.docx_template} ${out_json.baseName}.docx
-    docx_generate.py ${cnv_json} ${params.docx_template} ${cnv_json.baseName}.docx
-    """
-    else if (params.metadata_json && cnv_diagnosis_json == 'EMPTY')
+    else
     """
     docx_generate.py ${diagnosis_json} ${params.docx_template} ${out_json.baseName}.docx
-    """
-    else if (params.metadata_json && cnv_diagnosis_json != 'EMPTY')
-    """
-    docx_generate.py ${diagnosis_json} ${params.docx_template} ${out_json.baseName}.docx
-    docx_generate.py ${cnv_diagnosis_json} ${params.docx_template} ${cnv_json.baseName}.docx
     """
 }
 
 /*
- * STEP 7 - Output Description HTML
+ * STEP 7 - DOCX
+ */
+
+process render_report_cnv {
+    publishDir "${params.outdir}/reports", mode: 'copy'
+
+    input:
+    file cnv_json from cnv_report_generate
+    file cnv_diagnosis_json from ch_cnv_diagnosis.ifEmpty("EMPTY")
+
+    output:
+    file "${cnv_json.baseName}.docx" optional true
+
+    when:
+    params.cnv
+
+    script:
+    if (!params.metadata_json)
+    """
+    docx_generate.py ${cnv_json} ${params.docx_template} ${cnv_json.baseName}.docx
+    """
+    else
+    """
+    docx_generate.py ${cnv_diagnosis_json} ${params.docx_template} ${cnv_json.baseName}.docx
+    """
+}
+
+
+
+/*
+ * STEP 8 - Output Description HTML
  */
 
 process output_documentation {
