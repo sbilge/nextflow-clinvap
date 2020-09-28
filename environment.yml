@@ -71,5 +71,5 @@ dependencies:
   - zlib=1.2.11
   - docxtpl=0.10.0
   - watchdog=0.10.2
-  - c-compiler
+  - gxx_linux-64
 
