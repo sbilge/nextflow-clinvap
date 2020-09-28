@@ -251,8 +251,6 @@ process filter_vcf {
 
     conda '/opt/conda/envs/nf-core-clinvap-1.0dev'
 
-    publishDir "${params.outdir}/reports", mode: 'copy'
-
     input:
     file vcf_file from input_vcf
 
