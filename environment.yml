@@ -70,3 +70,4 @@ dependencies:
   - xz=5.2.5
   - zlib=1.2.11
   - docxtpl=0.10.0
+  - watchdog=0.10.2
