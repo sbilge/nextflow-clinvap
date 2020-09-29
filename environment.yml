@@ -72,4 +72,6 @@ dependencies:
   - docxtpl=0.10.0
   - watchdog=0.10.2
   - gxx_linux-64
+  - gcc_linux-64
+  - gfortran_linux-64
 
