@@ -9,3 +9,5 @@ results/
 ._scrape*
 ._render*
 ._*
+docs/._usage.md
+._README.md
