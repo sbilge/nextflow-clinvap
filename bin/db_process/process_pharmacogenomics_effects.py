@@ -38,6 +38,7 @@ def filter_gene_pair(gene_list_snv, gene_list_cnv, dictionary, keyword):
     for key, value in dictionary.items():
         filtered_dict[key] = []
         for element in value:
+            filtered_items = []
             # filtered_items = [item for item in element[keyword] if str(item["paired_gene_hgnc"]) in gene_list]
             if ";MUT" in element["variant_class"]:
                 filtered_items = [item for item in element[keyword] if str(
