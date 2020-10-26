@@ -312,18 +312,18 @@ process report_generation {
   file cnv from ch_cnv.ifEmpty("EMPTY")
 
   output:
-  file "${vcf.baseName}.json" into snv_metadata, snv_report_generate
-  file "${cnv.baseName}.json" optional true into cnv_metadata, cnv_report_generate
+  file "${vcf.baseName}.out.json" into snv_metadata, snv_report_generate
+  file "${cnv.baseName}.out.json" optional true into cnv_metadata, cnv_report_generate
   
   script:
   if (!params.cnv)
   """
-  snv_reporting.py -i ${vcf} -o ${vcf.baseName}.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
+  snv_reporting.py -i ${vcf} -o ${vcf.baseName}.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
   """
   else
   """
-  snv_reporting.py -i ${vcf} -c ${cnv} -o ${vcf.baseName}.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
-  cnv_reporting.py -i ${vcf} -c ${cnv} -o ${cnv.baseName}.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
+  snv_reporting.py -i ${vcf} -c ${cnv} -o ${vcf.baseName}.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
+  cnv_reporting.py -i ${vcf} -c ${cnv} -o ${cnv.baseName}.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
   """
 }
 
@@ -343,8 +343,8 @@ process metadata_diagnosis {
     file cnv_json from cnv_metadata.ifEmpty("EMPTY")
 
     output:
-    file "${main_json.baseName}_merged.json" into ch_snv_diagnosis
-    file "${cnv_json.baseName}_merged.json" optional true into ch_cnv_diagnosis
+    file "${main_json.simpleName}.json" into ch_snv_diagnosis
+    file "${cnv_json.simpleName}.json" optional true into ch_cnv_diagnosis
 
 
     when:
@@ -353,12 +353,12 @@ process metadata_diagnosis {
     script:
     if (!params.cnv)
     """
-    process_metadata.py ${main_json} ${metadata} ${main_json.baseName}_merged.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
+    process_metadata.py ${main_json} ${metadata} ${main_json.simpleName}.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
     """
     else
     """
-    process_metadata.py ${main_json} ${metadata} ${main_json.baseName}_merged.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
-    process_metadata.py ${cnv_json} ${metadata} ${cnv_json.baseName}_merged.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
+    process_metadata.py ${main_json} ${metadata} ${main_json.simpleName}.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
+    process_metadata.py ${cnv_json} ${metadata} ${cnv_json.simpleName}.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
     """
 }
 
