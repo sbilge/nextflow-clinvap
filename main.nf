@@ -305,7 +305,7 @@ process report_generation {
 
   conda '/opt/conda/envs/nf-core-clinvap-1.0dev'
 
-  publishDir "${params.outdir}/reports", mode: 'copy'
+//   publishDir "${params.outdir}/reports", mode: 'copy'
 
   input:
   file vcf from ch_annotated_vcf.mix(ch_annotated_vcf_for_reporting)
@@ -362,64 +362,64 @@ process metadata_diagnosis {
     """
 }
 
-/*
- * STEP 6 - DOCX
- */
+// /*
+//  * STEP 6 - DOCX
+//  */
 
-process render_report_snv {
+// process render_report_snv {
 
-    conda '/opt/conda/envs/nf-core-clinvap-1.0dev'
+//     conda '/opt/conda/envs/nf-core-clinvap-1.0dev'
 
-    publishDir "${params.outdir}/reports", mode: 'copy'
+//     publishDir "${params.outdir}/reports", mode: 'copy'
 
-    input:
-    file out_json from snv_report_generate
-    file diagnosis_json from ch_snv_diagnosis.ifEmpty("EMPTY")
+//     input:
+//     file out_json from snv_report_generate
+//     file diagnosis_json from ch_snv_diagnosis.ifEmpty("EMPTY")
 
-    output:
-    file "${out_json.baseName}.docx"
+//     output:
+//     file "${out_json.baseName}.docx"
 
-    script:
-    if (!params.metadata_json)
-    """
-    docx_generate.py ${out_json} ${params.docx_template} ${out_json.baseName}.docx
-    """
-    else
-    """
-    docx_generate.py ${diagnosis_json} ${params.docx_template} ${out_json.baseName}.docx
-    """
-}
+//     script:
+//     if (!params.metadata_json)
+//     """
+//     docx_generate.py ${out_json} ${params.docx_template} ${out_json.baseName}.docx
+//     """
+//     else
+//     """
+//     docx_generate.py ${diagnosis_json} ${params.docx_template} ${out_json.baseName}.docx
+//     """
+// }
 
-/*
- * STEP 7 - DOCX
- */
+// /*
+//  * STEP 7 - DOCX
+//  */
 
-process render_report_cnv {
+// process render_report_cnv {
 
-    conda '/opt/conda/envs/nf-core-clinvap-1.0dev'
+//     conda '/opt/conda/envs/nf-core-clinvap-1.0dev'
 
-    publishDir "${params.outdir}/reports", mode: 'copy'
+//     publishDir "${params.outdir}/reports", mode: 'copy'
 
-    input:
-    file cnv_json from cnv_report_generate
-    file cnv_diagnosis_json from ch_cnv_diagnosis.ifEmpty("EMPTY")
+//     input:
+//     file cnv_json from cnv_report_generate
+//     file cnv_diagnosis_json from ch_cnv_diagnosis.ifEmpty("EMPTY")
 
-    output:
-    file "${cnv_json.baseName}.docx" optional true
+//     output:
+//     file "${cnv_json.baseName}.docx" optional true
 
-    when:
-    params.cnv
+//     when:
+//     params.cnv
 
-    script:
-    if (!params.metadata_json)
-    """
-    docx_generate.py ${cnv_json} ${params.docx_template} ${cnv_json.baseName}.docx
-    """
-    else
-    """
-    docx_generate.py ${cnv_diagnosis_json} ${params.docx_template} ${cnv_json.baseName}.docx
-    """
-}
+//     script:
+//     if (!params.metadata_json)
+//     """
+//     docx_generate.py ${cnv_json} ${params.docx_template} ${cnv_json.baseName}.docx
+//     """
+//     else
+//     """
+//     docx_generate.py ${cnv_diagnosis_json} ${params.docx_template} ${cnv_json.baseName}.docx
+//     """
+// }
 
 
 
