@@ -313,7 +313,7 @@ process report_generation {
 
   output:
   file "${vcf.baseName}.out.json" into snv_metadata, snv_report_generate
-  file "${cnv.baseName}.out.json" optional true into cnv_metadata, cnv_report_generate
+  file "${cnv.baseName}.cnv.out.json" optional true into cnv_metadata, cnv_report_generate
   
   script:
   if (!params.cnv)
@@ -323,7 +323,7 @@ process report_generation {
   else
   """
   snv_reporting.py -i ${vcf} -c ${cnv} -o ${vcf.baseName}.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
-  cnv_reporting.py -i ${vcf} -c ${cnv} -o ${cnv.baseName}.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
+  cnv_reporting.py -i ${vcf} -c ${cnv} -o ${cnv.baseName}.cnv.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
   """
 }
 
@@ -344,7 +344,7 @@ process metadata_diagnosis {
 
     output:
     file "${main_json.simpleName}.json" into ch_snv_diagnosis
-    file "${cnv_json.simpleName}.json" optional true into ch_cnv_diagnosis
+    file "${cnv_json.simpleName}.cnv.json" optional true into ch_cnv_diagnosis
 
 
     when:
@@ -358,7 +358,7 @@ process metadata_diagnosis {
     else
     """
     process_metadata.py ${main_json} ${metadata} ${main_json.simpleName}.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
-    process_metadata.py ${cnv_json} ${metadata} ${cnv_json.simpleName}.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
+    process_metadata.py ${cnv_json} ${metadata} ${cnv_json.simpleName}.cnv.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
     """
 }
 
