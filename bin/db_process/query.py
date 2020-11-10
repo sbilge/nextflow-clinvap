@@ -77,10 +77,14 @@ def get_driver_annotation(dataframe, knowledgebase):
                 tag_dict(indel, "indel")
         if copynumber:
             if gene["var_type"] == "cnv":
-                type_specific = [
-                    cnv_ann for cnv_ann in copynumber if cnv_ann["alteration_type"] == gene["type"]]
-                driver_copynumber_annotation[gene["HGNC_ID"]] = type_specific
-                tag_dict(type_specific, "cnv")
+                type_specific = [cnv_ann for cnv_ann in copynumber if (cnv_ann["alteration_type"]
+                                                                       == gene["type"] or cnv_ann["alteration_type"] == "null")]
+                if type_specific:
+                    driver_copynumber_annotation[gene["HGNC_ID"]
+                                                 ] = type_specific
+                    tag_dict(type_specific, "cnv")
+                else:
+                    continue
         # TODO fusion
     return driver_mutation_annotation, driver_indel_annotation, driver_copynumber_annotation
 
