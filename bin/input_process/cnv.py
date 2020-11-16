@@ -12,11 +12,12 @@ def read_cnv(inputfile):
     def convert_to_int(row):
         if row['chr'].lower() in ["x", "y"]:
             return row["chr"]
+        elif row['chr'] == "null":
+            return row["chr"]
         else:
             return int(row["chr"])
 
-    dataframe = pd.read_csv(inputfile, sep="\t", dtype={
-                            "chr": "str", "start": "int", "end": "int"})
+    dataframe = pd.read_csv(inputfile, sep="\t")
     dataframe["var_type"] = "cnv"
     dataframe.fillna("null", inplace=True)
     dataframe["chr"] = dataframe["chr"].str.replace("chr", "")
