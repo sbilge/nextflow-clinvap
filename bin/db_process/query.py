@@ -134,7 +134,7 @@ def ann_pharm_variant(dataframe, genome, knowledgebase, variant_type):
         if not direct_target_list:
             continue
         if gene in all_direct_targets:
-            all_direct_targets[gene].append(direct_target_list)
+            all_direct_targets[gene].extend(direct_target_list)
         else:
             all_direct_targets[gene] = direct_target_list
     return all_direct_targets
