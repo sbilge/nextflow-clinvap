@@ -77,10 +77,14 @@ def get_driver_annotation(dataframe, knowledgebase):
                 tag_dict(indel, "indel")
         if copynumber:
             if gene["var_type"] == "cnv":
-                type_specific = [
-                    cnv_ann for cnv_ann in copynumber if cnv_ann["alteration_type"] == gene["type"]]
-                driver_copynumber_annotation[gene["HGNC_ID"]] = type_specific
-                tag_dict(type_specific, "cnv")
+                type_specific = [cnv_ann for cnv_ann in copynumber if (cnv_ann["alteration_type"]
+                                                                       == gene["type"] or cnv_ann["alteration_type"] == "null")]
+                if type_specific:
+                    driver_copynumber_annotation[gene["HGNC_ID"]
+                                                 ] = type_specific
+                    tag_dict(type_specific, "cnv")
+                else:
+                    continue
         # TODO fusion
     return driver_mutation_annotation, driver_indel_annotation, driver_copynumber_annotation
 
@@ -130,7 +134,7 @@ def ann_pharm_variant(dataframe, genome, knowledgebase, variant_type):
         if not direct_target_list:
             continue
         if gene in all_direct_targets:
-            all_direct_targets[gene].append(direct_target_list)
+            all_direct_targets[gene].extend(direct_target_list)
         else:
             all_direct_targets[gene] = direct_target_list
     return all_direct_targets

@@ -35,7 +35,7 @@ def empty_driver_annotation(var_type):
 def empty_mechanistic(variant_type):
     """Function to print warning that there is no hit for mechanistic drug targets."""
     message = "{}: No mechanistic drugs targeting distrupted genes was identified. Mechanistic drug targets table will be empty.".format(
-        varint_type)
+        variant_type)
     print(message)
 
 
