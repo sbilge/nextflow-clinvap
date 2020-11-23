@@ -255,14 +255,14 @@ process filter_vcf {
     file vcf_file from input_vcf
 
     output:
-    file "${vcf_file.baseName}_filter.vcf" into vep
+    file "${vcf_file.baseName}.filter.vcf" into vep
 
     when:
     !params.skip_vep
 
     script:
     """
-    filter_vcf.py ${vcf_file} ${vcf_file.baseName}_filter.vcf
+    filter_vcf.py ${vcf_file} ${vcf_file.baseName}.filter.vcf
     """
 }
 
@@ -281,7 +281,7 @@ process vep_on_input_file {
   file('ensembl-vep') from vep_offline_files
   
   output:
-  file "${vcf.baseName}_out.vcf" into ch_annotated_vcf
+  file "${vcf.simpleName}.out.vcf" into ch_annotated_vcf
 
   when:
   !params.skip_vep
@@ -289,11 +289,11 @@ process vep_on_input_file {
   script:
   if (!params.skip_vep_cache)
   """
-  vep -i ${vcf} -o ${vcf.baseName}_out.vcf --dir_cache "${params.outdir}/offline/ensembl-vep/offline_cache" --config $baseDir/assets/vep.ini
+  vep -i ${vcf} -o ${vcf.simpleName}.out.vcf --dir_cache "${params.outdir}/offline/ensembl-vep/offline_cache" --config $baseDir/assets/vep.ini
   """
   else
   """
-  vep -i ${vcf} -o ${vcf.baseName}_out.vcf --dir_cache ${params.vep_cache} --config $baseDir/assets/vep.ini
+  vep -i ${vcf} -o ${vcf.simpleName}.out.vcf --dir_cache ${params.vep_cache} --config $baseDir/assets/vep.ini
   """
 }
 
@@ -312,17 +312,17 @@ process report_generation {
   file cnv from ch_cnv.ifEmpty("EMPTY")
 
   output:
-  file "${vcf.baseName}.out.json" into snv_metadata, snv_report_generate
+  file "${vcf.simpleName}.vcf.out.json" into snv_metadata, snv_report_generate
   file "${cnv.baseName}.cnv.out.json" optional true into cnv_metadata, cnv_report_generate
   
   script:
   if (!params.cnv)
   """
-  snv_reporting.py -i ${vcf} -o ${vcf.baseName}.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
+  snv_reporting.py -i ${vcf} -o ${vcf.simpleName}.vcf.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
   """
   else
   """
-  snv_reporting.py -i ${vcf} -c ${cnv} -o ${vcf.baseName}.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
+  snv_reporting.py -i ${vcf} -c ${cnv} -o ${vcf.simpleName}.vcf.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
   cnv_reporting.py -i ${vcf} -c ${cnv} -o ${cnv.baseName}.cnv.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
   """
 }
