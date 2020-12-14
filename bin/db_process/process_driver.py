@@ -29,7 +29,7 @@ def assign_driver_role(role_set):
         driver_role == "Oncogene/TSG"
     return driver_role
 
-    
+
 def dict_to_dataframe(driver_dict):
     """Function to convert driver information dictionary into dataframe."""
     df_driver = pd.DataFrame.from_dict(

@@ -6,7 +6,6 @@ def remove_key_value(dictionary, *keys):
     return dictionary
 
 
-
 def populate_list(dictionary, key, list_to_populate):
     """Functions to populate a list with valuesof the given key"""
     value = dictionary[key]
