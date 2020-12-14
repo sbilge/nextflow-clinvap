@@ -1,6 +1,7 @@
 import pandas as pd
 import requests
 import json
+import time
 
 
 KEY_LIST = ["reference_id", "reference_source"]
@@ -47,25 +48,30 @@ def id_string(dataframe):
 
 def get_ref_details(URL):
     """Create reference content: Function to get reference details from etuils API into a dataframe"""
-    try:
-        response = requests.get(URL)
-        value = response.json()
-        references = value["result"]
-        del references["uids"]
-        df = pd.DataFrame.from_dict(references, orient='index', columns=[
-            "sortfirstauthor", "title", "fulljournalname", "volume", "issue", "pages", "pubdate"])
-        df["pubdate"] = df["pubdate"].str.replace("((?<=\d{4}).*)", "")
-        df["sortfirstauthor"] = df["sortfirstauthor"].str.replace(
-            "((?<=) .*)", " et al.")
-        df["title"] = df["title"].str.replace("(\<.*?\>)", "")
-        df["combined"] = df.apply(
-            lambda row: ", ".join(row.values.astype(str)), axis=1)
-        df = df.drop(columns=["sortfirstauthor", "title",
-                              "fulljournalname", "volume", "issue", "pages", "pubdate"])
-        return df
-    except requests.exceptions.RequestException as e:
-        print(str(e))
-        # raise SystemExit(e)
+    for i in range(3):
+        try:
+            response = requests.get(URL)
+            value = response.json()
+            references = value["result"]
+            del references["uids"]
+            df = pd.DataFrame.from_dict(references, orient='index', columns=[
+                "sortfirstauthor", "title", "fulljournalname", "volume", "issue", "pages", "pubdate"])
+            df["pubdate"] = df["pubdate"].str.replace("((?<=\d{4}).*)", "")
+            df["sortfirstauthor"] = df["sortfirstauthor"].str.replace(
+                "((?<=) .*)", " et al.")
+            df["title"] = df["title"].str.replace("(\<.*?\>)", "")
+            df["combined"] = df.apply(
+                lambda row: ", ".join(row.values.astype(str)), axis=1)
+            df = df.drop(columns=["sortfirstauthor", "title",
+                                "fulljournalname", "volume", "issue", "pages", "pubdate"])
+            return df
+        except requests.exceptions.RequestException as e:
+            if i != 2:
+                time.sleep(10)
+                continue
+            else:
+                raise SystemExit(e)
+
 
 
 def replace_ref_nan(row):
