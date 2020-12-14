@@ -17,6 +17,8 @@ def get_field(key, metadata):
     val = metadata.get(key, "null")
     if not val:
         val = "null"
+    elif key == "icd10" and "." not in val:
+        val = val + ".0"
     return val
 
 
@@ -38,7 +40,6 @@ def in_vocabulary(vocab_str, column_name, result_list):
         if not vocab[vocab[column_name] == v].empty:
             result_list.append(v)
     return result_list
-
 
 
 def get_tumor_name(vocab_list, vocab_df, vocab_df_column_name):
@@ -71,14 +72,18 @@ def tumor_type_match(section, keywords, match_type):
 def get_matching_annotations(annotation_type):
     """Process metadata function."""
     match_list = []
-    match = icd10_annotation_dict[icd10][annotation_type]
-    if isinstance(match, str):
-        cond = vocab[annotation_type] == match
-        match_list = vocab[cond]["tumor_type"].tolist()
-    return match_list
+    try:
+        match = icd10_annotation_dict[icd10][annotation_type]
+        if isinstance(match, str):
+            cond = vocab[annotation_type] == match
+            match_list = vocab[cond]["tumor_type"].tolist()
+        return match_list
+    except KeyError:
+        print("Not a cancer ICD10 code. Exiting...")
+        exit(1)
+
 
 # TODO bunu metinde anlatmak lazim
-
 
 def calculate_diagnosis_match_score(section):
     """Process metadata function."""
@@ -143,14 +148,12 @@ def priori_on_diagnosis(section):
     return sorted_new_section
 
 
-
 main_json = sys.argv[1]
 metadata_json = sys.argv[2]
 output_json = sys.argv[3]
 db_lookup = sys.argv[4]
 icd10_lookup = sys.argv[5]
 process_type = sys.argv[6]
-
 
 
 if len(sys.argv) != 7:
@@ -166,7 +169,6 @@ if not process_type in OPTIONS:
         "Invalid process type input. Choose among 'sort', 'filter', 'prioritize, filter, sort'")
 
 
-
 # Read metadata file
 with open(metadata_json) as m:
     metadata = json.load(m)
@@ -180,23 +182,25 @@ report = metadata.copy()
 report.update(main_report)
 
 # Load disease vocabulary TODO degisecek
-dtypes = {"tumor_type": "str", "disease_name": "str", "doid": "str", "icd10": "str", "do_name": "str", "abbr": "str", "system": "str", "organ": "str", "histology_0": "str", "histology_1": "str", "histology_2": "str"}
-columns = ["tumor_type", "doid", "icd10", "do_name", "system", "organ", "histology_0", "histology_1", "histology_2"]
+dtypes = {"tumor_type": "str", "disease_name": "str", "doid": "str", "icd10": "str", "do_name": "str",
+          "abbr": "str", "system": "str", "organ": "str", "histology_0": "str", "histology_1": "str", "histology_2": "str"}
+columns = ["tumor_type", "doid", "icd10", "do_name", "system",
+           "organ", "histology_0", "histology_1", "histology_2"]
 vocab = pd.read_csv(db_lookup, sep="\t", dtype=dtypes)[columns]
 vocab = vocab.apply(lambda x: x.str.lower())
 
 # Load ICD10 lookup table
-dtypes = {"code": "str", "long_desc": "str", "system": "str", "organ": "str", "histology_0": "str", "histology_1": "str", "histology_2": "str"}
-columns = ["code", "system", "organ", "histology_0", "histology_1", "histology_2"]
+dtypes = {"code": "str", "long_desc": "str", "system": "str", "organ": "str",
+          "histology_0": "str", "histology_1": "str", "histology_2": "str"}
+columns = ["code", "system", "organ",
+           "histology_0", "histology_1", "histology_2"]
 icd10_vocab = pd.read_csv(icd10_lookup, sep="\t", dtype=dtypes)[columns]
 icd10_vocab = icd10_vocab.apply(lambda x: x.str.lower())
-
 
 
 do_name = get_field("do_name", report).lower()
 doid = get_field("doid", report).lower()
 icd10 = get_field("icd10", report).lower()
-
 
 
 if all(val == "null" for val in [do_name, doid, icd10]):
@@ -205,7 +209,6 @@ if all(val == "null" for val in [do_name, doid, icd10]):
         json.dump(tagged_report, o, indent=4)
     print("Empty metadata file.")
     sys.exit(0)
-
 
 
 KEYS = ["driver_table", "direct_pharm_table", "pharm_table"]
@@ -236,22 +239,24 @@ else:
     vocab_icd10_tn = []
 
 
-
 keyword_lists = [vocab_doname_tn, vocab_doid_tn, vocab_icd10_tn]
 if not all(result == [] for result in keyword_lists):
     keywords = []
     for x in keyword_lists:
         keywords.extend(x)
     keywords = list(set(keywords))
-    report["driver_table"] = tumor_type_match(report["driver_table"], keywords, "seen_in_diagnosis")
-    report["direct_pharm_table"] = tumor_type_match(report["direct_pharm_table"], keywords, "seen_in_diagnosis")
-    report["pharm_table"] = tumor_type_match(report["pharm_table"], keywords, "seen_in_diagnosis")
+    report["driver_table"] = tumor_type_match(
+        report["driver_table"], keywords, "seen_in_diagnosis")
+    report["direct_pharm_table"] = tumor_type_match(
+        report["direct_pharm_table"], keywords, "seen_in_diagnosis")
+    report["pharm_table"] = tumor_type_match(
+        report["pharm_table"], keywords, "seen_in_diagnosis")
 
 
 if icd10:
     cond = icd10_vocab["code"] == icd10
-    icd10_annotation_dict = icd10_vocab[cond].set_index("code").to_dict("index")
-    
+    icd10_annotation_dict = icd10_vocab[cond].set_index(
+        "code").to_dict("index")
 
     same_system_tumors_list = get_matching_annotations("system")
     same_organ_tumors_list = get_matching_annotations("organ")
@@ -259,19 +264,24 @@ if icd10:
     same_histology_1_tumors_list = get_matching_annotations("histology_1")
     same_histology_2_tumors_list = get_matching_annotations("histology_2")
 
-    categories = ["system", "organ", "histology_0", "histology_1", "histology_2"]
+    categories = ["system", "organ", "histology_0",
+                  "histology_1", "histology_2"]
     for word in KEYS:
-        report[word] = tumor_type_match(report[word], same_system_tumors_list, "system")
-        report[word] = tumor_type_match(report[word], same_organ_tumors_list, "organ")
-        report[word] = tumor_type_match(report[word], same_histology_0_tumors_list, "histology_0")
-        report[word] = tumor_type_match(report[word], same_histology_1_tumors_list, "histology_1")
-        report[word] = tumor_type_match(report[word], same_histology_2_tumors_list, "histology_2")
-        
+        report[word] = tumor_type_match(
+            report[word], same_system_tumors_list, "system")
+        report[word] = tumor_type_match(
+            report[word], same_organ_tumors_list, "organ")
+        report[word] = tumor_type_match(
+            report[word], same_histology_0_tumors_list, "histology_0")
+        report[word] = tumor_type_match(
+            report[word], same_histology_1_tumors_list, "histology_1")
+        report[word] = tumor_type_match(
+            report[word], same_histology_2_tumors_list, "histology_2")
+
 
 for word in KEYS:
     report[word] = calculate_diagnosis_match_score(report[word])
     report[word] = clean_up(report[word])
-
 
 
 # APPLY FILTERS
