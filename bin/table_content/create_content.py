@@ -63,8 +63,9 @@ def get_ref_details(URL):
         df = df.drop(columns=["sortfirstauthor", "title",
                               "fulljournalname", "volume", "issue", "pages", "pubdate"])
         return df
-    except Exception as e:
+    except requests.exceptions.RequestException as e:
         print(str(e))
+        # raise SystemExit(e)
 
 
 def replace_ref_nan(row):

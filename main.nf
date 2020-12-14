@@ -253,14 +253,14 @@ process filter_vcf {
     file vcf_file from input_vcf
 
     output:
-    file "${vcf_file.baseName}_filter.vcf" into vep
+    file "${vcf_file.baseName}.filter.vcf" into vep
 
     when:
     !params.skip_vep
 
     script:
     """
-    filter_vcf.py ${vcf_file} ${vcf_file.baseName}_filter.vcf
+    filter_vcf.py ${vcf_file} ${vcf_file.baseName}.filter.vcf
     """
 }
 
@@ -277,7 +277,7 @@ process vep_on_input_file {
   file('ensembl-vep') from vep_offline_files
   
   output:
-  file "${vcf.baseName}_out.vcf" into ch_annotated_vcf
+  file "${vcf.simpleName}.out.vcf" into ch_annotated_vcf
 
   when:
   !params.skip_vep
@@ -285,11 +285,11 @@ process vep_on_input_file {
   script:
   if (!params.skip_vep_cache)
   """
-  vep -i ${vcf} -o ${vcf.baseName}_out.vcf --dir_cache "${params.outdir}/offline/ensembl-vep/offline_cache" --config $baseDir/assets/vep.ini
+  vep -i ${vcf} -o ${vcf.simpleName}.out.vcf --dir_cache "${params.outdir}/offline/ensembl-vep/offline_cache" --config $baseDir/assets/vep.ini
   """
   else
   """
-  vep -i ${vcf} -o ${vcf.baseName}_out.vcf --dir_cache ${params.vep_cache} --config $baseDir/assets/vep.ini
+  vep -i ${vcf} -o ${vcf.simpleName}.out.vcf --dir_cache ${params.vep_cache} --config $baseDir/assets/vep.ini
   """
 }
 
@@ -306,18 +306,18 @@ process report_generation {
   file cnv from ch_cnv.ifEmpty("EMPTY")
 
   output:
-  file "${vcf.baseName}.json" into snv_metadata, snv_report_generate
-  file "${cnv.baseName}.json" optional true into cnv_metadata, cnv_report_generate
+  file "${vcf.simpleName}.vcf.out.json" into snv_metadata, snv_report_generate
+  file "${cnv.baseName}.cnv.out.json" optional true into cnv_metadata, cnv_report_generate
   
   script:
   if (!params.cnv)
   """
-  snv_reporting.py -i ${vcf} -o ${vcf.baseName}.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
+  snv_reporting.py -i ${vcf} -o ${vcf.simpleName}.vcf.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
   """
   else
   """
-  snv_reporting.py -i ${vcf} -c ${cnv} -o ${vcf.baseName}.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
-  cnv_reporting.py -i ${vcf} -c ${cnv} -o ${cnv.baseName}.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
+  snv_reporting.py -i ${vcf} -c ${cnv} -o ${vcf.simpleName}.vcf.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
+  cnv_reporting.py -i ${vcf} -c ${cnv} -o ${cnv.baseName}.cnv.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
   """
 }
 
@@ -334,8 +334,8 @@ process metadata_diagnosis {
     file cnv_json from cnv_metadata.ifEmpty("EMPTY")
 
     output:
-    file "${main_json.baseName}_merged.json" into ch_snv_diagnosis
-    file "${cnv_json.baseName}_merged.json" optional true into ch_cnv_diagnosis
+    file "${main_json.simpleName}.json" into ch_snv_diagnosis
+    file "${cnv_json.simpleName}.cnv.json" optional true into ch_cnv_diagnosis
 
 
     when:
@@ -344,12 +344,12 @@ process metadata_diagnosis {
     script:
     if (!params.cnv)
     """
-    process_metadata.py ${main_json} ${metadata} ${main_json.baseName}_merged.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
+    process_metadata.py ${main_json} ${metadata} ${main_json.simpleName}.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
     """
     else
     """
-    process_metadata.py ${main_json} ${metadata} ${main_json.baseName}_merged.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
-    process_metadata.py ${cnv_json} ${metadata} ${cnv_json.baseName}_merged.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
+    process_metadata.py ${main_json} ${metadata} ${main_json.simpleName}.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
+    process_metadata.py ${cnv_json} ${metadata} ${cnv_json.simpleName}.cnv.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
     """
 }
 
