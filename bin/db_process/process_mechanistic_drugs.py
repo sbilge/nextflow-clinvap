@@ -20,8 +20,6 @@ def reshape(dictionary, temp):
     return dictionary
 
 
-
-
 def assign_approval_status(role_set):
     """Function to collapse approval status coming from diffeent sources and solving the conradicting info 
     if there is any. """
@@ -43,14 +41,14 @@ def assign_approval_status(role_set):
         approval_status = "approved|investigational|withdrawn"
     elif role_set == {"approved|investigational|vet_approved", "Approved"}:
         approval_status = "approved|investigational"
-    elif role_set == {"approved|experimental|investigational","Approved"}: 
+    elif role_set == {"approved|experimental|investigational", "Approved"}:
         approval_status = "approved|experimental|investigational"
     elif role_set == {"investigational", "Phase 3"}:
         approval_status = "investigational"
     elif role_set == {"approved|investigational|withdrawn", "Withdrawn from market"}:
         approval_status = "Withdrawn from market"
     return approval_status
-    
+
 
 EXCLUDED_VALUES = ["withdrawn",
                    "Withdrawn from market", "Discontinued in Phase 3", "Discontinued in Phase 2", "Terminated", "experimental"]
@@ -58,10 +56,12 @@ EXCLUDED_VALUES = ["withdrawn",
 SEPERATED_VALUES = ["investigational",
                     "Phase 3", "Phase 1", "Phase 2", "Phase 1/2", "Phase 2/3", "experimental|investigational"]
 
+
 def filter_approval_info(dictionary):
     """Function to filter drugs which are not approved"""
     for key in list(dictionary):
-        modified = [item for item in dictionary[key] if item["approval_status"] not in EXCLUDED_VALUES]
+        modified = [item for item in dictionary[key]
+                    if item["approval_status"] not in EXCLUDED_VALUES]
         dictionary[key] = modified
         if not dictionary[key]:
             helper.remove_key_value(dictionary, key)
@@ -73,14 +73,15 @@ def divide_approved_investigational(dictionary):
     investigational_dict = {}
     approved_dict = {}
     for key, value in dictionary.items():
-        investigational = [item for item in value if item["approval_status"] in SEPERATED_VALUES]
-        approved = [item for item in value if item["approval_status"] not in SEPERATED_VALUES]
+        investigational = [
+            item for item in value if item["approval_status"] in SEPERATED_VALUES]
+        approved = [item for item in value if item["approval_status"]
+                    not in SEPERATED_VALUES]
         if investigational:
             investigational_dict[key] = investigational
         if approved:
             approved_dict[key] = approved
     return approved_dict, investigational_dict
-
 
 
 def dict_to_dataframe(mechanistic_dict):

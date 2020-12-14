@@ -64,10 +64,10 @@ mvld_modifier = snv.get_modifier_effect(mvld)
 # Check if mvld_high_moderate dataframe is empty. If it is empty, use mvld_moderate
 if not mvld_high_moderate.empty:
     main_mvld = mvld_high_moderate
-else:
-    if not mvld_modifier.empty:
-        handle.empty_high_impact_mvld()
-        main_mvld = mvld_modifier
+
+elif not mvld_modifier.empty:
+    handle.empty_high_impact_mvld()
+    main_mvld = mvld_modifier
 
 # HGVSp one letter representation
 main_mvld = snv.one_letter_repr(main_mvld)
@@ -88,7 +88,7 @@ from_mlvd = main_mvld[[
 ### Read Process CNV ###
 ########################
 
-# Process CNV to get info that SNV analysis depends on (in section combined pharmacogenomics, 
+# Process CNV to get info that SNV analysis depends on (in section combined pharmacogenomics,
 # the combination partner might be a CNV)
 
 if input_cnv:
@@ -176,7 +176,6 @@ else:
     driver_indel_flag = False
 
 
-
 ############################################################################
 
 # PROCESS DATABASE RESULTS
@@ -237,11 +236,9 @@ if mut_direct_variant_targets:
     df_direct_pharmacogenomics = pharma.dict_to_dataframe(
         direct_pharmacogenomics, "pharmacogenomics_therapeutics")
 
-    
     if df_direct_pharmacogenomics.empty:
         df_direct_pharmacogenomics = handle.empty_dataframe_direct_pharmacogenomics(
             "SNVs")
-
 
     # DIRECT PHARMACOGENOMICS FOR COMBINED VARIANTS
 
@@ -253,7 +250,6 @@ if mut_direct_variant_targets:
     direct_pharmacogenomics_combined = pharma.filter_gene_pair(
         snv_gene_list, cnv_gene_tuples, direct_pharmacogenomics_combined, "pharmacogenomics_combined_variants_therapeutics")
 
-
     # merge tumor_type list into a list, remove "evidence_statement" and "rating"
     pharma.apply_add_tumor_string(
         direct_pharmacogenomics_combined, "pharmacogenomics_combined_variants_therapeutics")
@@ -261,7 +257,6 @@ if mut_direct_variant_targets:
     # Direct pharmacogenomics combined variant effect dictionary to dataframe
     df_direct_pharmacogenomics_combined = pharma.dict_to_dataframe(
         direct_pharmacogenomics_combined, "pharmacogenomics_combined_variants_therapeutics")
-
 
     if df_direct_pharmacogenomics_combined.empty:
         pass
@@ -297,7 +292,6 @@ if mut_gene_targets:
     pharmacogenomics_therapeutics = pharma.get_subset_dict(
         mut_gene_targets, "pharmacogenomics_therapeutics")
 
-
     # merge tumor_type list into a list, remove "evidence_statement" and "rating"
     pharma.apply_add_tumor_string(
         pharmacogenomics_therapeutics, "pharmacogenomics_therapeutics")
@@ -315,11 +309,9 @@ if mut_gene_targets:
     pharmacogenomics_combined_variants_therapeutics = pharma.get_subset_dict(
         mut_gene_targets, "pharmacogenomics_combined_variants_therapeutics")
 
-
     # Filter based on the distrupted pair gene
     pharmacogenomics_combined_variants_therapeutics = pharma.filter_gene_pair(
         snv_gene_list, cnv_gene_tuples, pharmacogenomics_combined_variants_therapeutics, "pharmacogenomics_combined_variants_therapeutics")
-
 
     # merge tumor_type list into a list, remove "evidence_statement" and "rating"
     pharma.apply_add_tumor_string(pharmacogenomics_combined_variants_therapeutics,
@@ -331,7 +323,6 @@ if mut_gene_targets:
     if df_pharmacogenomics_combined.empty:
         df_pharmacogenomics_combined = handle.empty_dataframe_pharmacogenomics_combined(
             "SNVs")
-
 
     # ADVERSE EFFECTS
 
@@ -387,16 +378,13 @@ if not skip_pharmacodynamics_content:
     direct_pharm_content = content.snv_get_content(
         df_direct_pharmacogenomics, from_mlvd, COLUMNS, direct=1, pharm=1, notcombined=1)
 
-
     # Remove direct results covered by df_pharmacogenomics
     pharm = pd.concat(
         [df_pharmacogenomics, df_direct_pharmacogenomics]).drop_duplicates(keep=False)
 
-
     # Content from pharmacogenomics effect
     pharm_content = content.snv_get_content(
         pharm, from_mlvd, COLUMNS, indirect=1, pharm=1, notcombined=1)
-
 
     # Content from pharmacogenomics variant combination effect
     pharm_comb_content = content.snv_get_content(
@@ -410,7 +398,6 @@ if not skip_pharmacodynamics_content:
         direct_pharm_content = direct_pharm_content.append(
             rows, ignore_index=True)
         pharm_comb_content.drop(rows.index, inplace=True)
-
 
     # Add match level to see whether the results are same gene, same, variant,same consequence or whether the
     # variant and consequence differs in the inut than the database result. For detais see documentation
@@ -433,10 +420,7 @@ if not skip_pharmacodynamics_content:
 
     ref_pharm = content.get_references(pharm_content)
 
-
-
     ##############################################################################################
-
 
     # CREATE ADVERSE EFFECT TABLE CONTENTS
 
@@ -449,9 +433,8 @@ if not skip_pharmacodynamics_content:
     # Content from direct adverse effects table
     direct_adverse_content = content.snv_get_content(
         df_direct_adverse, from_mlvd, ADV_COLUMNS, direct=1, adverse=1, notcombined=1)
-    
 
-    #remove direct results covered by df_adverse
+    # remove direct results covered by df_adverse
     adverse = pd.concat([df_direct_adverse, df_adverse]
                         ).drop_duplicates(keep=False)
 
@@ -459,24 +442,20 @@ if not skip_pharmacodynamics_content:
     adverse_content = content.snv_get_content(
         adverse, from_mlvd, ADV_COLUMNS, adverse=1, indirect=1, notcombined=1)
 
-
     # Content from adverse effects combined variants
     adverse_comb_content = content.snv_get_content(
         df_adverse_combined, from_mlvd, ADV_COMB_COLUMNS, combined=1, adverse=1, indirect=1)
 
-
     # merge direct_adverse_content, adverse_content, adverse_comb_content
     adverse_content = pd.concat(
         [direct_adverse_content, adverse_content, adverse_comb_content]).drop_duplicates()
-
-
 
     # add merge level and sort based on levels
     cols = ["gene", "drug_name", "variant_drug_association",
             "hgnc_id", "variant", "variant_type", "match_level"]
     sorted_adverse_content = prior.compatibility_sort(adverse_content)
     sorted_adverse_content = prior.unnest_ref(sorted_adverse_content, cols)
-    
+
     ref_adverse = content.get_references(adverse_content)
 
 else:
@@ -487,15 +466,14 @@ else:
     ref_pharm = handle.empty_reference_place_holder()
     ref_direct_pharm = handle.empty_reference_place_holder()
     ref_adverse = handle.empty_reference_place_holder()
-    
-    
+
 
 #############################################################################################################
 
 
 if mechanistic_flag:
 
-    # Update mechanistic drug targets dict  
+    # Update mechanistic drug targets dict
     mechanistic_drug_targets = mechanistic.reshape(
         mechanistic_drug_targets, {})
 
@@ -549,7 +527,6 @@ if mechanistic_flag:
     investigational_mechanistic_drugs = mechanistic.divide_approved_investigational(
         mechanistic_drugs_filtered)[1]
 
-
     # Mechanistic drug targets information to dataframe
     if approved_mechanistic_drugs:
         main_mechanistic = approved_mechanistic_drugs
@@ -590,7 +567,7 @@ ref_mechanistic = content.get_references(mechanistic_content)
 
 # CREATE APPENDIX TABLES
 
-# appendix table for all variants 
+# appendix table for all variants
 appendix_content = content.appendix_variants(main_mvld, "SNV")
 
 

@@ -466,7 +466,7 @@ cnv_ref_mechanistic = content.get_references(cnv_mechanistic_content)
 
 # CREATE APPENDIX TABLES
 
-# appendix table for all variants 
+# appendix table for all variants
 cnv_appendix_content = content.appendix_variants(df_cnv_processed, "CNV")
 
 
@@ -562,7 +562,6 @@ report_json["pharm_table"] = pharm_table
 report_json["mechanistic_drug_table"] = mechanistic_table
 report_json["appendix_variant_table"] = appendix_variant_table
 report_json["appendix_reference_table"] = appendix_reference_table
-
 
 
 with open(output_json, "w") as f:
