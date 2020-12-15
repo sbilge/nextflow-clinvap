@@ -90,7 +90,7 @@ def reference_table(reference_map_complete):
     reference_map_complete["combined"] = reference_map_complete.apply(
         replace_ref_nan, axis=1)
     table_content = reference_map_complete.drop(
-        columns=["reference_id", "reference_source"])
+        columns=["reference_source"])
     map_dict = reference_map_complete[["index", "reference_id"]].set_index(
         "reference_id").to_dict("dict")
     return table_content, map_dict
