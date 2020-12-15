@@ -26,7 +26,7 @@ def assign_driver_role(role_set):
     elif role_set == {"Oncogene/TSG", "Unknown", "TSG"}:
         driver_role = "Oncogene/TSG"
     elif role_set == {"Oncogene/TSG", "Oncogene"}:
-        driver_role == "Oncogene/TSG"
+        driver_role = "Oncogene/TSG"
     return driver_role
 
 
