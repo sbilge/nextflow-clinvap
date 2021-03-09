@@ -224,7 +224,7 @@ ${summary.collect { k,v -> "            <dt>$k</dt><dd><samp>${v ?: '<span style
 
 process ensembl_vep_files {
 
-  storeDir "${params.outdir}/offline"
+  storeDir "${params.outdir}/offline/${params.genome}"
 
   output:
   file("*") into vep_offline_files 
@@ -285,11 +285,11 @@ process vep_on_input_file {
   script:
   if (!params.skip_vep_cache)
   """
-  vep -i ${vcf} -o ${vcf.simpleName}.out.vcf --dir_cache "${params.outdir}/offline/ensembl-vep/offline_cache" --config $baseDir/assets/vep.ini
+  vep -i ${vcf} -o ${vcf.simpleName}.out.vcf --dir_cache "${params.outdir}/offline/ensembl-vep/offline_cache" --assembly ${params.genome}  --config $baseDir/assets/vep.ini
   """
   else
   """
-  vep -i ${vcf} -o ${vcf.simpleName}.out.vcf --dir_cache ${params.vep_cache} --config $baseDir/assets/vep.ini
+  vep -i ${vcf} -o ${vcf.simpleName}.out.vcf --dir_cache ${params.vep_cache} --assembly ${params.genome} --config $baseDir/assets/vep.ini
   """
 }
 

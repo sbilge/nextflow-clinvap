@@ -80,7 +80,7 @@ def get_matching_annotations(annotation_type):
         return match_list
     except KeyError:
         print("Not a cancer ICD10 code. Exiting...")
-        exit(1)
+        exit(0)
 
 
 # TODO bunu metinde anlatmak lazim
