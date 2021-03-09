@@ -289,11 +289,11 @@ process vep_on_input_file {
   script:
   if (!params.skip_vep_cache)
   """
-  vep -i ${vcf} -o ${vcf.simpleName}.out.vcf --dir_cache "${params.outdir}/offline/ensembl-vep/offline_cache" --config $baseDir/assets/vep.ini
+  vep -i ${vcf} -o ${vcf.simpleName}.out.vcf --dir_cache "${params.outdir}/offline/ensembl-vep/offline_cache" --assembly ${params.genome}  --config $baseDir/assets/vep.ini
   """
   else
   """
-  vep -i ${vcf} -o ${vcf.simpleName}.out.vcf --dir_cache ${params.vep_cache} --config $baseDir/assets/vep.ini
+  vep -i ${vcf} -o ${vcf.simpleName}.out.vcf --dir_cache ${params.vep_cache} --assembly ${params.genome} --config $baseDir/assets/vep.ini
   """
 }
 
