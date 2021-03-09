@@ -224,7 +224,7 @@ ${summary.collect { k,v -> "            <dt>$k</dt><dd><samp>${v ?: '<span style
 
 process ensembl_vep_files {
 
-  storeDir "${params.outdir}/offline/${params.genome}"
+  storeDir "${params.outdir}/offline"
 
   output:
   file("*") into vep_offline_files 
