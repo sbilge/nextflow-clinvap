@@ -203,7 +203,8 @@ else:
 
 # Concat snv and indel driver annotations to get driver content on those.
 df_driver_ann = pd.concat([df_driver_ann_mutation, df_driver_ann_indel],
-                          ignore_index=True).drop(columns=["index"])
+                          ignore_index=True)
+                        #   .drop(columns=["index"])
 
 # Start building up driver content. References will be mapped later.
 driver_ann = df_driver_ann[[
