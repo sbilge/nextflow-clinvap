@@ -17,8 +17,6 @@ def get_field(key, metadata):
     val = metadata.get(key, "null")
     if not val:
         val = "null"
-    elif key == "icd10" and "." not in val:
-        val = val + ".0"
     return val
 
 

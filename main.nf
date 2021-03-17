@@ -307,7 +307,7 @@ process report_generation {
 
   output:
   file "${vcf.simpleName}.vcf.out.json" into snv_metadata, snv_report_generate
-  file "${cnv.baseName}.cnv.out.json" optional true into cnv_metadata, cnv_report_generate
+  file "${cnv.baseName}.cnv.out.json" optional true into cnv_metadata, cnv_metadata_dummy, cnv_report_generate
   
   script:
   if (!params.cnv)
@@ -331,6 +331,7 @@ process metadata_diagnosis {
     input:
     file metadata from ch_metadata
     file main_json from snv_metadata
+    val dummy from cnv_metadata_dummy.ifEmpty("EMPTY")
     file cnv_json from cnv_metadata.ifEmpty("EMPTY")
 
     output:
@@ -342,7 +343,7 @@ process metadata_diagnosis {
     params.metadata_json
 
     script:
-    if (!params.cnv)
+    if (dummy =="EMPTY")
     """
     process_metadata.py ${main_json} ${metadata} ${main_json.simpleName}.json $baseDir/assets/database_diagnosis_lookup_table.txt $baseDir/assets/icd10_lookup_table.txt ${params.diagnosis_filter_option}
     """

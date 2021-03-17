@@ -69,7 +69,7 @@ def get_hgnc_id(dataframe):
                 row['gene'])
             response = requests.get(
                 url, headers={'Accept': 'application/json'})
-            if response.status_code == 200:
+            if response.status_code == 200 and response.json()["response"]["numFound"] > 0:
                 value = response.json()[
                     "response"]["docs"][0]["hgnc_id"].strip("HGNC: ")
                 print(value)

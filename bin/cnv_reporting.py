@@ -131,14 +131,14 @@ if cnv_flag and not df_cnv.empty:
 
 elif cnv_flag and df_cnv.empty:
     print("CNV file is empty. There will be no results related with copy number variants.")
-    sys.exit(1)
+    sys.exit(0)
     # cnv_flag = False
     # # we need empty cnv_gene_tuple list as a place holder for upcaming parts (filter_gene_pair function)
     # cnv_gene_tuple = [()]
 
 if (cnv_flag) and (not cnv_mechanistic_drug_targets) and (not cnv_driver_ann) and (not cnv_gene_targets) and (not cnv_direct_variant_targets):
     print("Database queries did not return any results for CNVs. There will be no results related with copy number variants.")
-    sys.exit(1)
+    sys.exit(0)
     # cnv_flag = False
 
 # Check if mechanistic drug targets are empty or not.
