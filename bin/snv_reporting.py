@@ -114,7 +114,7 @@ elif cnv_flag and df_cnv.empty:
     print("CNV file is empty")
     cnv_flag = False
     # we need empty cnv_gene_tuple list as a place holder for upcaming parts (filter_gene_pair function)
-    cnv_gene_tuple = [()]
+    cnv_gene_tuples = [()]
 
 
 #############################################################################################################
