@@ -25,14 +25,22 @@ def get_fields(vcf):
         sys.exit()
 
 
+def _strip_allele_comma(annotation_list):
+    allele = annotation_list[0]
+    stripped_allele = allele.strip(',')
+    annotation_list[0] = stripped_allele
+    return annotation_list
+
+
 def get_annotation(variant, header):
     """Get variant annotation info"""
     annotation = variant.INFO.get('CSQ').split('|')
-    base = annotation[0]
-    rest = annotation[1:]
-    list_annotation = [rest[x: x + len(header) - 1]
-                       for x in range(0, len(rest), len(header) - 1)]
-    [ls.insert(0, base) for ls in list_annotation]
+    pubmed = annotation[-1]
+    del annotation[-1]
+    list_annotation = [annotation[x: x + len(header) - 1]
+                    for x in range(0, len(annotation), len(header) - 1)]
+    [ls.insert(39, pubmed) for ls in list_annotation if len(ls) == 38]
+    [_strip_allele_comma(ls) for ls in list_annotation]
     return list_annotation
 
 
@@ -142,8 +150,7 @@ def parse_vcf(inputfile):
         vfilter = variant.FILTER
         alt = variant.ALT
         var_type = variant.var_type
-        if len(alt) == 1:
-            alt = alt[0]
+        alt = ''.join(variant.ALT)
         location = "{}:{}_{}/{}".format(chrom, start, ref, alt)
         line = [chrom, start, stop, location,
                 vid, ref, alt, qual, vfilter, vaf, var_type]

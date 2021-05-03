@@ -313,7 +313,7 @@ def get_mechanistic_content(dataframe, mvld, cols):
     df = dataframe.copy()
     processed_1 = pd.merge(df, mvld, how="left",
                            right_on="HGNC_ID", left_on="hgnc_id")
-    processed_2 = processed_1[cols]
+    processed_2 = processed_1[cols].drop_duplicates()
     return processed_2
 
 
