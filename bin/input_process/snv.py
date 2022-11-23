@@ -17,8 +17,7 @@ def read_vcf(inputfile):
 def get_fields(vcf):
     """Get annotation field names - CSQ comes from Ensembl VEP. It might not work for SV or CNV"""
     try:
-        header = vcf.get_header_type(
-            "CSQ")["Description"][51:].strip('"').split("|")
+        header = vcf.get_header_type("CSQ")["Description"].strip('"')[50:].split('|')
         return header
     except KeyError:
         print("Input file is not annotated. Run Ensembl VEP on input file. Terminating...")
@@ -34,11 +33,10 @@ def _strip_allele_comma(annotation_list):
 
 def get_annotation(variant, header):
     """Get variant annotation info"""
-    annotation = variant.INFO.get('CSQ').split('|')
+    annotation = variant.INFO.get('CSQ').split(",")
     pubmed = annotation[-1]
     del annotation[-1]
-    list_annotation = [annotation[x: x + len(header) - 1]
-                    for x in range(0, len(annotation), len(header) - 1)]
+    list_annotation = [annotation[x: x + len(header) - 1] for x in range(0, len(annotation), len(header) - 1)]
     [ls.insert(39, pubmed) for ls in list_annotation if len(ls) == 38]
     [_strip_allele_comma(ls) for ls in list_annotation]
     return list_annotation
@@ -156,11 +154,11 @@ def parse_vcf(inputfile):
                 vid, ref, alt, qual, vfilter, vaf, var_type]
         annotation = get_annotation(variant, fields)
         for ann in annotation:
-            for ln in line:
-                ann.append(ln)
-            complete_line_list.append(ann)
-    header = fields + ["chr", "start", "end", "location",
-                       "vid", "ref", "alt", "qual", "filter", "vaf", "var_type"]  # create VCF dataframe
+            for entry in ann:
+                new_ann = entry.split('|')
+                new_ann.extend(line)  
+            complete_line_list.append(new_ann)
+    header = fields + ["chr", "start", "end", "location", "vid", "ref", "alt", "qual", "filter", "vaf", "var_type"]  # create VCF dataframe
     dataframe = pd.DataFrame(complete_line_list, columns=header)
 
     dataframe["dbSNP"] = dataframe["Existing_variation"].str.findall(
