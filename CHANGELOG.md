@@ -11,6 +11,9 @@ Initial release of nf-core/clinvap, created with the [nf-core](http://nf-co.re/)
 
 ### `Fixed`
 
+- [#39](https://github.com/sbilge/nf-core-clinvap/pull/39) - Fixed setting executable bit on scripts in bin/* 
+- [#39](https://github.com/sbilge/nf-core-clinvap/pull/39) - Fixed wrong number of fields error in snv.py
+
 ### `Dependencies`
 
 ### `Deprecated`
