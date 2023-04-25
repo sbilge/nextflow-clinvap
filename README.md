@@ -31,14 +31,14 @@ iv. Start running your own analysis!
 <!-- TODO nf-core: Update the default command above used to run the pipeline -->
 
 ```bash
-nextflow run nextflow/clinvap -profile <docker/singularity/conda/institute> --annotated_vcf <input> --skip_vep true
+nextflow run KohlbacherLab/nextflow-clinvap -profile <docker/singularity/conda/institute> --annotated_vcf <input> --skip_vep true
 ```
 
 See [usage docs](docs/usage.md) for all of the available options when running the pipeline.
 
 ## Documentation
 
-The nf-core/clinvap pipeline comes with documentation about the pipeline, found in the `docs/` directory:
+The KohlbacherLab/nextflow-clinvap pipeline comes with documentation about the pipeline, found in the `docs/` directory:
 
 1. [Installation](https://nf-co.re/usage/installation)
 2. Pipeline configuration
@@ -53,7 +53,7 @@ The nf-core/clinvap pipeline comes with documentation about the pipeline, found 
 
 ## Credits
 
-nf-core/clinvap was originally written by Bilge Sürün.
+KohlbacherLab/nextflow-clinvap was originally written by Bilge Sürün.
 
 ## Contributions and Support
 
@@ -64,6 +64,6 @@ For further information or help, don't hesitate to get in touch on [Slack](https
 ## Citation
 
 <!-- TODO nf-core: Add citation for pipeline after first release. Uncomment lines below and update Zenodo doi. -->
-If you use  nf-core/clinvap for your analysis, please cite the following article:
+If you use  KohlbacherLab/nextflow-clinvap for your analysis, please cite the following article:
 
 > Sürün, B., Schärfe, C.P., Divine, M.R., Heinrich, J., Toussaint, N.C., Zimmermann, L., Beha, J. and Kohlbacher, O., 2020. ClinVAP: a reporting strategy from variants to therapeutic options. Bioinformatics, 36(7), pp.2316-2317. [https://doi.org/10.1093/bioinformatics/btz924](https://doi.org/10.1093/bioinformatics/btz924) 

@@ -1,6 +1,6 @@
 # KohlbacherLab/nextflow-clinvap: Documentation
 
-The nextflow/clinvap documentation is split into the following files:
+The KohlbacherLab/nextflow-clinvap documentation is split into the following files:
 
 1. [Installation](https://nf-co.re/usage/installation)
 2. Pipeline configuration
