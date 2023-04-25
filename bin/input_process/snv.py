@@ -1,11 +1,12 @@
 # VALID ONLY FOR SNVs
 
+import sys
+import re
+
+import pandas as pd
+
 import table_content.handling as handle
 from cyvcf2 import VCF
-
-import sys
-import pandas as pd
-import re
 
 
 def read_vcf(inputfile):
@@ -21,26 +22,25 @@ def get_fields(vcf):
             "CSQ")["Description"][51:].strip('"').split("|")
         return header
     except KeyError:
-        print("Input file is not annotated. Run Ensembl VEP on input file. Terminating...")
+        print(
+            "Input file is not annotated. Run Ensembl VEP on input file. Terminating..."
+        )
         sys.exit()
 
 
 def _strip_allele_comma(annotation_list):
     allele = annotation_list[0]
-    stripped_allele = allele.strip(',')
+    stripped_allele = allele.strip(",")
     annotation_list[0] = stripped_allele
     return annotation_list
 
 
-def get_annotation(variant, header):
+def get_annotation(variant):
     """Get variant annotation info"""
-    annotation = variant.INFO.get('CSQ').split('|')
-    pubmed = annotation[-1]
-    del annotation[-1]
-    list_annotation = [annotation[x: x + len(header) - 1]
-                       for x in range(0, len(annotation), len(header) - 1)]
-    [ls.insert(39, pubmed) for ls in list_annotation if len(ls) == 38]
-    [_strip_allele_comma(ls) for ls in list_annotation]
+    if re.finditer(r',[ACTG]', variant.INFO.get("CSQ")):
+        annotation_rows = variant.INFO.get("CSQ").split(",")
+
+    list_annotation = [row.split("|") for row in annotation_rows]
     return list_annotation
 
 
@@ -73,7 +73,7 @@ def strelka_vaf_calculation(variant, tumor_sample_index):
 
 
 def stratacaller_vaf_identification(variant):
-    vaf = float("".join(variant.format("FREQ")).strip("%"))/100
+    vaf = float("".join(variant.format("FREQ")).strip("%")) / 100
     return "%.2f" % vaf
 
 
@@ -100,7 +100,7 @@ def get_tumor_sample(vcf):
 
 # Only one tumor sample assumption is made. If more, fix is needed here.
 def tumor_sample_format_index(vcf, source):
-    """Function to return index of tumor sample name. The required Format filed of the tumor sample can be reached with the index. 
+    """Function to return index of tumor sample name. The required Format filed of the tumor sample can be reached with the index.
     It returns index if ##Sample field if present in VCF header. It returns index if sample names are Tumor, Normal. It returns "null" otherwise.
     """
     if source == "strelka":
@@ -121,6 +121,7 @@ def tumor_sample_format_index(vcf, source):
 
 # Read VCF file and create dataframe minium variant level data (MVLD) according to
 # Ritter et al. (https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-016-0367-z)
+
 
 def parse_vcf(inputfile):
     """Parse and process VCF, create dataframe"""
@@ -150,23 +151,48 @@ def parse_vcf(inputfile):
         vfilter = variant.FILTER
         alt = variant.ALT
         var_type = variant.var_type
-        alt = ''.join(variant.ALT)
+        alt = "".join(variant.ALT)
         location = "{}:{}_{}/{}".format(chrom, start, ref, alt)
-        line = [chrom, start, stop, location,
-                vid, ref, alt, qual, vfilter, vaf, var_type]
-        annotation = get_annotation(variant, fields)
+        line = [
+            chrom,
+            start,
+            stop,
+            location,
+            vid,
+            ref,
+            alt,
+            qual,
+            vfilter,
+            vaf,
+            var_type,
+        ]
+        annotation = get_annotation(variant)
         for ann in annotation:
             for ln in line:
                 ann.append(ln)
             complete_line_list.append(ann)
-    header = fields + ["chr", "start", "end", "location",
-                       "vid", "ref", "alt", "qual", "filter", "vaf", "var_type"]  # create VCF dataframe
+    header = fields + [
+        "chr",
+        "start",
+        "end",
+        "location",
+        "vid",
+        "ref",
+        "alt",
+        "qual",
+        "filter",
+        "vaf",
+        "var_type",
+    ]  # create VCF dataframe
     dataframe = pd.DataFrame(complete_line_list, columns=header)
 
-    dataframe["dbSNP"] = dataframe["Existing_variation"].str.findall(
-        "(rs.\d+)").apply(",".join)
-    dataframe["COSMIC"] = dataframe["Existing_variation"].str.findall(
-        "(COSM.\d+)").apply(",".join)
+    dataframe["dbSNP"] = (
+        dataframe["Existing_variation"].str.findall("(rs.\d+)").apply(",".join)
+    )
+    dataframe["COSMIC"] = (
+        dataframe["Existing_variation"].str.findall(
+            "(COSM.\d+)").apply(",".join)
+    )
 
     if dataframe.empty:
         handle.empty_mvld()
@@ -179,12 +205,22 @@ def get_high_moderate_effect(dataframe):
     dataframe = dataframe[dataframe["PICK"] == "1"]
 
     if len(dataframe.index != 0):
-        first_cond = dataframe[(dataframe["IMPACT"] == "HIGH") | (
-            dataframe["IMPACT"] == "MODERATE")]
-        second_cond = first_cond[~((first_cond["SIFT"] == "tolerated") & (
-            first_cond["PolyPhen"] == "benign"))]
-        third_cond = second_cond[~((second_cond["SIFT"] == "tolerated_low_confidence") & (
-            second_cond["PolyPhen"] == "benign"))]
+        first_cond = dataframe[
+            (dataframe["IMPACT"] == "HIGH") | (
+                dataframe["IMPACT"] == "MODERATE")
+        ]
+        second_cond = first_cond[
+            ~(
+                (first_cond["SIFT"] == "tolerated")
+                & (first_cond["PolyPhen"] == "benign")
+            )
+        ]
+        third_cond = second_cond[
+            ~(
+                (second_cond["SIFT"] == "tolerated_low_confidence")
+                & (second_cond["PolyPhen"] == "benign")
+            )
+        ]
         return third_cond
     else:
         print("No variants found that passed default filters.")
@@ -201,8 +237,32 @@ def get_modifier_effect(dataframe):
         return pd.DataFrame()
 
 
-ONE_LETTER = {"Ala": "A", "Arg": "R", "Asn": "N", "Asp": "D", "Cys": "C", "Gln": "Q", "Glu": "E", "Gly": "G", "His": "H", "Ile": "I", "Leu": "L",
-              "Lys": "K", "Met": "M", "Phe": "F", "Pro": "P", "Ser": "S", "Thr": "T", "Trp": "W", "Tyr": "Y", "Val": "V", "Asx": "B", "Glx": "Z", "Xaa": "X", "Ter": "*"}
+ONE_LETTER = {
+    "Ala": "A",
+    "Arg": "R",
+    "Asn": "N",
+    "Asp": "D",
+    "Cys": "C",
+    "Gln": "Q",
+    "Glu": "E",
+    "Gly": "G",
+    "His": "H",
+    "Ile": "I",
+    "Leu": "L",
+    "Lys": "K",
+    "Met": "M",
+    "Phe": "F",
+    "Pro": "P",
+    "Ser": "S",
+    "Thr": "T",
+    "Trp": "W",
+    "Tyr": "Y",
+    "Val": "V",
+    "Asx": "B",
+    "Glx": "Z",
+    "Xaa": "X",
+    "Ter": "*",
+}
 
 
 def one_letter_repr(dataframe):
@@ -210,12 +270,14 @@ def one_letter_repr(dataframe):
     dataframe["aa"] = dataframe["HGVSp"].str.replace("ENSP.*p\.", "")
     dataframe["aa_1"] = dataframe["aa"].str.extract("([a-zA-Z]{3}(?=\d))")
     dataframe["aa_number"] = dataframe["aa"].str.extract(
-        "((?<=[a-zA-Z]{3}).*(?=[a-zA-Z]{3}))")
+        "((?<=[a-zA-Z]{3}).*(?=[a-zA-Z]{3}))"
+    )
     dataframe["aa_2"] = dataframe["aa"].str.extract("((?<=\d)[a-zA-Z]{3})")
     dataframe["aa_1"] = dataframe["aa_1"].map(ONE_LETTER)
     dataframe["aa_2"] = dataframe["aa_2"].map(ONE_LETTER)
     cols = ["aa_1", "aa_number", "aa_2"]
     dataframe["one_letter_repr"] = dataframe[cols].apply(
-        lambda row: "".join(row.values.astype(str)), axis=1)
+        lambda row: "".join(row.values.astype(str)), axis=1
+    )
     dataframe = dataframe.drop(["aa", "aa_1", "aa_2", "aa_number"], axis=1)
     return dataframe

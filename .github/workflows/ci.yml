@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install Nextflow
         run: |
-          wget -qO- get.nextflow.io | bash
+          wget -qO- https://github.com/nextflow-io/nextflow/releases/download/v22.10.5/nextflow-22.10.5-all | bash
           sudo mv nextflow /usr/local/bin/
       - name: Pull docker image
         run: |
