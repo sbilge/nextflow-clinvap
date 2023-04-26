@@ -318,7 +318,7 @@ process snv_report_generation {
  * STEP 5 - CNV Report Generation
  */
 
-process snv_report_generation {
+process cnv_report_generation {
 
   publishDir "${params.outdir}/reports/json", mode: 'copy'
 
