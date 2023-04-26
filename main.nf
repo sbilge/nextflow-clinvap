@@ -326,7 +326,7 @@ process cnv_report_generation {
   publishDir "${params.outdir}/reports/json", mode: 'copy'
 
   input:
-  file vcf from rep_ch_annotated_vcf.
+  file vcf from rep_ch_annotated_vcf
   file cnv from ch_cnv
 
   output:
