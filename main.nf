@@ -146,10 +146,13 @@ if (params.skip_vep){
         .fromPath(params.annotated_vcf)
         .ifEmpty {exit 1, "Cannot find any vcf matching: ${params.annotated_vcf}.\nTry enclosing paths in quotes!\nTry adding a * wildcard!"}
         .set {ch_annotated_vcf_for_reporting}
+        .set {vcf_cnv}
         .println()
 } else {
     ch_annotated_vcf_for_reporting = Channel.empty()
+    vcf_cnv = Channel.empty()
 }
+
 
 /*
 * Create a channel for cnv file
@@ -323,7 +326,7 @@ process cnv_report_generation {
   publishDir "${params.outdir}/reports/json", mode: 'copy'
 
   input:
-  file vcf from ch_annotated_vcf_cnv.mix(ch_annotated_vcf_for_reporting)
+  file vcf from ch_annotated_vcf_cnv.mix(vcf_cnv)
   file cnv from ch_cnv.ifEmpty("EMPTY")
 
   output:
