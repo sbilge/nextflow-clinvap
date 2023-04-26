@@ -295,35 +295,49 @@ process vep_on_input_file {
 }
 
 /*
- * STEP 4 - Report Generation
+ * STEP 4 - SNV Report Generation
  */
 
-process report_generation {
+process snv_report_generation {
 
   publishDir "${params.outdir}/reports/json", mode: 'copy'
 
   input:
   file vcf from ch_annotated_vcf.mix(ch_annotated_vcf_for_reporting)
-  file cnv from ch_cnv.ifEmpty("EMPTY")
 
   output:
   file "${vcf.simpleName}.vcf.out.json" into snv_metadata, snv_report_generate
-  file "${cnv.baseName}.cnv.out.json" optional true into cnv_metadata, cnv_metadata_dummy, cnv_report_generate
   
   script:
-  if (!params.cnv)
   """
   snv_reporting.py -i ${vcf} -o ${vcf.simpleName}.vcf.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
-  """
-  else
-  """
-  snv_reporting.py -i ${vcf} -c ${cnv} -o ${vcf.simpleName}.vcf.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
-  cnv_reporting.py -i ${vcf} -c ${cnv} -o ${cnv.baseName}.cnv.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
   """
 }
 
 /*
- * STEP 5 - MERGE METADATA - FILTER DIAGNOSIS
+ * STEP 5 - CNV Report Generation
+ */
+
+process snv_report_generation {
+
+  publishDir "${params.outdir}/reports/json", mode: 'copy'
+
+  input:
+  file cnv from ch_cnv.ifEmpty("EMPTY")
+
+  output:
+  file "${cnv.baseName}.cnv.out.json" optional true into cnv_metadata, cnv_metadata_dummy, cnv_report_generate
+  
+  script:
+
+  """
+   cnv_reporting.py -i ${vcf} -c ${cnv} -o ${cnv.baseName}.cnv.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
+  """
+}
+
+
+/*
+ * STEP 6 - MERGE METADATA - FILTER DIAGNOSIS
  */
 
 process metadata_diagnosis {
@@ -356,7 +370,7 @@ process metadata_diagnosis {
 }
 
 /*
- * STEP 6 - DOCX
+ * STEP 7 - DOCX
  */
 
 process render_report_snv {
@@ -382,7 +396,7 @@ process render_report_snv {
 }
 
 /*
- * STEP 7 - DOCX
+ * STEP 8 - DOCX
  */
 
 process render_report_cnv {
@@ -412,7 +426,7 @@ process render_report_cnv {
 
 
 /*
- * STEP 8 - Output Description HTML
+ * STEP 9 - Output Description HTML
  */
 
 process output_documentation {

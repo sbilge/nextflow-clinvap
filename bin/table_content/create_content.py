@@ -52,26 +52,28 @@ def get_ref_details(URL):
         try:
             response = requests.get(URL)
             value = response.json()
-            references = value["result"]
-            del references["uids"]
-            df = pd.DataFrame.from_dict(references, orient='index', columns=[
-                "sortfirstauthor", "title", "fulljournalname", "volume", "issue", "pages", "pubdate"])
-            df["pubdate"] = df["pubdate"].str.replace("((?<=\d{4}).*)", "")
-            df["sortfirstauthor"] = df["sortfirstauthor"].str.replace(
-                "((?<=) .*)", " et al.")
-            df["title"] = df["title"].str.replace("(\<.*?\>)", "")
-            df["combined"] = df.apply(
-                lambda row: ", ".join(row.values.astype(str)), axis=1)
-            df = df.drop(columns=["sortfirstauthor", "title",
-                                "fulljournalname", "volume", "issue", "pages", "pubdate"])
-            return df
+            if value:
+                references = value["result"]
+                del references["uids"]
+                df = pd.DataFrame.from_dict(references, orient='index', columns=[
+                    "sortfirstauthor", "title", "fulljournalname", "volume", "issue", "pages", "pubdate"])
+                df["pubdate"] = df["pubdate"].str.replace("((?<=\d{4}).*)", "")
+                df["sortfirstauthor"] = df["sortfirstauthor"].str.replace(
+                    "((?<=) .*)", " et al.")
+                df["title"] = df["title"].str.replace("(\<.*?\>)", "")
+                df["combined"] = df.apply(
+                    lambda row: ", ".join(row.values.astype(str)), axis=1)
+                df = df.drop(columns=["sortfirstauthor", "title",
+                                      "fulljournalname", "volume", "issue", "pages", "pubdate"])
+                return df
+            else:
+                return pd.DataFrame(columns=["sortfirstauthor", "title", "fulljournalname", "volume", "issue", "pages", "pubdate"])
         except requests.exceptions.RequestException as e:
             if i != 2:
                 time.sleep(10)
                 continue
             else:
                 raise SystemExit(e)
-
 
 
 def replace_ref_nan(row):
