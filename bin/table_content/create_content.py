@@ -67,7 +67,7 @@ def get_ref_details(URL):
             return df
 
         except KeyError as e:
-            return pd.DataFrame(columns=["sortfirstauthor", "title", "fulljournalname", "volume", "issue", "pages", "pubdate"])
+            return pd.DataFrame(columns=["combined"])
 
         except requests.exceptions.RequestException as e:
             if i != 2:
