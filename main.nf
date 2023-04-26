@@ -330,7 +330,6 @@ process cnv_report_generation {
   file cnv from ch_cnv
 
   output:
-  file "${vcf.simpleName}.vcf.out.json" into snv_metadata, snv_report_generate
   file "${cnv.baseName}.cnv.out.json" optional true into cnv_metadata, cnv_metadata_dummy, cnv_report_generate
   
   when:
