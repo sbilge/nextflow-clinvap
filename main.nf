@@ -278,7 +278,7 @@ process vep_on_input_file {
   file('ensembl-vep') from vep_offline_files
   
   output:
-  file "${vcf.simpleName}.out.vcf" into ch_annotated_vcf
+  file "${vcf.simpleName}.out.vcf" into ch_annotated_vcf, ch_annotated_vcf_cnv
 
   when:
   !params.skip_vep
@@ -323,7 +323,7 @@ process cnv_report_generation {
   publishDir "${params.outdir}/reports/json", mode: 'copy'
 
   input:
-  file vcf from ch_annotated_vcf.mix(ch_annotated_vcf_for_reporting)
+  file vcf from ch_annotated_vcf_cnv.mix(ch_annotated_vcf_for_reporting)
   file cnv from ch_cnv.ifEmpty("EMPTY")
 
   output:
