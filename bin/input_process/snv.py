@@ -141,7 +141,7 @@ def parse_vcf(inputfile):
         else:
             vaf = other_ngs_vaf(variant)
         chrom = variant.CHROM.replace("chr", "")
-        if chrom != "X":
+        if chrom not in ["X", "Y"]:
             chrom = int(chrom)
         start = variant.POS
         stop = variant.end
