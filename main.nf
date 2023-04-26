@@ -323,6 +323,7 @@ process cnv_report_generation {
   publishDir "${params.outdir}/reports/json", mode: 'copy'
 
   input:
+  file vcf from ch_annotated_vcf.mix(ch_annotated_vcf_for_reporting)
   file cnv from ch_cnv.ifEmpty("EMPTY")
 
   output:
