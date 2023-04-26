@@ -72,9 +72,9 @@ if (params.help) {
 //params.fasta = params.genome ? params.genomes[ params.genome ].fasta ?: false : false
 //if (params.fasta) { ch_fasta = file(params.fasta, checkIfExists: true) }
 
-if (!params.skip_vep) {
-    params.vcf = params.vcf ?: { log.error "No input data folder is provided. Make sure you have used the '--vcf' option.": exit 1 }()
-}
+// if (!params.skip_vep) {
+//     params.vcf =  params.vcf ?: { log.error "No input data folder is provided. Make sure you have used the '--vcf' option.": exit 1 }()
+// }
 params.outdir = params.outdir ?: {log.warn "No ouput directory is provided. Results will be saved into './results'"; return "$baseDir/results"}()
 
 // Has the run name been specified by the user?
@@ -101,6 +101,7 @@ ch_output_docs = file("$baseDir/docs/output.md", checkIfExists: true)
 /*
  * Create a channel for input read files
  */
+params.vcf =  "$baseDir/data/*.vcf"
 if (!params.skip_vep) {
     Channel
     .fromPath(params.vcf)
