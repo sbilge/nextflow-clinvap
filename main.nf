@@ -72,9 +72,9 @@ if (params.help) {
 //params.fasta = params.genome ? params.genomes[ params.genome ].fasta ?: false : false
 //if (params.fasta) { ch_fasta = file(params.fasta, checkIfExists: true) }
 
-// if (!params.skip_vep) {
-//     params.vcf =  params.vcf ?: { log.error "No input data folder is provided. Make sure you have used the '--vcf' option.": exit 1 }()
-// }
+if (!params.skip_vep) {
+    params.vcf = params.vcf ?: { log.error "No input data folder is provided. Make sure you have used the '--vcf' option.": exit 1 }()
+}
 params.outdir = params.outdir ?: {log.warn "No ouput directory is provided. Results will be saved into './results'"; return "$baseDir/results"}()
 
 // Has the run name been specified by the user?
@@ -101,7 +101,6 @@ ch_output_docs = file("$baseDir/docs/output.md", checkIfExists: true)
 /*
  * Create a channel for input read files
  */
-params.vcf =  "$baseDir/data/*.vcf"
 if (!params.skip_vep) {
     Channel
     .fromPath(params.vcf)
@@ -146,13 +145,10 @@ if (params.skip_vep){
         .fromPath(params.annotated_vcf)
         .ifEmpty {exit 1, "Cannot find any vcf matching: ${params.annotated_vcf}.\nTry enclosing paths in quotes!\nTry adding a * wildcard!"}
         .set {ch_annotated_vcf_for_reporting}
-        .set {vcf_cnv}
         .println()
 } else {
     ch_annotated_vcf_for_reporting = Channel.empty()
-    vcf_cnv = Channel.empty()
 }
-
 
 /*
 * Create a channel for cnv file
@@ -281,7 +277,7 @@ process vep_on_input_file {
   file('ensembl-vep') from vep_offline_files
   
   output:
-  file "${vcf.simpleName}.out.vcf" into ch_annotated_vcf, ch_annotated_vcf_cnv
+  file "${vcf.simpleName}.out.vcf" into ch_annotated_vcf
 
   when:
   !params.skip_vep
@@ -298,50 +294,35 @@ process vep_on_input_file {
 }
 
 /*
- * STEP 4 - SNV Report Generation
+ * STEP 4 - Report Generation
  */
 
-process snv_report_generation {
+process report_generation {
 
   publishDir "${params.outdir}/reports/json", mode: 'copy'
 
   input:
   file vcf from ch_annotated_vcf.mix(ch_annotated_vcf_for_reporting)
-
-  output:
-  file "${vcf.simpleName}.vcf.out.json" into snv_metadata, snv_report_generate
-  
-  script:
-  """
-  snv_reporting.py -i ${vcf} -o ${vcf.simpleName}.vcf.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
-  """
-}
-
-/*
- * STEP 5 - CNV Report Generation
- */
-
-process cnv_report_generation {
-
-  publishDir "${params.outdir}/reports/json", mode: 'copy'
-
-  input:
-  file vcf from ch_annotated_vcf_cnv.mix(vcf_cnv)
   file cnv from ch_cnv.ifEmpty("EMPTY")
 
   output:
+  file "${vcf.simpleName}.vcf.out.json" into snv_metadata, snv_report_generate
   file "${cnv.baseName}.cnv.out.json" optional true into cnv_metadata, cnv_metadata_dummy, cnv_report_generate
   
   script:
-
+  if (!params.cnv)
   """
-   cnv_reporting.py -i ${vcf} -c ${cnv} -o ${cnv.baseName}.cnv.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
+  snv_reporting.py -i ${vcf} -o ${vcf.simpleName}.vcf.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
+  """
+  else
+  """
+  snv_reporting.py -i ${vcf} -c ${cnv} -o ${vcf.simpleName}.vcf.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
+  cnv_reporting.py -i ${vcf} -c ${cnv} -o ${cnv.baseName}.cnv.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
   """
 }
 
-
 /*
- * STEP 6 - MERGE METADATA - FILTER DIAGNOSIS
+ * STEP 5 - MERGE METADATA - FILTER DIAGNOSIS
  */
 
 process metadata_diagnosis {
@@ -374,7 +355,7 @@ process metadata_diagnosis {
 }
 
 /*
- * STEP 7 - DOCX
+ * STEP 6 - DOCX
  */
 
 process render_report_snv {
@@ -400,7 +381,7 @@ process render_report_snv {
 }
 
 /*
- * STEP 8 - DOCX
+ * STEP 7 - DOCX
  */
 
 process render_report_cnv {
@@ -430,7 +411,7 @@ process render_report_cnv {
 
 
 /*
- * STEP 9 - Output Description HTML
+ * STEP 8 - Output Description HTML
  */
 
 process output_documentation {
