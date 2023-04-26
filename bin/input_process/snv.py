@@ -48,7 +48,10 @@ def ngs_source(vcf):  # takes vcf object as argument
     """Function to get NGS pipeline name from the VCF header."""
     if vcf.contains("source"):
         source_info = vcf.get_header_type("source")
-        source_name = source_info["source"]
+        try:
+            source_name = source_info["source"]
+        except KeyError:
+            source_name = "null"
     else:
         source_name = "null"
     return source_name
