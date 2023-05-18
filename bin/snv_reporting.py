@@ -548,7 +548,6 @@ else:
 
 # CREATE MECHANISTIC DRUG TARGETS TABLE CONTENT
 
-print(df_mechanistic_targets)
 if not skip_pharmacodynamics_content:
     # remove the content found in pharmacogenomics therapeutics - bunlardan biri bossa bura patlar mi?
     all_pharm_drugs = pd.concat([direct_pharm_content[["drug_name", "hgnc_id"]], pharm_content[[
