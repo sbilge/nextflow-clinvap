@@ -52,6 +52,7 @@ def ngs_source(vcf):  # takes vcf object as argument
             source_name = source_info["source"]
         except KeyError:
             source_name = "null"
+            return source_name
     else:
         source_name = "null"
     return source_name
