@@ -75,6 +75,7 @@ if (params.help) {
 if (!params.skip_vep) {
     params.vcf = params.vcf ?: { log.error "No input data folder is provided. Make sure you have used the '--vcf' option.": exit 1 }()
 }
+
 params.outdir = params.outdir ?: {log.warn "No ouput directory is provided. Results will be saved into './results'"; return "$baseDir/results"}()
 
 // Has the run name been specified by the user?
@@ -110,6 +111,22 @@ if (!params.skip_vep) {
     input_vcf = Channel.empty()
 }
 
+
+/*
+* Create a channel for annotated vcf files
+*/
+
+if (params.skip_vep){
+    Channel
+        .fromPath(params.annotated_vcf)
+        .ifEmpty {exit 1, "Cannot find any vcf matching: ${params.annotated_vcf}.\nTry enclosing paths in quotes!\nTry adding a * wildcard!"}
+        .set {annotated_input_vcf}
+} else {
+    annotated_input_vcf = Channel.empty()
+}
+
+
+
 /* 
  * Create a channel for ensembl vep cache files when provided by user
 */
@@ -131,24 +148,10 @@ if (params.metadata_json){
     .fromPath(params.metadata_json)
     .ifEmpty {exit 1, "Cannot find any json matching: ${params.metadata_json}.\nTry enclosing paths in quotes!"}
     .set {ch_metadata}
-    .println()
 } else {
     ch_metadata = Channel.empty()
 }
 
-/*
-* Create a channel for annotated vcf files
-*/
-
-if (params.skip_vep){
-    Channel
-        .fromPath(params.annotated_vcf)
-        .ifEmpty {exit 1, "Cannot find any vcf matching: ${params.annotated_vcf}.\nTry enclosing paths in quotes!\nTry adding a * wildcard!"}
-        .set {ch_annotated_vcf_for_reporting}
-        .println()
-} else {
-    ch_annotated_vcf_for_reporting = Channel.empty()
-}
 
 /*
 * Create a channel for cnv file
@@ -158,7 +161,6 @@ if (params.cnv){
     .fromPath(params.cnv)
     .ifEmpty {exit 1, "Cannot find any tsv matching: ${params.cnv}.\nTry enclosing paths in quotes!"}
     .set {ch_cnv}
-    .println()
 } else {
     ch_cnv = Channel.value("EMPTY")
 }
@@ -296,13 +298,12 @@ process vep_on_input_file {
 /*
  * STEP 4 - Report Generation
  */
-
 process snv_report_generation {
 
   publishDir "${params.outdir}/reports/json", mode: 'copy'
 
   input:
-  file vcf from ch_annotated_vcf.mix(ch_annotated_vcf_for_reporting)
+  file vcf from ch_annotated_vcf.mix(annotated_input_vcf)
 
   output:
   file "${vcf.simpleName}.vcf.out.json" into snv_metadata, snv_report_generate
@@ -378,14 +379,13 @@ process metadata_diagnosis {
 /*
  * STEP 7 - DOCX
  */
-
 process render_report_snv {
 
     publishDir "${params.outdir}/reports", mode: 'copy'
 
     input:
     file out_json from snv_report_generate
-    file diagnosis_json from ch_snv_diagnosis.ifEmpty("EMPTY")
+    file diagnosis_json from ch_snv_diagnosis.ifEmpty("EMPTY").collect()
 
     output:
     file "${out_json.baseName}.docx"
