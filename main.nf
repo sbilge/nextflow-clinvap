@@ -1,11 +1,11 @@
 #!/usr/bin/env nextflow
 /*
 ========================================================================================
-                         nf-core/clinvap
+                         KohlbacherLab/nextflow-clinvap
 ========================================================================================
- nf-core/clinvap Analysis Pipeline.
+ KohlbacherLab/nextflow-clinvap Clinical variant annotation pipeline
  #### Homepage / Documentation
- https://github.com/nf-core/clinvap
+ https://github.com/KohlbacherLab/nextflow-clinvap
 ----------------------------------------------------------------------------------------
 */
 
@@ -52,34 +52,14 @@ if (params.help) {
     exit 0
 }
 
-/*
- * SET UP CONFIGURATION VARIABLES
- */
-
-// Check if genome exists in the config file
-//if (params.genomes && params.genome && !params.genomes.containsKey(params.genome)) {
-//    exit 1, "The provided genome '${params.genome}' is not available in the iGenomes file. Currently the available genomes are ${params.genomes.keySet().join(", ")}"
-//}
-
-// TODO nf-core: Add any reference files that are needed
-// Configurable reference genomes
-//
-// NOTE - THIS IS NOT USED IN THIS PIPELINE, EXAMPLE ONLY
-// If you want to use the channel below in a process, define the following:
-//   input:
-//   file fasta from ch_fasta
-//
-//params.fasta = params.genome ? params.genomes[ params.genome ].fasta ?: false : false
-//if (params.fasta) { ch_fasta = file(params.fasta, checkIfExists: true) }
-
+// vcf input check  
 if (!params.skip_vep) {
     params.vcf = params.vcf ?: { log.error "No input data folder is provided. Make sure you have used the '--vcf' option.": exit 1 }()
 }
 
 params.outdir = params.outdir ?: {log.warn "No ouput directory is provided. Results will be saved into './results'"; return "$baseDir/results"}()
 
-// Has the run name been specified by the user?
-//  this has the bonus effect of catching both -name and --name
+//  workflow run name
 custom_runName = params.name
 if (!(workflow.runName ==~ /[a-z]+_[a-z]+/)) {
     custom_runName = workflow.runName
@@ -584,7 +564,7 @@ def nfcoreHeader() {
     ${c_blue}  |\\ | |__  __ /  ` /  \\ |__) |__         ${c_yellow}}  {${c_reset}
     ${c_blue}  | \\| |       \\__, \\__/ |  \\ |___     ${c_green}\\`-._,-`-,${c_reset}
                                             ${c_green}`._,._,\'${c_reset}
-    ${c_purple}  nf-core/clinvap v${workflow.manifest.version}${c_reset}
+    ${c_purple}  KohlbacherLab/nextflow-clinvap v${workflow.manifest.version}${c_reset}
     -${c_dim}--------------------------------------------------${c_reset}-
     """.stripIndent()
 }
