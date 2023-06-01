@@ -1,10 +1,8 @@
 
 **Clinical Variant Annotation Pipeline**.
 
-[//]: # ([![GitHub Actions CI Status](https://github.com/KohlbacherLab/nextflow-clinvap/workflows/nf-core%20CI/badge.svg)](https://github.com/KohlbacherLab/nextflow-clinvap/actions))
-[//]: # ([![GitHub Actions Linting Status](https://github.com/KohlbacherLab/nextflow-clinvap/workflows/nf-core%20linting/badge.svg)](https://github.com/KohlbacherLab/nextflow-clinvap/actions))
-[![Nextflow](https://img.shields.io/badge/nextflow-%E2%89%A519.10.0-brightgreen.svg)](https://www.nextflow.io/)
 
+[![Nextflow](https://img.shields.io/badge/nextflow-%E2%89%A519.10.0-brightgreen.svg)](https://www.nextflow.io/)
 [![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg)](http://bioconda.github.io/)
 [![Docker](https://img.shields.io/docker/automated/nfcore/clinvap.svg)](https://hub.docker.com/r/nfcore/clinvap)
 
