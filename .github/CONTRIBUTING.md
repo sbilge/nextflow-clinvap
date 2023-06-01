@@ -1,23 +1,21 @@
-# nf-core/clinvap: Contributing Guidelines
+# ClinVAP Contributing Guidelines
 
 Hi there!
-Many thanks for taking an interest in improving nf-core/clinvap.
+Many thanks for taking an interest in improving KohlbacherLab/nextflow-clinvap.
 
-We try to manage the required tasks for nf-core/clinvap using GitHub issues, you probably came to this page when creating one.
+We manage the required tasks for KohlbacherLab/nextflow-clinvap using GitHub issues, you probably came to this page when creating one.
 Please use the pre-filled template to save time.
 
 However, don't be put off by this template - other more general issues and suggestions are welcome!
-Contributions to the code are even more welcome ;)
-
-> If you need help using or modifying nf-core/clinvap then the best place to ask is on the nf-core Slack [#clinvap](https://nfcore.slack.com/channels/clinvap) channel ([join our Slack here](https://nf-co.re/join/slack)).
+Contributions to the code are even more welcome
 
 ## Contribution workflow
 
-If you'd like to write some code for nf-core/clinvap, the standard workflow is as follows:
+If you'd like to write some code for KohlbacherLab/nextflow-clinvap, the standard workflow is as follows:
 
-1. Check that there isn't already an issue about your idea in the [nf-core/clinvap issues](https://github.com/nf-core/clinvap/issues) to avoid duplicating work
+1. Check that there isn't already an issue about your idea in the [KohlbacherLab/nextflow-clinvap issues](https://github.com/KohlbacherLab/nextflow-clinvap/issues) to avoid duplicating work
     * If there isn't one already, please create one so that others know you're working on this
-2. [Fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) the [nf-core/clinvap repository](https://github.com/nf-core/clinvap) to your GitHub account
+2. [Fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) the [KohlbacherLab/nextflow-clinvap repository](https://github.com/KohlbacherLab/nextflow-clinvap) to your GitHub account
 3. Make the necessary changes / additions within your forked repository
 4. Submit a Pull Request against the `dev` branch and wait for the code to be reviewed and merged
 
@@ -25,7 +23,7 @@ If you're not used to this workflow with git, you can start with some [docs from
 
 ## Tests
 
-When you create a pull request with changes, [GitHub Actions](https://github.com/features/actions) will run automatic tests.
+When you create a pull request with changes, [GitHub Actions](https://github.com/features/actions) will run automatic tests. These tests are from the [nf-core](https://github.com/nf-core) template. 
 Typically, pull-requests are only fully reviewed when these tests are passing, though of course we can help out before then.
 
 There are typically two types of tests that run:
@@ -33,7 +31,7 @@ There are typically two types of tests that run:
 ### Lint Tests
 
 `nf-core` has a [set of guidelines](https://nf-co.re/developers/guidelines) which all pipelines must adhere to.
-To enforce these and ensure that all pipelines stay in sync, we have developed a helper tool which runs checks on the pipeline code. This is in the [nf-core/tools repository](https://github.com/nf-core/tools) and once installed can be run locally with the `nf-core lint <pipeline-directory>` command.
+To enforce these and ensure that all pipelines stay in sync, nf-core developers provided a helper tool which runs checks on the pipeline code. This is in the [nf-core/tools repository](https://github.com/nf-core/tools) and once installed can be run locally with the `nf-core lint <pipeline-directory>` command.
 
 If any failures or warnings are encountered, please follow the listed URL for more documentation.
 
@@ -54,4 +52,4 @@ These tests are run both with the latest available version of `Nextflow` and als
 
 ## Getting help
 
-For further information/help, please consult the [nf-core/clinvap documentation](https://nf-co.re/nf-core/clinvap/docs) and don't hesitate to get in touch on the nf-core Slack [#clinvap](https://nfcore.slack.com/channels/clinvap) channel ([join our Slack here](https://nf-co.re/join/slack)).
+For further information/help, please consult the [https://github.com/KohlbacherLab/nextflow-clinvap documentation](https://github.com/KohlbacherLab/nextflow-clinvap/tree/master/docs).

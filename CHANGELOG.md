@@ -5,7 +5,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## v1.0dev - [date]
 
-Initial release of nf-core/clinvap, created with the [nf-core](http://nf-co.re/) template.
+Initial release of KohlbacherLab/nextflow-clinvap, created with the [nf-core](http://nf-co.re/) template.
 
 ### `Added`
 
