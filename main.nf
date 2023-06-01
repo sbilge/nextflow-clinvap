@@ -18,7 +18,7 @@ def helpMessage() {
 
     The typical command for running the pipeline is as follows:
 
-    nextflow run nf-core/clinvap --vcf '/input/folder' -profile docker
+    nextflow run main.nf --skip_vep false --vcf '/input/folder/*.vcf' -profile docker
 
     Mandatory arguments:
       --vcf  [Path]                 Path to the input directory.
@@ -184,10 +184,10 @@ checkHostname()
 def create_workflow_summary(summary) {
     def yaml_file = workDir.resolve('workflow_summary_mqc.yaml')
     yaml_file.text  = """
-    id: 'nf-core-clinvap-summary'
+    id: 'nextflow-clinvap-summary'
     description: " - this information is collected when the pipeline is started."
-    section_name: 'nf-core/clinvap Workflow Summary'
-    section_href: 'https://github.com/nf-core/clinvap'
+    section_name: 'KohlbacherLab/nextflow-clinvap Workflow Summary'
+    section_href: 'https://github.com/KohlbacherLab/nextflow-clinvap'
     plot_type: 'html'
     data: |
         <dl class=\"dl-horizontal\">
@@ -436,9 +436,9 @@ process output_documentation {
 workflow.onComplete {
 
     // Set up the e-mail variables
-    def subject = "[nf-core/clinvap] Successful: $workflow.runName"
+    def subject = "[KohlbacherLab/nextflow-clinvap] Successful: $workflow.runName"
     if (!workflow.success) {
-        subject = "[nf-core/clinvap] FAILED: $workflow.runName"
+        subject = "[KohlbacherLab/nextflow-clinvap] FAILED: $workflow.runName"
     }
     def email_fields = [:]
     email_fields['version'] = workflow.manifest.version
@@ -470,12 +470,12 @@ workflow.onComplete {
         if (workflow.success) {
             mqc_report = ch_multiqc_report.getVal()
             if (mqc_report.getClass() == ArrayList) {
-                log.warn "[nf-core/clinvap] Found multiple reports from process 'multiqc', will use only one"
+                log.warn "[KohlbacherLab/nextflow-clinvap] Found multiple reports from process 'multiqc', will use only one"
                 mqc_report = mqc_report[0]
             }
         }
     } catch (all) {
-        log.warn "[nf-core/clinvap] Could not attach MultiQC report to summary email"
+        log.warn "[KohlbacherLab/nextflow-clinvap] Could not attach MultiQC report to summary email"
     }
 
     // Check if we are only sending emails on failure
@@ -507,11 +507,11 @@ workflow.onComplete {
             if (params.plaintext_email) { throw GroovyException('Send plaintext e-mail, not HTML') }
             // Try to send HTML e-mail using sendmail
             [ 'sendmail', '-t' ].execute() << sendmail_html
-            log.info "[nf-core/clinvap] Sent summary e-mail to $email_address (sendmail)"
+            log.info "[KohlbacherLab/nextflow-clinvap] Sent summary e-mail to $email_address (sendmail)"
         } catch (all) {
             // Catch failures and try with plaintext
             [ 'mail', '-s', subject, email_address ].execute() << email_txt
-            log.info "[nf-core/clinvap] Sent summary e-mail to $email_address (mail)"
+            log.info "[KohlbacherLab/nextflow-clinvap] Sent summary e-mail to $email_address (mail)"
         }
     }
 
@@ -537,10 +537,10 @@ workflow.onComplete {
     }
 
     if (workflow.success) {
-        log.info "-${c_purple}[nf-core/clinvap]${c_green} Pipeline completed successfully${c_reset}-"
+        log.info "-${c_purple}[KohlbacherLab/nextflow-clinvap]${c_green} Pipeline completed successfully${c_reset}-"
     } else {
         checkHostname()
-        log.info "-${c_purple}[nf-core/clinvap]${c_red} Pipeline completed with errors${c_reset}-"
+        log.info "-${c_purple}[KohlbacherLab/nextflow-clinvap]${c_red} Pipeline completed with errors${c_reset}-"
     }
 
 }

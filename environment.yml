@@ -1,6 +1,6 @@
 # You can use this file to create a conda environment for this pipeline:
 #   conda env create -f environment.yml
-name: nf-core-clinvap-1.0dev
+name: nextflow-clinvap-1.0dev
 channels:
   - bioconda
   - anaconda

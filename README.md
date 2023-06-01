@@ -53,7 +53,7 @@ The KohlbacherLab/nextflow-clinvap pipeline comes with documentation about the p
 
 ## Credits
 
-KohlbacherLab/nextflow-clinvap was originally written by Bilge Sürün.
+KohlbacherLab/nextflow-clinvap was originally written by Bilge Sürün. It is created using [nf-core](https://nf-co.re/) pipeline template. 
 
 ## Contributions and Support
 
