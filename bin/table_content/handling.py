@@ -3,17 +3,16 @@ import pandas as pd
 
 
 def empty_mvld():
-    """Function to exit program if the main ataframe calculated from annotated VCF empty."""
+    """Function to exit program if the main dataframe calculated from annotated VCF empty."""
     message = "Input VFC is empty. Terminating..."
     print(message)
     sys.exit()
 
 
 def empty_database_result():
-    """Function to exit program if there are not database results returned for the input VCF."""
-    message = "No database result. Terminating..."
+    """Function to notify if there are not database results returned for the input VCF."""
+    message = "No database result. The result will be empty"
     print(message)
-    sys.exit()
 
 
 def empty_high_impact_mvld():
@@ -181,3 +180,9 @@ def empty_pharmacodynamics_place_holder(adverse=None):
     if adverse:
         df = df.drop(columns=['tumor_list', 'db_tumor_repr'])
     return df
+
+
+def empty_references():
+    """Return an empty dataframe if the pubmed references are empty"""
+    print("Empty reference table")
+    return pd.DataFrame(columns=["sortfirstauthor", "title", "fulljournalname", "volume", "issue", "pages", "pubdate"])

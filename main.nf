@@ -1,11 +1,11 @@
 #!/usr/bin/env nextflow
 /*
 ========================================================================================
-                         nf-core/clinvap
+                         KohlbacherLab/nextflow-clinvap
 ========================================================================================
- nf-core/clinvap Analysis Pipeline.
+ KohlbacherLab/nextflow-clinvap Clinical variant annotation pipeline
  #### Homepage / Documentation
- https://github.com/nf-core/clinvap
+ https://github.com/KohlbacherLab/nextflow-clinvap
 ----------------------------------------------------------------------------------------
 */
 
@@ -52,33 +52,14 @@ if (params.help) {
     exit 0
 }
 
-/*
- * SET UP CONFIGURATION VARIABLES
- */
-
-// Check if genome exists in the config file
-//if (params.genomes && params.genome && !params.genomes.containsKey(params.genome)) {
-//    exit 1, "The provided genome '${params.genome}' is not available in the iGenomes file. Currently the available genomes are ${params.genomes.keySet().join(", ")}"
-//}
-
-// TODO nf-core: Add any reference files that are needed
-// Configurable reference genomes
-//
-// NOTE - THIS IS NOT USED IN THIS PIPELINE, EXAMPLE ONLY
-// If you want to use the channel below in a process, define the following:
-//   input:
-//   file fasta from ch_fasta
-//
-//params.fasta = params.genome ? params.genomes[ params.genome ].fasta ?: false : false
-//if (params.fasta) { ch_fasta = file(params.fasta, checkIfExists: true) }
-
+// vcf input check  
 if (!params.skip_vep) {
     params.vcf = params.vcf ?: { log.error "No input data folder is provided. Make sure you have used the '--vcf' option.": exit 1 }()
 }
+
 params.outdir = params.outdir ?: {log.warn "No ouput directory is provided. Results will be saved into './results'"; return "$baseDir/results"}()
 
-// Has the run name been specified by the user?
-//  this has the bonus effect of catching both -name and --name
+//  workflow run name
 custom_runName = params.name
 if (!(workflow.runName ==~ /[a-z]+_[a-z]+/)) {
     custom_runName = workflow.runName
@@ -110,6 +91,22 @@ if (!params.skip_vep) {
     input_vcf = Channel.empty()
 }
 
+
+/*
+* Create a channel for annotated vcf files
+*/
+
+if (params.skip_vep){
+    Channel
+        .fromPath(params.annotated_vcf)
+        .ifEmpty {exit 1, "Cannot find any vcf matching: ${params.annotated_vcf}.\nTry enclosing paths in quotes!\nTry adding a * wildcard!"}
+        .set {annotated_input_vcf}
+} else {
+    annotated_input_vcf = Channel.empty()
+}
+
+
+
 /* 
  * Create a channel for ensembl vep cache files when provided by user
 */
@@ -131,24 +128,10 @@ if (params.metadata_json){
     .fromPath(params.metadata_json)
     .ifEmpty {exit 1, "Cannot find any json matching: ${params.metadata_json}.\nTry enclosing paths in quotes!"}
     .set {ch_metadata}
-    .println()
 } else {
     ch_metadata = Channel.empty()
 }
 
-/*
-* Create a channel for annotated vcf files
-*/
-
-if (params.skip_vep){
-    Channel
-        .fromPath(params.annotated_vcf)
-        .ifEmpty {exit 1, "Cannot find any vcf matching: ${params.annotated_vcf}.\nTry enclosing paths in quotes!\nTry adding a * wildcard!"}
-        .set {ch_annotated_vcf_for_reporting}
-        .println()
-} else {
-    ch_annotated_vcf_for_reporting = Channel.empty()
-}
 
 /*
 * Create a channel for cnv file
@@ -158,9 +141,8 @@ if (params.cnv){
     .fromPath(params.cnv)
     .ifEmpty {exit 1, "Cannot find any tsv matching: ${params.cnv}.\nTry enclosing paths in quotes!"}
     .set {ch_cnv}
-    .println()
 } else {
-    ch_cnv = Channel.empty()
+    ch_cnv = Channel.value("EMPTY")
 }
 
 
@@ -277,7 +259,7 @@ process vep_on_input_file {
   file('ensembl-vep') from vep_offline_files
   
   output:
-  file "${vcf.simpleName}.out.vcf" into ch_annotated_vcf
+  file "${vcf.simpleName}.out.vcf" into ch_annotated_vcf, rep_ch_annotated_vcf
 
   when:
   !params.skip_vep
@@ -296,33 +278,53 @@ process vep_on_input_file {
 /*
  * STEP 4 - Report Generation
  */
-
-process report_generation {
+process snv_report_generation {
 
   publishDir "${params.outdir}/reports/json", mode: 'copy'
 
   input:
-  file vcf from ch_annotated_vcf.mix(ch_annotated_vcf_for_reporting)
-  file cnv from ch_cnv.ifEmpty("EMPTY")
+  file vcf from ch_annotated_vcf.mix(annotated_input_vcf)
 
   output:
   file "${vcf.simpleName}.vcf.out.json" into snv_metadata, snv_report_generate
-  file "${cnv.baseName}.cnv.out.json" optional true into cnv_metadata, cnv_metadata_dummy, cnv_report_generate
   
+  when:
+  !params.cnv
+
   script:
-  if (!params.cnv)
   """
   snv_reporting.py -i ${vcf} -o ${vcf.simpleName}.vcf.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
   """
-  else
+}
+
+/*
+ * STEP 5 - Report Generation
+ */
+
+
+process cnv_report_generation {
+
+  publishDir "${params.outdir}/reports/json", mode: 'copy'
+
+  input:
+  file vcf from rep_ch_annotated_vcf
+  file cnv from ch_cnv
+
+  output:
+  file "${cnv.baseName}.cnv.out.json" optional true into cnv_metadata, cnv_metadata_dummy, cnv_report_generate
+  
+  when:
+  params.cnv
+
+  script:
+  if (cnv != "EMPTY")
   """
-  snv_reporting.py -i ${vcf} -c ${cnv} -o ${vcf.simpleName}.vcf.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
   cnv_reporting.py -i ${vcf} -c ${cnv} -o ${cnv.baseName}.cnv.out.json -g ${params.genome} -k $baseDir/assets/cancerDB_final.json
   """
 }
 
 /*
- * STEP 5 - MERGE METADATA - FILTER DIAGNOSIS
+ * STEP 6 - MERGE METADATA - FILTER DIAGNOSIS
  */
 
 process metadata_diagnosis {
@@ -355,16 +357,15 @@ process metadata_diagnosis {
 }
 
 /*
- * STEP 6 - DOCX
+ * STEP 7 - DOCX
  */
-
 process render_report_snv {
 
     publishDir "${params.outdir}/reports", mode: 'copy'
 
     input:
     file out_json from snv_report_generate
-    file diagnosis_json from ch_snv_diagnosis.ifEmpty("EMPTY")
+    file diagnosis_json from ch_snv_diagnosis.ifEmpty("EMPTY").collect()
 
     output:
     file "${out_json.baseName}.docx"
@@ -381,7 +382,7 @@ process render_report_snv {
 }
 
 /*
- * STEP 7 - DOCX
+ * STEP 8 - DOCX
  */
 
 process render_report_cnv {
@@ -411,7 +412,7 @@ process render_report_cnv {
 
 
 /*
- * STEP 8 - Output Description HTML
+ * STEP 9 - Output Description HTML
  */
 
 process output_documentation {
@@ -563,7 +564,7 @@ def nfcoreHeader() {
     ${c_blue}  |\\ | |__  __ /  ` /  \\ |__) |__         ${c_yellow}}  {${c_reset}
     ${c_blue}  | \\| |       \\__, \\__/ |  \\ |___     ${c_green}\\`-._,-`-,${c_reset}
                                             ${c_green}`._,._,\'${c_reset}
-    ${c_purple}  nf-core/clinvap v${workflow.manifest.version}${c_reset}
+    ${c_purple}  KohlbacherLab/nextflow-clinvap v${workflow.manifest.version}${c_reset}
     -${c_dim}--------------------------------------------------${c_reset}-
     """.stripIndent()
 }

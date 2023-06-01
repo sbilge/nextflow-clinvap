@@ -63,15 +63,18 @@ def get_ref_details(URL):
             df["combined"] = df.apply(
                 lambda row: ", ".join(row.values.astype(str)), axis=1)
             df = df.drop(columns=["sortfirstauthor", "title",
-                                "fulljournalname", "volume", "issue", "pages", "pubdate"])
+                                  "fulljournalname", "volume", "issue", "pages", "pubdate"])
             return df
+
+        except KeyError as e:
+            return pd.DataFrame(columns=["combined"])
+
         except requests.exceptions.RequestException as e:
             if i != 2:
                 time.sleep(10)
                 continue
             else:
                 raise SystemExit(e)
-
 
 
 def replace_ref_nan(row):

@@ -48,7 +48,11 @@ def ngs_source(vcf):  # takes vcf object as argument
     """Function to get NGS pipeline name from the VCF header."""
     if vcf.contains("source"):
         source_info = vcf.get_header_type("source")
-        source_name = source_info["source"]
+        try:
+            source_name = source_info["source"]
+        except KeyError:
+            source_name = "null"
+            return source_name
     else:
         source_name = "null"
     return source_name
@@ -141,8 +145,8 @@ def parse_vcf(inputfile):
         else:
             vaf = other_ngs_vaf(variant)
         chrom = variant.CHROM.replace("chr", "")
-        if chrom != "X":
-            chrom = int(chrom)
+        # if chrom not in ["X", "Y"]:
+        #     chrom = int(chrom)
         start = variant.POS
         stop = variant.end
         vid = variant.ID

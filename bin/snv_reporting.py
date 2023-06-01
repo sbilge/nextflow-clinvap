@@ -535,14 +535,18 @@ if mechanistic_flag:
         handle.empty_approved_mechanistic()
         main_mechanistic = investigational_mechanistic_drugs
 
-    df_mechanistic_targets = mechanistic.dict_to_dataframe(main_mechanistic)
+    if main_mechanistic:
+        df_mechanistic_targets = mechanistic.dict_to_dataframe(main_mechanistic)
+    else:
+        df_mechanistic_targets = pd.DataFrame(
+        columns=['drugbank_id', 'drug_name', 'approval_status', 'source_name', 'reference_id', 'reference_source', 'source_pmid', 'hgnc_id'])
+
 else:
     df_mechanistic_targets = pd.DataFrame(
         columns=['drugbank_id', 'drug_name', 'approval_status', 'source_name', 'reference_id', 'reference_source', 'source_pmid', 'hgnc_id'])
 
 
 # CREATE MECHANISTIC DRUG TARGETS TABLE CONTENT
-
 
 if not skip_pharmacodynamics_content:
     # remove the content found in pharmacogenomics therapeutics - bunlardan biri bossa bura patlar mi?
