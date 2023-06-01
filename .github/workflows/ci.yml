@@ -21,7 +21,7 @@ jobs:
           sudo mv nextflow /usr/local/bin/
       - name: Pull docker image
         run: |
-          docker pull bilges/nextflow-clinvap-clinvap:dev && docker tag bilges/nextflow-clinvap:dev bilges/nextflow-clinvap:dev
+          docker pull kohlbacherlab/nextflow-clinvap:dev
       - name: Run pipeline with test data
         run: |
           # TODO nf-core: You can customise CI pipeline run tests as required
